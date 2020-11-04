@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://SpeechBubble.gd" type="Script" id=1]
+[ext_resource path="res://image.png" type="Texture" id=2]
+[ext_resource path="res://Lato-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://FredokaOne-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 3 )
+
+[node name="SpeechBubble" type="Control"]
+size_flags_stretch_ratio = 0.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="speech_bubble" type="TextureRect" parent="."]
+margin_left = -178.682
+margin_top = -158.927
+margin_right = 30.3181
+margin_bottom = 2.07254
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="speech_bubble"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = 3.0
+margin_right = -19.0
+margin_bottom = -23.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 7
+custom_constants/line_spacing = 3
+custom_constants/shadow_offset_y = 5
+text = "This is a long long long long long long text. I can not do more than that."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="speech_bubble/Label"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -6.85077
+margin_top = -34.258
+margin_right = 78.1492
+margin_bottom = 6.74197
+custom_fonts/font = SubResource( 2 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="speech_bubble"]
+margin_left = 34.3645
+margin_top = -39.1955
+margin_right = 172.365
+margin_bottom = -8.19553
+custom_fonts/font = SubResource( 3 )
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Tween" type="Tween" parent="."]

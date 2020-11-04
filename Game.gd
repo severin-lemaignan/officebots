@@ -1,11 +1,11 @@
-extends Node2D
+extends Spatial
 
 #const SERVER_URL="research.skadge.org"
 const SERVER_URL="localhost"
 const SERVER_PORT=6969
 
 export (bool) var force_client : bool = false
-var is_server : bool = false
+var is_server : bool
 
 
 export(String) var username = "John Doe"
@@ -61,7 +61,7 @@ func remove_player(id):
     
 func add_player(id):
     print("Adding player " + str(id))
-    var player = preload("res://Player.tscn").instance()
+    var player = preload("res://Character.tscn").instance()
     player.set_name(str(id))
     player.set_network_master(id) # Will be explained later
     get_node("/root/Game/Players").add_child(player)
