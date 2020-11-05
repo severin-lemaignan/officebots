@@ -3,8 +3,8 @@
 [ext_resource path="res://Player.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.732466
-height = 1.13417
+radius = 0.835729
+height = 0.797972
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 3 )
@@ -16,14 +16,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.20038, 1.73621, 1.85397 )
 transform = Transform( 0.194408, 0, 0, 0, 0.194408, 0, 0, 0, 0.194408, -0.301798, -0.125454, -0.16385 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.00122173, 0.999999, 0, -0.999999, 0.00122173, 0, 1.207, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 1.34177, 0 )
 shape = SubResource( 1 )
 
 [node name="CameraTarget" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.87643, 0 )
 
 [node name="Rotation_helper" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15708, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0 )
 
 [node name="Camera" type="Camera" parent="Rotation_helper"]
 transform = Transform( -1, -2.25269e-09, -1.50625e-07, -1.27936e-08, 0.997546, 0.0700177, 1.50098e-07, 0.0700177, -0.997546, 0, 0, 0 )
