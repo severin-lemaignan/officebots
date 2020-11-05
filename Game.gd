@@ -22,8 +22,10 @@ func _ready():
     # the web version are always clients; the non-web versions are server (except if set to force client)
     if OS.get_name() == "HTML5" or force_client:
         is_server = false
+        $ControlCamera.current = false
     else:
         is_server = true
+        $ControlCamera.current = true
         
     var peer
     
@@ -62,6 +64,7 @@ func remove_player(id):
 func add_player(id):
     print("Adding player " + str(id))
     var player = preload("res://Character.tscn").instance()
+    
     player.set_name(str(id))
     player.set_network_master(id) # Will be explained later
     get_node("/root/Game/Players").add_child(player)

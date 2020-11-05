@@ -5,7 +5,7 @@ extends KinematicBody
 
 const GRAVITY = -24.8
 var vel = Vector3()
-const MAX_SPEED = 1
+const MAX_SPEED = 1.5
 const JUMP_SPEED = 1
 const ACCEL = 2.5
 
@@ -34,7 +34,13 @@ func _physics_process(delta):
     
     process_input(delta)
     process_movement(delta)
+    
+    
     rpc_unreliable("set_puppet_transform", transform)
+    
+    # version that also communicate the gaze direction -- not working because
+    # puppet head pose overridden by animation
+    #rpc_unreliable("set_puppet_transform", transform, $Rotation_helper/CameraTarget.get_global_transform().origin)
 
 func process_input(delta):
 
@@ -106,7 +112,7 @@ func _input(event):
         self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
 
         var camera_rot = rotation_helper.rotation_degrees
-        camera_rot.x = clamp(camera_rot.x, -10, 20)
+        camera_rot.x = clamp(camera_rot.x, -20, 30)
         rotation_helper.rotation_degrees = camera_rot
 
 

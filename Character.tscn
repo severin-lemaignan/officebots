@@ -1,10 +1,9 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://skin.material" type="Material" id=1]
 [ext_resource path="res://Skins/casualFemaleA_neutral.png" type="Texture" id=2]
 [ext_resource path="res://Character.gd" type="Script" id=3]
 [ext_resource path="res://SpeechBubble.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Skins/alienA.png" type="Texture" id=5]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Character"
@@ -1149,21 +1148,13 @@ tracks/44/enabled = true
 tracks/44/keys = PoolRealArray( 0, 1, -4.65661e-10, -2.38419e-07, -7.45058e-09, 3.67682e-22, -3.63798e-12, -1.0823e-10, 1, 1, 1, 1, 0.0666667, 1, 1.70395e-05, 0.00987661, 0.000792645, 0.00204556, -5.9038e-06, -3.805e-07, 0.999998, 1, 1, 1, 0.2, 1, 0.000106181, 0.0615463, 0.00493938, 0.0127469, -3.67893e-05, -2.37132e-06, 0.999919, 1, 1, 1, 0.266667, 1, 0.000123221, 0.0714232, 0.00573202, 0.0147922, -4.26926e-05, -2.75186e-06, 0.999891, 1, 1, 1, 0.333333, 1, 0.000106181, 0.0615463, 0.00493938, 0.0127468, -3.67893e-05, -2.37132e-06, 0.999919, 1, 1, 1, 0.466667, 1, 1.70395e-05, 0.00987661, 0.000792645, 0.00204556, -5.9038e-06, -3.805e-07, 0.999998, 1, 1, 1, 0.533333, 1, -4.65661e-10, -2.38419e-07, -7.45058e-09, 3.67682e-22, -3.63798e-12, -1.0823e-10, 1, 1, 1, 1, 0.6, 1, 1.70395e-05, 0.00987661, 0.000792645, 0.00204556, -5.9038e-06, -3.805e-07, 0.999998, 1, 1, 1, 0.733333, 1, 0.000106181, 0.0615463, 0.00493938, 0.0127469, -3.67893e-05, -2.37132e-06, 0.999919, 1, 1, 1, 0.8, 1, 0.000123221, 0.0714232, 0.00573202, 0.0147922, -4.26926e-05, -2.75186e-06, 0.999891, 1, 1, 1, 0.866667, 1, 0.000106181, 0.0615463, 0.00493938, 0.0127468, -3.67893e-05, -2.37132e-06, 0.999919, 1, 1, 1, 1, 1, 1.70395e-05, 0.00987661, 0.000792645, 0.00204556, -5.9038e-06, -3.805e-07, 0.999998, 1, 1, 1, 1.06667, 1, -4.65661e-10, -2.38419e-07, -7.45058e-09, 3.67682e-22, -3.63798e-12, -1.0823e-10, 1, 1, 1, 1 )
 
 [sub_resource type="CylinderShape" id=8]
-radius = 2.12939
-height = 3.58539
-
-[sub_resource type="CylinderShape" id=9]
-radius = 1.2
-height = 0.2
-
-[sub_resource type="CylinderShape" id=10]
-radius = 0.6
-height = 0.2
+radius = 2.82309
+height = 7.78752
 
 [node name="Character" type="StaticBody"]
 script = ExtResource( 3 )
 max_earshot_distance = 2.0
-neutral_skin = ExtResource( 5 )
+neutral_skin = ExtResource( 2 )
 
 [node name="SpeechBubbleHandle" type="Node2D" parent="."]
 __meta__ = {
@@ -1179,7 +1170,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.571958, 0.126205 )
 transform = Transform( 0.0882466, 0, 0, 0, 0.0882466, 0, 0, 0, 0.0972273, -0.177421, 0.13305, 0.00488836 )
 
 [node name="Root" type="Spatial" parent="."]
-transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+transform = Transform( 0.46, 0, 0, 0, 0.46, 0, 0, 0, 0.46, 0, 0, 0 )
 
 [node name="Skeleton" type="Skeleton" parent="Root"]
 bones/0/name = "left_foot_ctrl"
@@ -1420,18 +1411,8 @@ anims/Idle = SubResource( 6 )
 anims/Walk = SubResource( 7 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.2, 0, 0, 0, -0.2, -3.01992e-08, 0, 3.01992e-08, -0.2, 0, 0.362822, -0.010438 )
+transform = Transform( 0.2, 0, 0, 0, -0.2, -3.01992e-08, 0, 3.01992e-08, -0.2, 0, 0.801375, -0.010438 )
 shape = SubResource( 8 )
-
-[node name="SocialSpace" type="Area" parent="."]
-
-[node name="CollisionShape" type="CollisionShape" parent="SocialSpace"]
-shape = SubResource( 9 )
-
-[node name="PersonalSpace" type="Area" parent="."]
-
-[node name="CollisionShape" type="CollisionShape" parent="PersonalSpace"]
-shape = SubResource( 10 )
 
 [node name="RotationTween" type="Tween" parent="."]
 

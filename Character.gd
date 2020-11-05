@@ -2,8 +2,6 @@ extends StaticBody
 class_name Character
 
 onready var anim_player = $AnimationPlayer
-onready var player = get_tree().root.get_node("Game/Player")
-onready var menu = get_tree().root.get_node("Game/UI")
 
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
@@ -30,66 +28,63 @@ var target_quaternion
 
 signal ready_to_speak
 
-var is_moving
+var last_location
+var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
-var speed = 0.2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 #    set_fixed_process(true)
 #    player.connect("spoke", player, "say()")
-    is_moving = true
+    last_location = translation
 
-    original_orientation = Quat(transform.basis)
+    original_orientation = Quat(transform.basis.orthonormalized())
     set_expression(Expressions.NEUTRAL)
     
     # flip the tip of the speech bubble to place the speech bubble on the left of NPCs
     speech_bubble.flip_left()
     #say("My name is " + username, 5)
     
-    $SocialSpace.connect("body_entered", self, "enter_social_space")
-    $SocialSpace.connect("body_exited", self, "exit_social_space")
-    $PersonalSpace.connect("body_entered", self, "enter_personal_space")
-    $PersonalSpace.connect("body_exited", self, "exit_personal_space")
-    
-    $SocialSpace.connect("input_event", self, "in_social_space")
-    $PersonalSpace.connect("ready", self, "in_social_space")
-    
+
+# gaze control doe snot work due to animations overriding head pose    
+#puppet func set_puppet_transform(puppet_transform, eye_target):
+#    # eye_target is a (x,y,z) point (in world coordinates) that the player
+#    # is looking at
+#
+#    transform = puppet_transform
+#
+#    var tr = $Root/Skeleton.get_bone_pose(17)
+#    $Root/Skeleton.set_bone_pose(17, 
+#                                 Transform(face(eye_target), tr.origin))
+
 puppet func set_puppet_transform(puppet_transform):
+    
     transform = puppet_transform
     
-#func _process(delta):
-#    if is_moving:
-#        speed = 0.2
-#        anim_to_play = "Walk"
-#    else:
-#        speed = 0
-#        anim_to_play = "Idle"
-#        
-#    current_anim = anim_player.get_current_animation()
-#    
-#    if current_anim != anim_to_play:
-#        anim_player.play(anim_to_play)
-#    
-#    get_parent().set_offset(get_parent().get_offset() + (speed*delta))
-
-
-
-# Override these methods for each characters to create different behaviours
-func enter_social_space(body):
-    pass
-
-func exit_social_space(body):
-    pass
+func _process(delta):
     
-func enter_personal_space(body):
-    pass
-
-func exit_personal_space(body):
-    pass
-
-
+    
+    # we buffer a bit as the peer main loop might run faster
+    # that the pace at which puppet controller sends position
+    # updates. By waiting ~0.1s, we make sure the character would have moved,
+    # hence properly setting the animation
+    total_delta += delta
+    
+    if total_delta > 0.1:
+        total_delta = 0
+        
+        if translation.distance_squared_to(last_location) > 0.001:
+            anim_to_play = "Walk"
+        else:
+            anim_to_play = "Idle"
+            
+        current_anim = anim_player.get_current_animation()
+        
+        if current_anim != anim_to_play:
+            anim_player.play(anim_to_play)
+    
+        last_location = translation
 
     
 #######################################################
@@ -103,7 +98,8 @@ func get_look_at_transform_basis(target,
     # reimplemented from Godot's source at core/math/transform.cpp
     # to enable Tweening + +Z forward
     
-    var v_z = -(eye - target.get_global_transform().origin)
+    #var v_z = -(eye - target.get_global_transform().origin)
+    var v_z = -(eye - target)
     v_z = v_z.normalized()
     var v_y = up
     var v_x = v_y.cross(v_z)
@@ -135,8 +131,8 @@ func set_expression(expression):
 func face(object):
 
     target_quaternion = Quat(get_look_at_transform_basis(object))
-                                                         #$Root/Skeleton.get_bone_pose(17).origin))
-    
+                                #$Root/Skeleton.get_bone_pose(17).origin))
+    return target_quaternion
 
 
 func on_rotation_finished():
