@@ -42,7 +42,7 @@ func _physics_process(delta):
     # puppet head pose overridden by animation
     #rpc_unreliable("set_puppet_transform", transform, $Rotation_helper/CameraTarget.get_global_transform().origin)
 
-func process_input(delta):
+func process_input(_delta):
 
     # ----------------------------------
     # Walking

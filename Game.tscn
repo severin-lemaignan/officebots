@@ -4,26 +4,26 @@
 [ext_resource path="res://Game.gd" type="Script" id=2]
 [ext_resource path="res://assets/MainOffice/MainOffice.tscn" type="PackedScene" id=3]
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="BoxShape" id=1]
 extents = Vector3( 2.62413, 1, 2.81689 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-force_client = true
 
 [node name="Players" type="Spatial" parent="."]
-
-[node name="MainOffice" parent="." instance=ExtResource( 3 )]
 
 [node name="Floor" type="StaticBody" parent="."]
 transform = Transform( 10, 0, 0, 0, 0.1, 0, 0, 0, 10, 0, -0.1, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Floor"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.313101 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
-[node name="RobotBridge" parent="." instance=ExtResource( 1 )]
+[node name="Robot" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.34003, 0, 2.98457 )
 
 [node name="ControlCamera" type="Camera" parent="."]
-transform = Transform( -0.125991, 0.372777, -0.919328, 0, 0.926712, 0.375771, 0.992031, 0.0473439, -0.116758, -3.05783, 1.91314, -1.6619 )
-current = true
+transform = Transform( 0.468547, 0.331971, -0.818694, 0, 0.926712, 0.375772, 0.883439, -0.176067, 0.434208, -3.05783, 4.81994, 9.09039 )
+
+[node name="MainOffice" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.41699, 0.003461, 6.10439 )
