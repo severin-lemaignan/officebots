@@ -26,6 +26,7 @@ func _ready():
     else:
         is_server = true
         $ControlCamera.current = true
+        $CanvasLayer/UI.visible = false
         
     var peer
     

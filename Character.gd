@@ -58,6 +58,10 @@ func _ready():
 #    $Root/Skeleton.set_bone_pose(17, 
 #                                 Transform(face(eye_target), tr.origin))
 
+puppet func puppet_says(msg):
+    print("Got something to say: " + msg)
+    say(msg)
+    
 puppet func set_puppet_transform(puppet_transform):
     
     transform = puppet_transform
@@ -140,23 +144,23 @@ func on_rotation_finished():
     quaternion_slerp_progress = 0
     
 func say(text, wait_time=2, force=false):
-    $SpeechBubbleHandle/SpeechBubble/speech_bubble/Name.text = username
+#    $SpeechBubbleHandle/SpeechBubble/speech_bubble/Name.text = username
     
 #    emit_signal("spoke")
-    var player2 = get_tree().root.get_node("Game/Player")
+#    var player2 = get_tree().root.get_node("Game/Player")
     
-    if is_speaking() and not force:
-        return
+#    if is_speaking() and not force:
+#        return
         
-    var dist = distance_to(player2)
+#    var dist = distance_to(player2)
     
     #For background dialogue
-    if force:
-        speech_bubble.say(text, wait_time)
+#    if force:
+#        speech_bubble.say(text, wait_time)
     
     # NPC too far from Player? we don't hear it!
-    if dist > max_earshot_distance:
-        return
+#    if dist > max_earshot_distance:
+#        return
     
     speech_bubble.say(text, speech_bubble.ButtonType.NONE, wait_time)
 

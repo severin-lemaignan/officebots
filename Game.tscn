@@ -10,6 +10,7 @@ extents = Vector3( 2.62413, 1, 2.81689 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
+force_client = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -25,10 +26,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.313101 )
 shape = SubResource( 1 )
 
 [node name="Robot" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.34003, 0, 2.98457 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.617118, 0, 4.22762 )
 
 [node name="ControlCamera" type="Camera" parent="."]
-transform = Transform( 0.468547, 0.331971, -0.818694, 0, 0.926712, 0.375772, 0.883439, -0.176067, 0.434208, -3.05783, 4.81994, 9.09039 )
+transform = Transform( 0.468547, 0.331971, -0.818693, 0, 0.926712, 0.375772, 0.883439, -0.176067, 0.434208, -12.0087, 4.81994, 5.78424 )
 
 [node name="MainOffice" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.41699, 0.003461, 6.10439 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.30599, 0.003, 2.64479 )
