@@ -1,0 +1,162 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=1]
+[ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=2]
+[ext_resource path="res://assets/icons/emoticon-angry.svg" type="Texture" id=3]
+[ext_resource path="res://assets/icons/emoticon-angry-outline.svg" type="Texture" id=4]
+[ext_resource path="res://assets/icons/emoticon-confused-outline.svg" type="Texture" id=5]
+[ext_resource path="res://assets/characters/char1.png" type="Texture" id=6]
+[ext_resource path="res://assets/icons/emoticon-sad.svg" type="Texture" id=7]
+[ext_resource path="res://assets/icons/emoticon-sad-outline.svg" type="Texture" id=8]
+[ext_resource path="res://assets/icons/emoticon-excited-outline.svg" type="Texture" id=9]
+[ext_resource path="res://assets/icons/emoticon-confused.svg" type="Texture" id=10]
+[ext_resource path="res://assets/icons/emoticon-excited.svg" type="Texture" id=11]
+[ext_resource path="res://assets/icons/timer-outline.svg" type="Texture" id=12]
+[ext_resource path="res://assets/icons/exit-to-app.svg" type="Texture" id=13]
+[ext_resource path="res://default_theme.tres" type="Theme" id=14]
+[ext_resource path="res://assets/icons/timer-outline-hover.svg" type="Texture" id=15]
+[ext_resource path="res://assets/icons/exit-to-app-hover.svg" type="Texture" id=16]
+
+[node name="UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bottom" type="HBoxContainer" parent="."]
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Top" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.15
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Top"]
+margin_right = 370.0
+margin_bottom = 92.0
+
+[node name="TextureRect" type="TextureRect" parent="Top/HBoxContainer2"]
+margin_right = 100.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 100, 50 )
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+
+[node name="NameExpression" type="VBoxContainer" parent="Top/HBoxContainer2"]
+margin_left = 104.0
+margin_right = 370.0
+margin_bottom = 92.0
+
+[node name="Label" type="Label" parent="Top/HBoxContainer2/NameExpression"]
+margin_right = 266.0
+margin_bottom = 38.0
+theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Séverin"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Top/HBoxContainer2/NameExpression"]
+margin_top = 42.0
+margin_right = 266.0
+margin_bottom = 92.0
+
+[node name="happy" type="TextureButton" parent="Top/HBoxContainer2/NameExpression/HBoxContainer"]
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="excited" type="TextureButton" parent="Top/HBoxContainer2/NameExpression/HBoxContainer"]
+margin_left = 54.0
+margin_right = 104.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 11 )
+texture_hover = ExtResource( 11 )
+expand = true
+stretch_mode = 6
+
+[node name="confused" type="TextureButton" parent="Top/HBoxContainer2/NameExpression/HBoxContainer"]
+margin_left = 108.0
+margin_right = 158.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 10 )
+texture_hover = ExtResource( 10 )
+expand = true
+stretch_mode = 6
+
+[node name="sad" type="TextureButton" parent="Top/HBoxContainer2/NameExpression/HBoxContainer"]
+margin_left = 162.0
+margin_right = 212.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 7 )
+texture_hover = ExtResource( 7 )
+expand = true
+stretch_mode = 6
+
+[node name="angry" type="TextureButton" parent="Top/HBoxContainer2/NameExpression/HBoxContainer"]
+margin_left = 216.0
+margin_right = 266.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="Control" type="Control" parent="Top"]
+margin_left = 374.0
+margin_right = 876.0
+margin_bottom = 92.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Top"]
+margin_left = 880.0
+margin_right = 1004.0
+margin_bottom = 92.0
+
+[node name="away" type="TextureButton" parent="Top/HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 12 )
+texture_hover = ExtResource( 15 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="exit" type="TextureButton" parent="Top/HBoxContainer"]
+margin_left = 64.0
+margin_right = 124.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 13 )
+texture_hover = ExtResource( 16 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
