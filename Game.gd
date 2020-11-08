@@ -23,10 +23,10 @@ func _ready():
     # the web version are always clients; the non-web versions are server (except if set to force client)
     if OS.get_name() == "HTML5" or force_client:
         is_server = false
-        $ControlCamera.current = false
+        $FakePlayer/ControlCamera.current = false
     else:
         is_server = true
-        $ControlCamera.current = true
+        $FakePlayer/ControlCamera.current = true
         $CanvasLayer/UI.visible = false
         
     var peer
@@ -37,6 +37,8 @@ func _ready():
         
         # the last 'true' parameter enables the Godot high-level multiplayer API
         peer.listen(SERVER_PORT, PoolStringArray(), true)
+        
+        local_player = $FakePlayer
         
     else:
         print("STARTING AS CLIENT")
