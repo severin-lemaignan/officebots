@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=1]
 [ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://assets/icons/hand-hover.svg" type="Texture" id=17]
 [ext_resource path="res://assets/icons/hand.svg" type="Texture" id=18]
 [ext_resource path="res://UI.gd" type="Script" id=19]
+[ext_resource path="res://expressions_buttongroup.tres" type="ButtonGroup" id=20]
+[ext_resource path="res://TransientMessage.gd" type="Script" id=21]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -128,6 +130,8 @@ margin_bottom = 92.0
 margin_right = 50.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
+toggle_mode = true
+group = ExtResource( 20 )
 texture_normal = ExtResource( 1 )
 texture_pressed = ExtResource( 2 )
 texture_hover = ExtResource( 2 )
@@ -139,6 +143,8 @@ margin_left = 54.0
 margin_right = 104.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
+toggle_mode = true
+group = ExtResource( 20 )
 texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 11 )
 texture_hover = ExtResource( 11 )
@@ -150,6 +156,8 @@ margin_left = 108.0
 margin_right = 158.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
+toggle_mode = true
+group = ExtResource( 20 )
 texture_normal = ExtResource( 5 )
 texture_pressed = ExtResource( 10 )
 texture_hover = ExtResource( 10 )
@@ -161,6 +169,8 @@ margin_left = 162.0
 margin_right = 212.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
+toggle_mode = true
+group = ExtResource( 20 )
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 7 )
 texture_hover = ExtResource( 7 )
@@ -172,6 +182,8 @@ margin_left = 216.0
 margin_right = 266.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
+toggle_mode = true
+group = ExtResource( 20 )
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 3 )
 texture_hover = ExtResource( 3 )
@@ -213,3 +225,22 @@ stretch_mode = 5
 __meta__ = {
 "_editor_description_": ""
 }
+
+[node name="TransientMessage" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.72549 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -259.5
+margin_top = -19.0
+margin_right = 259.5
+margin_bottom = 19.0
+theme = ExtResource( 14 )
+text = "press left-click to move the camera"
+script = ExtResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="TransientMessage"]

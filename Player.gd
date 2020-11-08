@@ -61,11 +61,11 @@ func process_input(_delta):
     if Input.is_action_pressed("ui_down"):
         input_movement_vector.y -= 1
     if Input.is_action_pressed("ui_left"):
-        #input_movement_vector.x -= 1
-        self.rotate_y(deg2rad(1))
+        input_movement_vector.x -= 1
+        #self.rotate_y(deg2rad(1))
     if Input.is_action_pressed("ui_right"):
-        #input_movement_vector.x += 1
-        self.rotate_y(deg2rad(-1))
+        input_movement_vector.x += 1
+        #self.rotate_y(deg2rad(-1))
 
     input_movement_vector = input_movement_vector.normalized()
 
@@ -115,7 +115,7 @@ func process_movement(delta):
 
 func _input(event):
     
-    if event is InputEventMouseMotion: # and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+    if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
         rotation_helper.rotate_x(deg2rad(event.relative.y * MOUSE_SENSITIVITY))
         self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
 
@@ -123,7 +123,11 @@ func _input(event):
         camera_rot.x = clamp(camera_rot.x, -20, 30)
         rotation_helper.rotation_degrees = camera_rot
 
+    if not Input.is_action_just_pressed("mouselook") and Input.is_action_pressed("mouselook"):
+        Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
+    if event.is_action_released("mouselook"):
+        Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func has_met(character):
     return (character in known_npc)
