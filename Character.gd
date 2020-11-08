@@ -3,6 +3,11 @@ class_name Character
 
 onready var anim_player = $AnimationPlayer
 
+# reference to the active player owns by this network peer
+# used to ensure the speech bubbles of the other players
+# are oriented to face this player
+var local_player
+
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
 
@@ -44,7 +49,7 @@ func _ready():
     
     # flip the tip of the speech bubble to place the speech bubble on the left of NPCs
     speech_bubble.flip_left()
-    #say("My name is " + username, 5)
+    say("My name is " + username, 5)
     
 
 # gaze control doe snot work due to animations overriding head pose    
@@ -89,6 +94,25 @@ func _process(delta):
             anim_player.play(anim_to_play)
     
         last_location = translation
+
+    if speech_bubble.is_speaking:
+
+        var dist = distance_to(local_player)
+
+
+        var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/SpeechBubbleAnchor.get_global_transform().origin)
+        speech_bubble_handle.position = screenPos
+
+        # Scale the speech bubble based on distance to player
+        var bubble_scale = max(0.5, min(1, 1 / dist))
+        speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
+
+        var s= speech_bubble_handle.scale
+
+    #if is_looking_at_player:
+    #    face(player)
+
+    $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
 
     
 #######################################################
@@ -205,23 +229,5 @@ func quaternions_distance(q1, q2):
 #
 #
 #
-#    if speech_bubble.is_speaking:
-#
-#        var dist = distance_to(player)
-#
-#
-#        var screenPos = player.camera.unproject_position($SpeechBubbleAnchorAxis/SpeechBubbleAnchor.get_global_transform().origin)
-#        speech_bubble_handle.position = screenPos
-#
-#        # Scale the speech bubble based on distance to player
-#        var bubble_scale = max(0.5, min(1, 1 / dist))
-#        speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
-#
-#        var s= speech_bubble_handle.scale
-#
-#    if is_looking_at_player:
-#        face(player)
-#
-#    $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + player.camera.get_global_transform().basis.get_euler().y
 
 

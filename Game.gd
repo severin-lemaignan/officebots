@@ -7,6 +7,7 @@ const SERVER_PORT=6969
 export (bool) var force_client : bool = false
 var is_server : bool
 
+var local_player
 
 export(String) var username = "John Doe"
 
@@ -115,12 +116,12 @@ remote func pre_configure_game():
 
 
     # Load my player
-    var my_player = preload("res://Player.tscn").instance()
-    my_player.set_name(str(selfPeerID))
-    my_player.set_network_master(selfPeerID)
-    get_node("/root/Game/Players").add_child(my_player)
+    local_player = preload("res://Player.tscn").instance()
+    local_player.set_name(str(selfPeerID))
+    local_player.set_network_master(selfPeerID)
+    get_node("/root/Game/Players").add_child(local_player)
     
-    $CanvasLayer/UI.connect("on_chat_msg", my_player, "say")
+    $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
 
     # Load other players
 #    for p in player_info:
@@ -147,6 +148,9 @@ func add_player(id):
     
     player.set_name(str(id))
     player.set_network_master(id)
+    
+    player.local_player = local_player
+    
     get_node("/root/Game/Players").add_child(player)
     
     player_info[id]["object"] = player
