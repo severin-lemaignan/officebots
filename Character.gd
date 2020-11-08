@@ -95,6 +95,8 @@ func _process(delta):
     
         last_location = translation
 
+    # manage speech bubble, incl updating scale and orientation based on
+    # player distance
     if speech_bubble.is_speaking:
 
         var dist = distance_to(local_player)

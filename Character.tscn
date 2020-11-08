@@ -1164,10 +1164,10 @@ __meta__ = {
 [node name="SpeechBubble" parent="SpeechBubbleHandle" instance=ExtResource( 4 )]
 
 [node name="SpeechBubbleAnchorAxis" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.571958, 0.126205 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3077, 0.126205 )
 
 [node name="SpeechBubbleAnchor" type="Spatial" parent="SpeechBubbleAnchorAxis"]
-transform = Transform( 0.0882466, 0, 0, 0, 0.0882466, 0, 0, 0, 0.0972273, -0.177421, 0.13305, 0.00488836 )
+transform = Transform( 0.0882466, 0, 0, 0, 0.0882466, 0, 0, 0, 0.0972273, -0.346705, 0.13305, 0.00488836 )
 
 [node name="Root" type="Spatial" parent="."]
 transform = Transform( 0.46, 0, 0, 0, 0.46, 0, 0, 0, 0.46, 0, 0, 0 )
