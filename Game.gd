@@ -1,10 +1,11 @@
 extends Spatial
 
+# To start as a server, pass --server on the cmd line
+
 #const SERVER_URL="research.skadge.org"
 const SERVER_URL="localhost"
 const SERVER_PORT=6969
 
-export (bool) var force_client : bool = false
 var is_server : bool
 
 var local_player
@@ -20,8 +21,17 @@ var my_info =  { "name": username, "favorite_color": Color8(255, 0, 255) }
 
 func _ready():
     
-    # the web version are always clients; the non-web versions are server (except if set to force client)
-    if OS.get_name() == "HTML5" or force_client:
+    var arguments = {"server": false}
+    for argument in OS.get_cmdline_args():
+        if argument.find("=") > -1:
+            var key_value = argument.split("=")
+            arguments[key_value[0].lstrip("--")] = key_value[1]
+        if argument == "--server":
+            arguments["server"] = true
+            
+    # the web version are always clients;
+    # the non-web versions are server iff '--server' argument is passed
+    if OS.get_name() == "HTML5" or not arguments["server"]:
         is_server = false
         $FakePlayer/ControlCamera.current = false
     else:
