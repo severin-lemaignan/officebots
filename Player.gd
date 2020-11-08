@@ -43,6 +43,10 @@ func _physics_process(delta):
     # puppet head pose overridden by animation
     #rpc_unreliable("set_puppet_transform", transform, $Rotation_helper/CameraTarget.get_global_transform().origin)
 
+# connect to the UI 'on_chat_msg' signal by Game.gd
+func say(msg):
+    rpc("puppet_says", msg)
+    
 func process_input(_delta):
 
     # ----------------------------------

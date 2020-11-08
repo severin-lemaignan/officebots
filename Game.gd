@@ -57,24 +57,13 @@ func _ready():
     
     $Robot.navigation = $MainOffice.nav
 
+    
 
 func _process(_delta):
     
     # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
     get_tree().network_peer.poll()
 
-func remove_player(id):
-    player_info[id]["object"].queue_free()
-    
-func add_player(id):
-    print("Adding player " + str(id))
-    var player = preload("res://Character.tscn").instance()
-    
-    player.set_name(str(id))
-    player.set_network_master(id) # Will be explained later
-    get_node("/root/Game/Players").add_child(player)
-    
-    player_info[id]["object"] = player
 
 
 ##### NETWORK SIGNALS HANDLERS #####
@@ -130,6 +119,8 @@ remote func pre_configure_game():
     my_player.set_name(str(selfPeerID))
     my_player.set_network_master(selfPeerID)
     get_node("/root/Game/Players").add_child(my_player)
+    
+    $CanvasLayer/UI.connect("on_chat_msg", my_player, "say")
 
     # Load other players
 #    for p in player_info:
@@ -146,6 +137,19 @@ remote func pre_configure_game():
 remote func post_configure_game():
     print("Starting the game!")
     get_tree().set_pause(false)
+
+func remove_player(id):
+    player_info[id]["object"].queue_free()
+    
+func add_player(id):
+    print("Adding player " + str(id))
+    var player = preload("res://Character.tscn").instance()
+    
+    player.set_name(str(id))
+    player.set_network_master(id)
+    get_node("/root/Game/Players").add_child(player)
+    
+    player_info[id]["object"] = player
 
 
 # Executed on the server only

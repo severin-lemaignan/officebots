@@ -14,6 +14,5 @@ func _ready():
 
 
 func on_chat(msg):
-    #emit_signal("on_chat_msg", msg)
-    rpc_unreliable("puppet_says", msg)
+    emit_signal("on_chat_msg", msg)
     chat.text = ""
