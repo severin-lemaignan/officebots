@@ -134,6 +134,7 @@ remote func pre_configure_game():
     get_node("/root/Game/Players").add_child(local_player)
     
     $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
+    $MainOffice.set_local_player(local_player)
 
     # Load other players
 #    for p in player_info:

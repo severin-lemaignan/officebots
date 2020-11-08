@@ -26,7 +26,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.313101 )
 shape = SubResource( 1 )
 
 [node name="Robot" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.617118, 0, 4.22762 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.61712, 0, 5.22762 )
 
 [node name="MainOffice" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.30599, 0.003, 2.64479 )
