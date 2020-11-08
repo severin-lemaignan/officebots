@@ -1,18 +1,37 @@
-extends Spatial
+extends StaticBody
 
 var local_player
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+enum DOOR_STATE {
+    closed,
+    half_open,
+    open
+   }
+
+var state = DOOR_STATE.half_open
 
 var MAX_DIST_HANDLEHIGHLIGHT = 3.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass # Replace with function body.
+    $HandleHighlight.connect("handle_clicked", self, "on_handle_clicked")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+func on_handle_clicked():
+    $Tween.remove_all()
+    match state:
+        DOOR_STATE.closed:
+            $Tween.interpolate_property(self, "rotation_degrees:y", null, -40, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+            state = DOOR_STATE.half_open
+        DOOR_STATE.half_open:
+            $Tween.interpolate_property(self, "rotation_degrees:y", null, -90, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+            state = DOOR_STATE.open
+        DOOR_STATE.open:
+            $Tween.interpolate_property(self, "rotation_degrees:y", null, 0, 2.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+            state = DOOR_STATE.closed
+    
+    $Tween.start()
+
+
 func _process(delta):
 
     if !local_player:
@@ -32,7 +51,7 @@ func _process(delta):
         var s = max(0.5, 2 / dist)
         #print(str(s))
         $HandleHighlight.scale = Vector2(s, s)
-        $HandleHighlight.modulate = Color(1,1,1,s-0.5)
+        $HandleHighlight.modulate = Color(1,1,1,min(0.6, s-0.5))
     
     else:
         $HandleHighlight.visible = false

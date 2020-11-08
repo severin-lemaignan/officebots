@@ -3,11 +3,11 @@
 [ext_resource path="res://Player.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.538745
-height = 0.797972
+radius = 0.247559
+height = 1.11647
 
 [node name="Player" type="KinematicBody"]
-collision/safe_margin = 0.1
+collision/safe_margin = 0.05
 script = ExtResource( 3 )
 
 [node name="SpeechBubbleAnchorAxis" type="Spatial" parent="."]

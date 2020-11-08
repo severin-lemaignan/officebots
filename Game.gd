@@ -56,6 +56,8 @@ func _ready():
         
         # the last 'true' parameter enables the Godot high-level multiplayer API
         peer.connect_to_url(SERVER_URL + ":" + str(SERVER_PORT), PoolStringArray(), true)
+        
+        Input.set_default_cursor_shape(Input.CURSOR_DRAG)
     
     get_tree().network_peer = peer
     
