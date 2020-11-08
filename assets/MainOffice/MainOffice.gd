@@ -10,7 +10,8 @@ func _ready():
 # called by Game.gd upon player creation
 func set_local_player(object):
     
-    $Doors/Door1.local_player = object
+    for d in $Doors.get_children():
+        d.local_player = object
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

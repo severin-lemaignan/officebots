@@ -8,25 +8,33 @@ enum DOOR_STATE {
     open
    }
 
-var state = DOOR_STATE.half_open
+export(DOOR_STATE) var initial_state
+
+export(float) var open_angle = -90
+export(float) var half_open_angle = -40
+export(float) var closed_angle = 0
+
+var state
 
 var MAX_DIST_HANDLEHIGHLIGHT = 3.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    state = initial_state
+    
     $HandleHighlight.connect("handle_clicked", self, "on_handle_clicked")
 
 func on_handle_clicked():
     $Tween.remove_all()
     match state:
         DOOR_STATE.closed:
-            $Tween.interpolate_property(self, "rotation_degrees:y", null, -40, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+            $Tween.interpolate_property(self, "rotation_degrees:y", null, half_open_angle, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
             state = DOOR_STATE.half_open
         DOOR_STATE.half_open:
-            $Tween.interpolate_property(self, "rotation_degrees:y", null, -90, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+            $Tween.interpolate_property(self, "rotation_degrees:y", null, open_angle, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
             state = DOOR_STATE.open
         DOOR_STATE.open:
-            $Tween.interpolate_property(self, "rotation_degrees:y", null, 0, 2.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+            $Tween.interpolate_property(self, "rotation_degrees:y", null, closed_angle, 2.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
             state = DOOR_STATE.closed
     
     $Tween.start()
