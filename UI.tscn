@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=1]
 [ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://UI.gd" type="Script" id=19]
 [ext_resource path="res://expressions_buttongroup.tres" type="ButtonGroup" id=20]
 [ext_resource path="res://TransientMessage.gd" type="Script" id=21]
+[ext_resource path="res://Character.tscn" type="PackedScene" id=22]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -245,3 +246,14 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="TransientMessage"]
+
+[node name="CharacterViewport" type="Viewport" parent="."]
+size = Vector2( 256, 256 )
+own_world = true
+transparent_bg = true
+handle_input_locally = false
+hdr = false
+render_target_v_flip = true
+gui_disable_input = true
+
+[node name="Character" parent="CharacterViewport" instance=ExtResource( 22 )]

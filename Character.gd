@@ -49,7 +49,8 @@ func _ready():
     
     # flip the tip of the speech bubble to place the speech bubble on the left of NPCs
     speech_bubble.flip_left()
-    say("My name is " + username, 5)
+    anim_player.play("Idle")
+    #say("My name is " + username, 5)
     
 
 # gaze control doe snot work due to animations overriding head pose    
@@ -114,7 +115,7 @@ func _process(delta):
     #if is_looking_at_player:
     #    face(player)
 
-    $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
+        $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
 
     
 #######################################################

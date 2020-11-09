@@ -16,3 +16,7 @@ func _ready():
 func on_chat(msg):
     emit_signal("on_chat_msg", msg)
     chat.text = ""
+
+func _process(_delta):
+    var tex = $CharacterViewport.get_texture()
+    $Top/HBoxContainer2/TextureRect.texture = tex
