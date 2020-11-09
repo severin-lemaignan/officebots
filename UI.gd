@@ -1,5 +1,7 @@
 extends Control
 
+onready var portrait = $CharacterViewport/Character
+
 onready var chat = $Bottom/Chat
 
 signal on_chat_msg
@@ -13,7 +15,13 @@ func _ready():
     chat.connect("text_entered", self, "on_chat")
     
     $Top/HBoxContainer/exit.connect("pressed", self, "on_exit")
+    
+    portrait.portrait_mode(true)
 
+func set_name_skin(name, skin):
+    $Top/HBoxContainer2/NameBox/Name.text = name
+    portrait.set_base_skin(skin)
+    
 func on_exit():
     $ModalMessage.show()
     var output = yield($ModalMessage, "on_choice")
@@ -27,4 +35,4 @@ func on_chat(msg):
 
 func _process(_delta):
     var tex = $CharacterViewport.get_texture()
-    $Top/HBoxContainer2/TextureRect.texture = tex
+    $Top/HBoxContainer2/Portrait.texture = tex

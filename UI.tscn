@@ -177,7 +177,7 @@ __meta__ = {
 margin_right = 214.0
 margin_bottom = 80.0
 
-[node name="TextureRect" type="TextureRect" parent="Top/HBoxContainer2"]
+[node name="Portrait" type="TextureRect" parent="Top/HBoxContainer2"]
 margin_right = 100.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 100, 50 )
@@ -186,12 +186,12 @@ texture = ExtResource( 6 )
 expand = true
 stretch_mode = 6
 
-[node name="NameExpression" type="VBoxContainer" parent="Top/HBoxContainer2"]
+[node name="NameBox" type="VBoxContainer" parent="Top/HBoxContainer2"]
 margin_left = 104.0
 margin_right = 214.0
 margin_bottom = 80.0
 
-[node name="Label" type="Label" parent="Top/HBoxContainer2/NameExpression"]
+[node name="Name" type="Label" parent="Top/HBoxContainer2/NameBox"]
 margin_right = 110.0
 margin_bottom = 38.0
 theme = ExtResource( 14 )
@@ -258,6 +258,7 @@ size = Vector2( 256, 256 )
 own_world = true
 transparent_bg = true
 handle_input_locally = false
+msaa = 1
 hdr = false
 render_target_v_flip = true
 gui_disable_input = true

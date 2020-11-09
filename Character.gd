@@ -11,7 +11,7 @@ var local_player
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
 
-export(String) var username = "Character"
+var username = "Unknown player"
 export(float) var max_earshot_distance = 3
 export(float) var max_background_distance = 1
 export(Texture) var neutral_skin
@@ -40,8 +40,8 @@ var current_anim
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-#    set_fixed_process(true)
-#    player.connect("spoke", player, "say()")
+    randomize()
+
     last_location = translation
 
     original_orientation = Quat(transform.basis.orthonormalized())
@@ -49,7 +49,12 @@ func _ready():
     
     # flip the tip of the speech bubble to place the speech bubble on the left of NPCs
     speech_bubble.flip_left()
-    anim_player.play("Idle")
+    
+    # by default, disable camera + light
+    portrait_mode(false)
+
+
+    
     #say("My name is " + username, 5)
     
 
@@ -63,6 +68,19 @@ func _ready():
 #    var tr = $Root/Skeleton.get_bone_pose(17)
 #    $Root/Skeleton.set_bone_pose(17, 
 #                                 Transform(face(eye_target), tr.origin))
+
+func portrait_mode(mode):
+    if mode:
+        $Camera.visible = true
+        $OmniLight.visible = true
+        
+        anim_player.current_animation = "Idle"
+        anim_player.seek(randf() * anim_player.current_animation_length)
+        anim_player.play()
+    
+    else:
+        $Camera.visible = false
+        $OmniLight.visible = false
 
 puppet func puppet_says(msg):
     print("Got something to say: " + msg)
@@ -142,6 +160,10 @@ func get_look_at_transform_basis(target,
     
     return Transform(v_x, v_y, v_z, eye).basis
 
+func set_base_skin(resource_path):
+    neutral_skin = load(resource_path)
+    $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", neutral_skin)
+    
 func set_expression(expression):
     var texture_basename = neutral_skin.resource_path.split("neutral")[0]
     

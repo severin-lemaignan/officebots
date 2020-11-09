@@ -9,6 +9,8 @@ const SERVER_PORT=6969
 var is_server : bool
 
 var local_player
+var player_name
+var player_skin
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
@@ -17,8 +19,7 @@ export(String) var username = "John Doe"
 
 # Player info, associate ID to data
 var player_info = {}
-# Info we send to other players
-var my_info =  { "name": username, "favorite_color": Color8(255, 0, 255) }
+
 
 
 
@@ -43,8 +44,17 @@ func _ready():
         is_server = true
         $FakePlayer/ControlCamera.current = true
         $CanvasLayer/UI.visible = false
+        $CanvasLayer/CharacterSelection.visible = false
         
     var peer
+
+    get_tree().connect("network_peer_connected", self, "_player_connected")
+    get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+    
+
+    get_tree().connect("connected_to_server", self, "_connected_ok")
+    get_tree().connect("connection_failed", self, "_connected_fail")
+    get_tree().connect("server_disconnected", self, "_server_disconnected")
     
     if is_server:
         print("STARTING AS SERVER")
@@ -67,16 +77,10 @@ func _ready():
     
     get_tree().network_peer = peer
     
-    get_tree().connect("network_peer_connected", self, "_player_connected")
-    get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
-    
 
-    get_tree().connect("connected_to_server", self, "_connected_ok")
-    get_tree().connect("connection_failed", self, "_connected_fail")
-    get_tree().connect("server_disconnected", self, "_server_disconnected")
-    
     
     $Robot.navigation = $MainOffice.nav
+
 
     
 
@@ -110,6 +114,18 @@ func _server_disconnected():
     
 func _player_connected(id):
     # Called on both clients and server when a peer connects. Send my info to it.
+    
+    # at launch, we might not have completed the character creation yet: wait
+    # until this is is finished
+    if !player_name:
+        var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+        player_name = res[0]
+        player_skin = res[1]
+        
+        $CanvasLayer/UI.set_name_skin(player_name, player_skin)
+    
+    var my_info =  { "name": player_name, "skin": player_skin }
+    
     print("New player " + str(id) + " joined")
     if not get_tree().is_network_server():
         rpc_id(id, "register_player", my_info)
@@ -121,6 +137,7 @@ func _player_disconnected(id):
 
 ########################################################
 
+# excuted on every existing peer (incl server) when a new player joins
 remote func register_player(info):
     # Get the id of the RPC sender.
     var id = get_tree().get_rpc_sender_id()
@@ -132,16 +149,32 @@ remote func register_player(info):
     if get_tree().is_network_server():
         print("New player connected: " + info["name"])
 
+func remove_player(id):
+    player_info[id]["object"].queue_free()
+    
+func add_player(id):
+    print("Adding player " + str(id))
+    var player = preload("res://Character.tscn").instance()
+    
+    player.set_name(str(id))
+    player.set_network_master(id)
+    
+    player.username = player_info[id]["name"]
+    player.set_base_skin(player_info[id]["skin"])
+    
+    player.local_player = local_player
+    
+    get_node("/root/Game/Players").add_child(player)
+    
+    player_info[id]["object"] = player
+
+
 remote func pre_configure_game():
     var selfPeerID = get_tree().get_network_unique_id()
-    
+        
     get_tree().set_pause(true)
 
-    # Load world
-    #var world = load(which_level).instance()
-    #get_node("/root").add_child(world)
-
-
+    
     # Load my player
     local_player = preload("res://Player.tscn").instance()
     local_player.set_name(str(selfPeerID))
@@ -175,21 +208,6 @@ remote func post_configure_game(transform):
         local_player.transform = transform
         get_tree().set_pause(false)
 
-func remove_player(id):
-    player_info[id]["object"].queue_free()
-    
-func add_player(id):
-    print("Adding player " + str(id))
-    var player = preload("res://Character.tscn").instance()
-    
-    player.set_name(str(id))
-    player.set_network_master(id)
-    
-    player.local_player = local_player
-    
-    get_node("/root/Game/Players").add_child(player)
-    
-    player_info[id]["object"] = player
 
 
 # Executed on the server only
