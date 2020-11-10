@@ -51,6 +51,7 @@ func say(msg):
     rpc("puppet_says", msg)
 
 func pickup_object(object):
+    
     pickedup_object = object
     
     pickedup_object_original_parent = object.get_parent()
@@ -61,14 +62,9 @@ func pickup_object(object):
     object.mode = RigidBody.MODE_STATIC
     
     object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
-    
-    #$PinJoint.set_node_b(object.get_path())
 
 func release_object():
     if pickedup_object:
-        
-        #$PinJoint.set_node_b(NodePath(""))
-        
         
         $Rotation_helper/Camera/PickupAnchor.remove_child(pickedup_object)
         pickedup_object_original_parent.add_child(pickedup_object)

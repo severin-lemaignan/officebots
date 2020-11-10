@@ -28,8 +28,6 @@ func on_highlight_clicked():
 #        OBJECT_STATE.picked:
 #            local_player.release_object(self)
 #            state = OBJECT_STATE.resting
-    
-
 
 func _process(delta):
 
