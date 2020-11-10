@@ -1171,7 +1171,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3077, 0.126205 )
 transform = Transform( 0.0882466, 0, 0, 0, 0.0882466, 0, 0, 0, 0.0972273, -0.346705, 0.13305, 0.00488836 )
 
 [node name="Root" type="Spatial" parent="."]
-transform = Transform( 0.46, 0, 0, 0, 0.46, 0, 0, 0, 0.46, 0, 0, 0 )
+transform = Transform( 0.46, 0, 0, 0, 0.46, 0, 0, 0, 0.46, 0, 0.0393963, 0 )
 
 [node name="Skeleton" type="Skeleton" parent="Root"]
 bones/0/name = "left_foot_ctrl"
