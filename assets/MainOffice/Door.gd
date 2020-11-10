@@ -20,9 +20,11 @@ var MAX_DIST_HANDLEHIGHLIGHT = 3.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    $HandleHighlight.visible = false
+    
     state = initial_state
     
-    $HandleHighlight.connect("handle_clicked", self, "on_handle_clicked")
+    $HandleHighlight.connect("highlight_clicked", self, "on_handle_clicked")
 
 func on_handle_clicked():
     $Tween.remove_all()

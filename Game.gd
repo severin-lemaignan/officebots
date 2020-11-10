@@ -39,10 +39,10 @@ func _ready():
     # the non-web versions are server iff '--server' argument is passed
     if OS.get_name() == "HTML5" or not arguments["server"]:
         is_server = false
-        $FakePlayer/ControlCamera.current = false
+        $FakePlayer/Camera.current = false
     else:
         is_server = true
-        $FakePlayer/ControlCamera.current = true
+        $FakePlayer/Camera.current = true
         $CanvasLayer/UI.visible = false
         $CanvasLayer/CharacterSelection.visible = false
         

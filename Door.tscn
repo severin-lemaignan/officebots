@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/MainOffice/HandleHighlight.gd" type="Script" id=1]
+[ext_resource path="res://Highlight.gd" type="Script" id=1]
 [ext_resource path="res://assets/MainOffice/Door.gd" type="Script" id=2]
 
-[sub_resource type="CircleShape2D" id=589]
+[sub_resource type="CircleShape2D" id=617]
 radius = 60.0
 
-[sub_resource type="BoxShape" id=590]
+[sub_resource type="BoxShape" id=618]
 extents = Vector3( 0.520628, 1.36822, 0.0604212 )
 
 [node name="Door" type="StaticBody"]
@@ -22,10 +22,10 @@ script = ExtResource( 1 )
 [node name="Area2D" type="Area2D" parent="HandleHighlight"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandleHighlight/Area2D"]
-shape = SubResource( 589 )
+shape = SubResource( 617 )
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.547536, 1.4021, 0.0489888 )
-shape = SubResource( 590 )
+shape = SubResource( 618 )

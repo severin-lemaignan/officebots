@@ -25,6 +25,9 @@ var known_npc = []
 
 var MOUSE_SENSITIVITY = 0.1
 
+var pickedup_object_original_parent
+var pickedup_object
+
 func _ready():
 
     #Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -46,7 +49,37 @@ func _physics_process(delta):
 # connect to the UI 'on_chat_msg' signal by Game.gd
 func say(msg):
     rpc("puppet_says", msg)
+
+func pickup_object(object):
+    pickedup_object = object
     
+    pickedup_object_original_parent = object.get_parent()
+    pickedup_object_original_parent.remove_child(object)
+    
+    
+    $Rotation_helper/Camera/PickupAnchor.add_child(object)
+    object.mode = RigidBody.MODE_STATIC
+    
+    object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
+    
+    #$PinJoint.set_node_b(object.get_path())
+
+func release_object():
+    if pickedup_object:
+        
+        #$PinJoint.set_node_b(NodePath(""))
+        
+        
+        $Rotation_helper/Camera/PickupAnchor.remove_child(pickedup_object)
+        pickedup_object_original_parent.add_child(pickedup_object)
+        
+        pickedup_object.set_global_transform($Rotation_helper/Camera/PickupAnchor.get_global_transform())
+        
+        pickedup_object.mode = RigidBody.MODE_RIGID
+        pickedup_object.sleeping = false
+        
+        pickedup_object = null
+        
 func process_input(_delta):
 
     # ----------------------------------
@@ -128,6 +161,7 @@ func _input(event):
 
     if event.is_action_released("mouselook"):
         Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+        release_object()
 
 func has_met(character):
     return (character in known_npc)

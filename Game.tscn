@@ -37,7 +37,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.30599, 0.003, 2.64479 )
 [node name="FakePlayer" type="Spatial" parent="."]
 script = ExtResource( 5 )
 
-[node name="ControlCamera" type="Camera" parent="FakePlayer"]
+[node name="Camera" type="Camera" parent="FakePlayer"]
 transform = Transform( 0.468547, 0.331971, -0.818693, 0, 0.926712, 0.375772, 0.883439, -0.176067, 0.434208, -12.0087, 4.81994, 5.78424 )
 
 [node name="SpawnPointsPlayers" type="Spatial" parent="."]
