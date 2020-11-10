@@ -35,8 +35,7 @@ func _ready():
     
 
 puppet func set_puppet_transform(puppet_transform):
-    
-    print("Got pos update")
+
     transform = puppet_transform
     
 func _physics_process(delta):

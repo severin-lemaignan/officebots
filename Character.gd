@@ -38,7 +38,7 @@ var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
 
-const MAX_SLOPE_ANGLE = 40
+const MAX_SLOPE_ANGLE = 30
 var next_motion_linear_velocity
 
 # Called when the node enters the scene tree for the first time.
@@ -57,7 +57,11 @@ func _ready():
     
     # by default, disable camera + light
     portrait_mode(false)
-
+    
+    # physics calculation disabled by default
+    # will be re-enabled on the server only when the character is
+    # created
+    set_physics_process(false)
     
     #say("My name is " + username, 5)
     
@@ -84,8 +88,7 @@ func portrait_mode(mode):
         anim_player.current_animation = "Idle"
         anim_player.seek(randf() * anim_player.current_animation_length)
         anim_player.play()
-        
-        set_physics_process(false)
+
     
     else:
         $FakePlayer/Camera.visible = false
@@ -109,11 +112,6 @@ remote func execute_move_and_slide(linear_velocity):
 
 # physics process is only enabled on the server
 func _physics_process(delta):
-
-
-    # physics calculation disabled outside of the server
-    if not is_network_master():
-        return
 
     if next_motion_linear_velocity:
         move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))

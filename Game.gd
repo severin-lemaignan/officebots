@@ -174,7 +174,9 @@ func add_player(id):
     var player = preload("res://Character.tscn").instance()
     
     player.set_name(str(id))
-    player.set_network_master(id)
+    # the server is ultimately controlling all the characters position
+    # -> the network master is 1 (eg, default)
+    #player.set_network_master(id)
     
     player.username = player_info[id]["name"]
     player.set_base_skin(player_info[id]["skin"])
@@ -182,6 +184,7 @@ func add_player(id):
     # physics *only* performed on server
     if get_tree().is_network_server():
         player.enable_collisions(true)
+        player.call_deferred("set_physics_process", true)
     else:
         player.enable_collisions(false)
         
@@ -204,7 +207,9 @@ remote func pre_configure_game():
     # Load my player
     local_player = preload("res://Player.tscn").instance()
     local_player.set_name(str(selfPeerID))
-    local_player.set_network_master(selfPeerID)
+    # the server is ultimately controlling the player position
+    # -> the network master is 1 (eg, default)
+    #local_player.set_network_master(selfPeerID)
     get_node("/root/Game/Players").add_child(local_player)
     
     $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
