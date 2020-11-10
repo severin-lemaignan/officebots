@@ -1,14 +1,15 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://SpeechBubble.gd" type="Script" id=1]
 [ext_resource path="res://image.png" type="Texture" id=2]
 [ext_resource path="res://Lato-Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://FredokaOne-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://ArchitectsDaughter-Regular.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="DynamicFont" id=1]
-size = 20
+size = 24
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 3 )
+font_data = ExtResource( 5 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 25
@@ -48,7 +49,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 7
 custom_constants/line_spacing = 3
 custom_constants/shadow_offset_y = 5
-text = "This is a long long long long long long text. I can not do more than that."
+text = "This is a long long long long long long text."
 align = 1
 valign = 1
 autowrap = true

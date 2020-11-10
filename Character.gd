@@ -41,6 +41,8 @@ var current_anim
 # Called when the node enters the scene tree for the first time.
 func _ready():
     randomize()
+    
+    local_player = $FakePlayer
 
     last_location = translation
 
@@ -55,7 +57,7 @@ func _ready():
 
 
     
-    #say("My name is " + username, 5)
+    say("My name is " + username, 5)
     
 
 # gaze control doe snot work due to animations overriding head pose    
@@ -71,7 +73,7 @@ func _ready():
 
 func portrait_mode(mode):
     if mode:
-        $Camera.visible = true
+        $FakePlayer/Camera.visible = true
         $OmniLight.visible = true
         
         anim_player.current_animation = "Idle"
@@ -79,7 +81,7 @@ func portrait_mode(mode):
         anim_player.play()
     
     else:
-        $Camera.visible = false
+        $FakePlayer/Camera.visible = false
         $OmniLight.visible = false
 
 puppet func puppet_says(msg):
@@ -125,7 +127,7 @@ func _process(delta):
         speech_bubble_handle.position = screenPos
 
         # Scale the speech bubble based on distance to player
-        var bubble_scale = max(0.5, min(1, 1 / dist))
+        var bubble_scale = max(0.5, min(2, 1 / dist))
         speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
 
         var s= speech_bubble_handle.scale

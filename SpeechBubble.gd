@@ -41,6 +41,11 @@ func say(text, button_type = ButtonType.NONE, wait_time = 2):
 
     $speech_bubble/Label.text = text
     
+    if text.length() < 20:
+        $speech_bubble/Label.get("custom_fonts/font").set_size(36)
+    else:
+        $speech_bubble/Label.get("custom_fonts/font").set_size(24)
+    
     is_speaking = true
     
     $Tween.remove_all()
