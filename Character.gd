@@ -1,4 +1,4 @@
-extends StaticBody
+extends KinematicBody
 class_name Character
 
 onready var anim_player = $AnimationPlayer
@@ -38,6 +38,9 @@ var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
 
+const MAX_SLOPE_ANGLE = 40
+var next_motion_linear_velocity
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     randomize()
@@ -55,9 +58,8 @@ func _ready():
     # by default, disable camera + light
     portrait_mode(false)
 
-
     
-    say("My name is " + username, 5)
+    #say("My name is " + username, 5)
     
 
 # gaze control doe snot work due to animations overriding head pose    
@@ -71,6 +73,9 @@ func _ready():
 #    $Root/Skeleton.set_bone_pose(17, 
 #                                 Transform(face(eye_target), tr.origin))
 
+func enable_collisions(val=true):
+    $CollisionShape.disabled = !val
+    
 func portrait_mode(mode):
     if mode:
         $FakePlayer/Camera.visible = true
@@ -79,6 +84,8 @@ func portrait_mode(mode):
         anim_player.current_animation = "Idle"
         anim_player.seek(randf() * anim_player.current_animation_length)
         anim_player.play()
+        
+        set_physics_process(false)
     
     else:
         $FakePlayer/Camera.visible = false
@@ -91,6 +98,31 @@ puppet func puppet_says(msg):
 puppet func set_puppet_transform(puppet_transform):
     
     transform = puppet_transform
+
+
+# this code is only supposed to be called on the server, where the physics takes place
+remote func execute_move_and_slide(linear_velocity):
+
+    assert(get_tree().is_network_server())
+    next_motion_linear_velocity = linear_velocity
+    
+
+# physics process is only enabled on the server
+func _physics_process(delta):
+
+
+    # physics calculation disabled outside of the server
+    if not is_network_master():
+        return
+
+    if next_motion_linear_velocity:
+        move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+        next_motion_linear_velocity = null
+    
+    # the server is responsible to broadcast the position of all the player
+    # once the physics is computed
+    rpc_unreliable("set_puppet_transform", transform)
+    
     
 func _process(delta):
     

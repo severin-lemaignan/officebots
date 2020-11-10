@@ -7,6 +7,7 @@ const SERVER_URL="localhost"
 const SERVER_PORT=6969
 
 var is_server : bool
+export(bool) var force_server = false
 
 var local_player
 var player_name
@@ -34,10 +35,10 @@ func _ready():
             arguments[key_value[0].lstrip("--")] = key_value[1]
         if argument == "--server":
             arguments["server"] = true
-            
+    
     # the web version are always clients;
     # the non-web versions are server iff '--server' argument is passed
-    if OS.get_name() == "HTML5" or not arguments["server"]:
+    if (OS.get_name() == "HTML5" or not arguments["server"]) and not force_server:
         is_server = false
         $FakePlayer/Camera.current = false
     else:
@@ -91,7 +92,8 @@ func _process(_delta):
 
 
 func shuffle_spawn_points():
-    var order = [0,1,2,3,4,5,6,7,8,9].shuffle()
+    var order = [0,1,2,3,4,5,6,7,8,9]
+    order.shuffle()
     
     for p in range(10):
         var child = $SpawnPointsPlayers.get_child(order[p])
@@ -115,6 +117,9 @@ func _server_disconnected():
 func _player_connected(id):
     # Called on both clients and server when a peer connects. Send my info to it.
     
+    if not get_tree().is_network_server():
+        rpc_id(id, "pre_register_player")
+        
     # at launch, we might not have completed the character creation yet: wait
     # until this is is finished
     if !player_name:
@@ -138,16 +143,28 @@ func _player_disconnected(id):
 ########################################################
 
 # excuted on every existing peer (incl server) when a new player joins
-remote func register_player(info):
+remote func pre_register_player():
     # Get the id of the RPC sender.
     var id = get_tree().get_rpc_sender_id()
     # Store the info
-    player_info[id] = info
+    player_info[id] = {}
+    
+    if get_tree().is_network_server():
+        print("New player connected -- pre-registering id: " + str(id))
+
+# excuted on every existing peer (incl server) when a new player joins
+remote func register_player(info):
+    
+    var id = get_tree().get_rpc_sender_id()
+    
+    # update player_info dictionary with username + skin
+    for key in info:
+        player_info[id][key] = info[key]
     
     add_player(id)
     
     if get_tree().is_network_server():
-        print("New player connected: " + info["name"])
+        print("Player " + str(id) + ": registration & initialization complete")
 
 func remove_player(id):
     player_info[id]["object"].queue_free()
@@ -162,11 +179,20 @@ func add_player(id):
     player.username = player_info[id]["name"]
     player.set_base_skin(player_info[id]["skin"])
     
+    # physics *only* performed on server
+    if get_tree().is_network_server():
+        player.enable_collisions(true)
+    else:
+        player.enable_collisions(false)
+        
+    player.set_global_transform(player_info[id]["start_location"])
+    
     player.local_player = local_player
     
     get_node("/root/Game/Players").add_child(player)
     
     player_info[id]["object"] = player
+    
 
 
 remote func pre_configure_game():
@@ -223,7 +249,7 @@ remote func done_preconfiguring(who):
         rpc_id(who, "post_configure_game", null)
         return
         
-    print(player_info[who]["name"] + " is ready.")
+    print("Player #" + str(who) + " is ready.")
     players_done.append(who)
     
     # wait for everyone to be ready
@@ -234,5 +260,6 @@ remote func done_preconfiguring(who):
     # start the game immediately for whoever is connecting, passing the
     # start location of the player
     var start_location = $SpawnPointsPlayers.get_child(players_done.size() - 1).transform
+    player_info[who]["start_location"] = start_location
     rpc_id(who, "post_configure_game", start_location)
 

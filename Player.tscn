@@ -13,6 +13,7 @@ script = ExtResource( 3 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.972435, 0 )
 shape = SubResource( 1 )
+disabled = true
 
 [node name="Rotation_helper" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0 )

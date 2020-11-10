@@ -12,7 +12,7 @@ const ACCEL = 2.5
 var dir = Vector3()
 
 const DEACCEL= 16
-const MAX_SLOPE_ANGLE = 40
+
 
 onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
@@ -34,13 +34,18 @@ func _ready():
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
     
 
+puppet func set_puppet_transform(puppet_transform):
+    
+    print("Got pos update")
+    transform = puppet_transform
+    
 func _physics_process(delta):
     
     process_input(delta)
     process_movement(delta)
     
     
-    rpc_unreliable("set_puppet_transform", transform)
+    
     
     # version that also communicate the gaze direction -- not working because
     # puppet head pose overridden by animation
@@ -123,7 +128,8 @@ func process_movement(delta):
     dir.y = 0
     dir = dir.normalized()
 
-    vel.y += delta * GRAVITY
+    #vel.y += delta * GRAVITY
+    vel.y = 0
 
     var hvel = vel
     hvel.y = 0
@@ -140,7 +146,11 @@ func process_movement(delta):
     hvel = hvel.linear_interpolate(target, accel * delta)
     vel.x = hvel.x
     vel.z = hvel.z
-    vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+    
+    if vel:
+    # execute the actual motion on the server, so that physics are computed
+    # the resulting new position will be updated by the server via 'set_puppet_transform'
+        rpc_unreliable_id(1, "execute_move_and_slide", vel)
 
 func _input(event):
     

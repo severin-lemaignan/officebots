@@ -9,6 +9,7 @@
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
+force_server = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
