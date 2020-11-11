@@ -64,8 +64,8 @@ func _ready():
         # the last 'true' parameter enables the Godot high-level multiplayer API
         peer.listen(SERVER_PORT, PoolStringArray(), true)
         
-        shuffle_spawn_points()
         local_player = $FakePlayer
+        configure_server()
         
     else:
         print("STARTING AS CLIENT")
@@ -83,8 +83,13 @@ func _ready():
     $Robot.navigation = $MainOffice.nav
 
 
+func configure_server():
+    shuffle_spawn_points()
     
-
+    # enable physics calculations for all the dynamics objects, *on the server only*
+    for o in $MainOffice/DynamicObstacles.get_children():
+        o.call_deferred("set_physics_process", true)
+    
 func _process(_delta):
     
     # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
