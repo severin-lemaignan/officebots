@@ -155,11 +155,13 @@ func _input(event):
     
     if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
         rotation_helper.rotate_x(deg2rad(event.relative.y * MOUSE_SENSITIVITY))
-        self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
-
+        #self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+        rpc_unreliable_id(1, "execute_set_rotation", deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+        
         var camera_rot = rotation_helper.rotation_degrees
         camera_rot.x = clamp(camera_rot.x, -20, 30)
         rotation_helper.rotation_degrees = camera_rot
+        
 
     if not Input.is_action_just_pressed("mouselook") and Input.is_action_pressed("mouselook"):
         Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

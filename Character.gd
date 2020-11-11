@@ -102,7 +102,11 @@ puppet func set_puppet_transform(puppet_transform):
     
     transform = puppet_transform
 
-
+# this code is only supposed to be called on the server, where the physics takes place
+remote func execute_set_rotation(angle):
+    assert(get_tree().is_network_server())
+    rotate_y(angle)
+    
 # this code is only supposed to be called on the server, where the physics takes place
 remote func execute_move_and_slide(linear_velocity):
 
