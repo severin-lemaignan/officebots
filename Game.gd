@@ -21,6 +21,8 @@ export(String) var username = "John Doe"
 # Player info, associate ID to data
 var player_info = {}
 
+var robots = {}
+
 var robot_server
 
 
@@ -71,7 +73,7 @@ func _ready():
         local_player = $FakePlayer
         configure_server()
         
-        robot_server = RobotServer.new()
+        robot_server = RobotServer.new(self)
 
         
     else:
@@ -86,9 +88,6 @@ func _ready():
     get_tree().network_peer = peer
     
 
-    
-    $Robot.navigation = $MainOffice.nav
-
 
 func configure_server():
     shuffle_spawn_points()
@@ -101,6 +100,10 @@ func _process(_delta):
     
     # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
     get_tree().network_peer.poll()
+    
+    # only the server polls for the robot websocket server
+    if is_network_master():
+        robot_server.poll()
 
 
 func shuffle_spawn_points():
@@ -214,6 +217,29 @@ func add_player(id):
     player_info[id]["object"] = player
     
 
+remotesync func add_robot(name):
+    print("Adding robot " + str(name))
+    var robot = preload("res://RobotBridge.tscn").instance()
+    
+    robots[name] = robot
+    
+    robot.set_name(name)
+    
+    # physics *only* performed on server
+    if get_tree().is_network_server():
+        robot.enable_collisions(true)
+        robot.call_deferred("set_physics_process", true)
+    else:
+        robot.enable_collisions(false)
+    
+    if is_network_master():
+        var start_location = $SpawnPointsRobots.get_child($Robots.get_child_count()).transform
+        robot.set_global_transform(start_location)
+        
+        robot.navigation = $MainOffice.nav
+    
+    $Robots.add_child(robot)
+    
 
 remote func pre_configure_game():
     var selfPeerID = get_tree().get_network_unique_id()

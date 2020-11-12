@@ -1,4 +1,5 @@
 extends KinematicBody
+class_name Robot
 
 #const SERVER_URL="research.skadge.org"
 const SERVER_URL="localhost"
@@ -11,8 +12,6 @@ var path = []
 var path_node = 0
 var speed = 1
 
-enum Colors {BLACK, BLUE, YELLOW, GREEN, RED, WHITE, PURPLE, SALMON}
-
 var textures = {"black": load("res://assets/palette_texture_black.png"),
                 "blue": load("res://assets/palette_texture_blue.png"),
                 "yellow": load("res://assets/palette_texture_yellow.png"),
@@ -24,21 +23,32 @@ var textures = {"black": load("res://assets/palette_texture_black.png"),
                }
 
 func _ready():
+    set_color("white")
+    
     #set_screen_texture("res://assets/screen_tex_hello.png")
-    pass
+    
+    # disable physics by default (will be only enabled on the server)
+    set_physics_process(false)
 
-func set_color(color):
+   
+func enable_collisions(val=true):
+    $CollisionShape.disabled = !val
+
+puppet func set_puppet_transform(transform):
+    self.transform = transform
+    
+remotesync func set_color(color):
     
     var material = $robot/Robot.mesh.surface_get_material(0)
     material.albedo_texture = textures[color]
 
-func set_screen_texture(resource_path):
+remotesync func set_screen_texture(resource_path):
     var material = $robot/Screen.mesh.surface_get_material(1)
     material.albedo_texture = load(resource_path)
     
+# should only run on the server!
 func _physics_process(_delta):
-    
-    server.poll()
+    assert(is_network_master())
     
     if path_node < path.size():
         var direction = (path[path_node] - global_transform.origin)
@@ -47,6 +57,8 @@ func _physics_process(_delta):
         else:
             move_and_slide(direction.normalized() * speed, Vector3.UP)
 
+    rpc_unreliable("set_puppet_transform", transform)
+
 func set_navigation_target(target):
     print("Computing new navigation path for robot...")
     path = navigation.get_simple_path(global_transform.origin, target)
@@ -54,4 +66,8 @@ func set_navigation_target(target):
     
     if path.size() == 0:
         print("[!!] No path found to " + str(target))
+
+func stop_navigation():
+    path = []
+    path_node = 0
 
