@@ -21,7 +21,7 @@ export(String) var username = "John Doe"
 # Player info, associate ID to data
 var player_info = {}
 
-
+var robot_server
 
 
 func _ready():
@@ -71,6 +71,9 @@ func _ready():
         local_player = $FakePlayer
         configure_server()
         
+        robot_server = RobotServer.new()
+
+        
     else:
         print("STARTING AS CLIENT")
         peer = WebSocketClient.new()
@@ -101,13 +104,18 @@ func _process(_delta):
 
 
 func shuffle_spawn_points():
-    var order = [0,1,2,3,4,5,6,7,8,9]
+    var order = range($SpawnPointsPlayers.get_child_count())
+
     order.shuffle()
-    
-    for p in range(10):
+    for p in range(order.size()):
         var child = $SpawnPointsPlayers.get_child(order[p])
         $SpawnPointsPlayers.move_child(child, p)
-        
+    
+    order = range($SpawnPointsRobots.get_child_count())
+    order.shuffle()
+    for p in range(order.size()):
+        var child = $SpawnPointsRobots.get_child(order[p])
+        $SpawnPointsRobots.move_child(child, p)
 
 ##### NETWORK SIGNALS HANDLERS #####
 # only triggered client-side

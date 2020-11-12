@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Character",
 "language": "GDScript",
 "path": "res://Character.gd"
+}, {
+"base": "Node",
+"class": "RobotServer",
+"language": "GDScript",
+"path": "res://robot_server.gd"
 } ]
 _global_script_class_icons={
-"Character": ""
+"Character": "",
+"RobotServer": ""
 }
 
 [application]
