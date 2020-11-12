@@ -4,13 +4,16 @@
 [ext_resource path="res://assets/robot.glb" type="PackedScene" id=2]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.570387, 1.36156, 0.581508 )
+extents = Vector3( 0.490163, 1.14669, 0.554112 )
 
 [node name="Robot" type="KinematicBody"]
 script = ExtResource( 1 )
 
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.28228, 0.576418, 0 )
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.64375, 0 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.0177188, 0.576418, 0 )
 shape = SubResource( 1 )
 
 [node name="robot" parent="." instance=ExtResource( 2 )]

@@ -11,7 +11,21 @@ var path = []
 var path_node = 0
 var speed = 1
 
+enum Colors {BLACK, BLUE, YELLOW, GREEN, RED, WHITE, PURPLE, SALMON}
+
+var textures = {Colors.BLACK: load("res://assets/palette_texture_black.png"),
+                Colors.BLUE: load("res://assets/palette_texture_blue.png"),
+                Colors.YELLOW: load("res://assets/palette_texture_yellow.png"),
+                Colors.GREEN: load("res://assets/palette_texture_green.png"),
+                Colors.RED: load("res://assets/palette_texture_red.png"),
+                Colors.WHITE: load("res://assets/palette_texture_white.png"),
+                Colors.PURPLE: load("res://assets/palette_texture_purple.png"),
+                Colors.SALMON: load("res://assets/palette_texture_salmon.png")
+               }
+
 func _ready():
+    
+    #set_screen_texture("res://assets/screen_tex_hello.png")
     
     print("STARTING ROBOT BRIDGE SERVER")
     server = WebSocketServer.new()
@@ -25,7 +39,15 @@ func _ready():
     
     server.connect("data_received", self, "_on_robot_data")
 
+func set_color(color):
+    
+    var material = $robot/Robot.mesh.surface_get_material(0)
+    material.albedo_texture = textures[color]
 
+func set_screen_texture(resource_path):
+    var material = $robot/Screen.mesh.surface_get_material(1)
+    material.albedo_texture = load(resource_path)
+    
 func _physics_process(_delta):
     
     server.poll()
