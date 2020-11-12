@@ -2,8 +2,8 @@ extends Spatial
 
 # To start as a server, pass --server on the cmd line
 
-#const SERVER_URL="research.skadge.org"
-const SERVER_URL="localhost"
+
+var SERVER_URL="localhost"
 const SERVER_PORT=6969
 
 var is_server : bool
@@ -38,9 +38,13 @@ func _ready():
     
     # the web version are always clients;
     # the non-web versions are server iff '--server' argument is passed
-    if (OS.get_name() == "HTML5" or not arguments["server"]) and not force_server:
+    if OS.get_name() == "HTML5" or (not arguments["server"] and not force_server):
         is_server = false
         $FakePlayer/Camera.current = false
+        
+        if OS.get_name() == "HTML5":
+            var SERVER_URL="research.skadge.org"
+            print("Setting the game server to " + SERVER_URL + ":" + SERVER_PORT)
     else:
         is_server = true
         $FakePlayer/Camera.current = true
