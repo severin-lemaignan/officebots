@@ -55,12 +55,30 @@ func _ready():
         
     var peer
 
+    # Flow chart when joining:
+    # 1. Peer connects to the server -> _connect_ok -> pre_configure_game
+    # 2. pre_configure_game creates the local 'Player' node and calls done_preconfiguring(peer_id) on the server
+    # 3. the server stores details about this new peer and calls back the peer with 'post_configure_game(start_location)'
+    # 4. post_configure_game simply 'un-pause' the game
+    #
+    # *Simultaneously*:
+    # 1. All the existing peers (including the server) receive an event 'network_peer_connected(peer_id)'
+    # 1bis. the peer receives as well an event 'network_peer_connected(1)' from the server
+    # 2. in _player_connected, each peer send to the new peer its details via 'register_player'
+    # 2bis. the new peer sends its details to the server, for the server to create the character as well
+    # 3. register_player -> add_player that creates Character node instance for each other peers on the new peer
+    
+    # called when a player joins the game
     get_tree().connect("network_peer_connected", self, "_player_connected")
+    
+    # called when a player leaves the game
     get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
     
 
+    # called when *I* connect to the server
     get_tree().connect("connected_to_server", self, "_connected_ok")
     get_tree().connect("connection_failed", self, "_connected_fail")
+    # called when the server disconnect, eg is killed
     get_tree().connect("server_disconnected", self, "_server_disconnected")
     
     if is_server:
@@ -80,6 +98,16 @@ func _ready():
         print("STARTING AS CLIENT")
         peer = WebSocketClient.new()
         
+        # wait for the character creation to be complete
+        var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+        player_name = res[0]
+        player_skin = res[1]
+        
+        $CanvasLayer/UI.set_name_skin(player_name, player_skin)
+        
+        # then, initiate the connection to the server
+        
+        
         # the last 'true' parameter enables the Godot high-level multiplayer API
         peer.connect_to_url(SERVER_URL + ":" + str(SERVER_PORT), PoolStringArray(), true)
         
@@ -98,12 +126,13 @@ func configure_server():
     
 func _process(_delta):
     
-    # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
-    get_tree().network_peer.poll()
-    
-    # only the server polls for the robot websocket server
-    if is_network_master():
-        robot_server.poll()
+    if get_tree().has_network_peer() and get_tree().network_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+        # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
+        get_tree().network_peer.poll()
+        
+        # only the server polls for the robot websocket server
+        if is_network_master():
+            robot_server.poll()
 
 
 func shuffle_spawn_points():
@@ -137,21 +166,17 @@ func _server_disconnected():
 func _player_connected(id):
     # Called on both clients and server when a peer connects. Send my info to it.
     
-    if not get_tree().is_network_server():
-        rpc_id(id, "pre_register_player")
+    #if not get_tree().is_network_server():
+    #    rpc_id(id, "pre_register_player")
         
-    # at launch, we might not have completed the character creation yet: wait
-    # until this is is finished
-    if !player_name:
-        var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
-        player_name = res[0]
-        player_skin = res[1]
-        
-        $CanvasLayer/UI.set_name_skin(player_name, player_skin)
     
     var my_info =  { "name": player_name, "skin": player_skin }
     
-    print("New player " + str(id) + " joined")
+    if id == 1:
+        print("Sending my player to the server")
+    else:
+        print("New player " + str(id) + " joined")
+        
     if not get_tree().is_network_server():
         rpc_id(id, "register_player", my_info)
     
@@ -163,40 +188,43 @@ func _player_disconnected(id):
 ########################################################
 
 # excuted on every existing peer (incl server) when a new player joins
-remote func pre_register_player():
-    # Get the id of the RPC sender.
-    var id = get_tree().get_rpc_sender_id()
-    # Store the info
-    player_info[id] = {}
-    
-    if get_tree().is_network_server():
-        print("New player connected -- pre-registering id: " + str(id))
+#remote func pre_register_player():
+#    # Get the id of the RPC sender.
+#    var id = get_tree().get_rpc_sender_id()
+#    # Store the info
+#    player_info[id] = {}
+#
+#    if get_tree().is_network_server():
+#        print("New player connected -- pre-registering id: " + str(id))
 
 # excuted on every existing peer (incl server) when a new player joins
 remote func register_player(info):
     
     var id = get_tree().get_rpc_sender_id()
     
-    # update player_info dictionary with username + skin
-    for key in info:
-        player_info[id][key] = info[key]
+    player_info[id] = info
     
     add_player(id)
     
     if get_tree().is_network_server():
-        print("Player " + str(id) + ": registration & initialization complete")
+        print("Player " + player_info[id]["name"] + " (peer id #" + str(id) + "): registration & initialization complete")
 
 func remove_player(id):
     player_info[id]["object"].queue_free()
     
 func add_player(id):
-    print("Adding player " + str(id))
+    print("Creating character instance for peer #" + str(id))
     var player = preload("res://Character.tscn").instance()
     
+    # this is key: by re-using the id, each player (be it a Player instance or 
+    # a Character instance) will have the *same* node path on every peers, enabling
+    # RPC calls
+    
     player.set_name(str(id))
+    
     # the server is ultimately controlling all the characters position
     # -> the network master is 1 (eg, default)
-    #player.set_network_master(id)
+    #player.set_network_master(1)
     
     player.set_username(player_info[id]["name"])
     player.set_base_skin(player_info[id]["skin"])
@@ -205,10 +233,13 @@ func add_player(id):
     if get_tree().is_network_server():
         player.enable_collisions(true)
         player.call_deferred("set_physics_process", true)
+        
+        var start_location = $SpawnPointsPlayers.get_child($Players.get_child_count()).transform
+        player_info[id]["start_location"] = start_location
+        player.set_global_transform(start_location)
     else:
         player.enable_collisions(false)
-        
-    player.set_global_transform(player_info[id]["start_location"])
+    
     
     player.local_player = local_player
     
@@ -251,20 +282,16 @@ remote func pre_configure_game():
     # Load my player
     local_player = preload("res://Player.tscn").instance()
     local_player.set_name(str(selfPeerID))
+    
+    #local_player.set_network_master(selfPeerID)
+    
     # the server is ultimately controlling the player position
     # -> the network master is 1 (eg, default)
-    #local_player.set_network_master(selfPeerID)
+    
     get_node("/root/Game/Players").add_child(local_player)
     
     $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
     $MainOffice.set_local_player(local_player)
-
-    # Load other players
-#    for p in player_info:
-#        var player = preload("res://Player.tscn").instance()
-#        player.set_name(str(p))
-#        player.set_network_master(p) # Will be explained later
-#        get_node("/root/Game/Players").add_child(player)
 
     # Tell server (remember, server is always ID=1) that this peer is done pre-configuring.
     rpc_id(1, "done_preconfiguring", selfPeerID)
@@ -300,15 +327,9 @@ remote func done_preconfiguring(who):
         
     print("Player #" + str(who) + " is ready.")
     players_done.append(who)
-    
-    # wait for everyone to be ready
-    #if players_done.size() == player_info.size():
-    #    print("All players ready, starting the game!")
-    #    rpc_id(who, "post_configure_game")
-    
+
     # start the game immediately for whoever is connecting, passing the
     # start location of the player
-    var start_location = $SpawnPointsPlayers.get_child(players_done.size() - 1).transform
-    player_info[who]["start_location"] = start_location
-    rpc_id(who, "post_configure_game", start_location)
+    
+    rpc_id(who, "post_configure_game", player_info[who]["start_location"])
 
