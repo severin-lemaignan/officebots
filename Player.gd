@@ -50,9 +50,13 @@ func _physics_process(delta):
     # puppet head pose overridden by animation
     #rpc_unreliable("set_puppet_transform", transform, $Rotation_helper/CameraTarget.get_global_transform().origin)
 
+puppet func puppet_says(msg):
+    # do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
+    pass
+    
 # connect to the UI 'on_chat_msg' signal by Game.gd
 func say(msg):
-    rpc("puppet_says", msg)
+    rpc_id(1, "execute_puppet_says", msg)
 
 func pickup_object(object):
     
@@ -169,11 +173,4 @@ func _input(event):
     if event.is_action_released("mouselook"):
         Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
         release_object()
-
-func has_met(character):
-    return (character in known_npc)
-
-func meet(character):
-    known_npc.append(character)
-
 

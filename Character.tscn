@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://skin.material" type="Material" id=1]
 [ext_resource path="res://FakePlayer.gd" type="Script" id=2]
 [ext_resource path="res://Character.gd" type="Script" id=3]
 [ext_resource path="res://SpeechBubble.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/characters/skins/casualFemaleA_neutral.png" type="Texture" id=5]
+[ext_resource path="res://default_theme.tres" type="Theme" id=6]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Character"
@@ -1157,6 +1158,23 @@ script = ExtResource( 3 )
 max_earshot_distance = 2.0
 neutral_skin = ExtResource( 5 )
 
+[node name="NameHandle" type="Node2D" parent="."]
+
+[node name="Name" type="Label" parent="NameHandle"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -118.0
+margin_top = -46.0
+margin_right = 118.0
+margin_bottom = -8.0
+theme = ExtResource( 6 )
+text = "Unknown player"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="SpeechBubbleHandle" type="Node2D" parent="."]
 __meta__ = {
 "_edit_group_": true
@@ -1169,6 +1187,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3077, 0.126205 )
 
 [node name="SpeechBubbleAnchor" type="Spatial" parent="SpeechBubbleAnchorAxis"]
 transform = Transform( 0.0882466, 0, 0, 0, 0.0882466, 0, 0, 0, 0.0972273, -0.346705, 0.13305, 0.00488836 )
+
+[node name="NameAnchor" type="Spatial" parent="SpeechBubbleAnchorAxis"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553644, 0 )
 
 [node name="Root" type="Spatial" parent="."]
 transform = Transform( 0.46, 0, 0, 0, 0.46, 0, 0, 0, 0.46, 0, 0.0393963, 0 )

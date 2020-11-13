@@ -198,7 +198,7 @@ func add_player(id):
     # -> the network master is 1 (eg, default)
     #player.set_network_master(id)
     
-    player.username = player_info[id]["name"]
+    player.set_username(player_info[id]["name"])
     player.set_base_skin(player_info[id]["skin"])
     
     # physics *only* performed on server
@@ -233,6 +233,7 @@ remotesync func add_robot(name):
         robot.enable_collisions(false)
     
     if is_network_master():
+        
         var start_location = $SpawnPointsRobots.get_child($Robots.get_child_count()).transform
         robot.set_global_transform(start_location)
         

@@ -41,6 +41,8 @@ var current_anim
 const MAX_SLOPE_ANGLE = 30
 var next_motion_linear_velocity
 
+var is_portrait_mode
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     randomize()
@@ -81,13 +83,19 @@ func enable_collisions(val=true):
     $CollisionShape.disabled = !val
     
 func portrait_mode(mode):
-    if mode:
+    
+    is_portrait_mode = mode
+    
+    if mode == true:
+        
         $FakePlayer/Camera.visible = true
         $OmniLight.visible = true
         
         anim_player.current_animation = "Idle"
         anim_player.seek(randf() * anim_player.current_animation_length)
         anim_player.play()
+        
+        $NameHandle/Name.visible = false
 
     
     else:
@@ -113,7 +121,9 @@ remote func execute_move_and_slide(linear_velocity):
     assert(get_tree().is_network_server())
     next_motion_linear_velocity = linear_velocity
     
-
+remote func execute_puppet_says(msg):
+    rpc("puppet_says", msg)
+    
 # physics process is only enabled on the server
 func _physics_process(delta):
 
@@ -127,6 +137,7 @@ func _physics_process(delta):
     
     
 func _process(delta):
+    
     
     
     # we buffer a bit as the peer main loop might run faster
@@ -150,12 +161,15 @@ func _process(delta):
     
         last_location = translation
 
+    if is_portrait_mode:
+        return
+        
     # manage speech bubble, incl updating scale and orientation based on
     # player distance
+    var dist = distance_to(local_player)
+    $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
+            
     if speech_bubble.is_speaking:
-
-        var dist = distance_to(local_player)
-
 
         var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/SpeechBubbleAnchor.get_global_transform().origin)
         speech_bubble_handle.position = screenPos
@@ -164,12 +178,17 @@ func _process(delta):
         var bubble_scale = max(0.5, min(2, 1 / dist))
         speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
 
-        var s= speech_bubble_handle.scale
+    if dist < 10:
+        $NameHandle.visible = true
+        var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/NameAnchor.get_global_transform().origin)
+        $NameHandle.position = screenPos
 
-    #if is_looking_at_player:
-    #    face(player)
+        var name_scale = max(0.5, min(2, 1 / dist))
+        $NameHandle.scale = Vector2(name_scale, name_scale)
+    else:
+        $NameHandle.visible = false
+        
 
-        $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
 
     
 #######################################################
@@ -199,6 +218,11 @@ func get_look_at_transform_basis(target,
 func set_base_skin(resource_path):
     neutral_skin = load(resource_path)
     $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", neutral_skin)
+
+func set_username(name):
+    username = name
+    $NameHandle/Name.text = name
+    
     
 func set_expression(expression):
     var texture_basename = neutral_skin.resource_path.split("neutral")[0]
