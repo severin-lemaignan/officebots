@@ -55,7 +55,7 @@ func _physics_process(_delta):
         if direction.length() < 0.2:
             path_node += 1
         else:
-            move_and_slide(direction.normalized() * speed, Vector3.UP)
+            var _vel = move_and_slide(direction.normalized() * speed, Vector3.UP)
 
     rpc_unreliable("set_puppet_transform", transform)
 

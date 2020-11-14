@@ -19,7 +19,6 @@ export(Texture) var neutral_skin
 enum Expressions {NEUTRAL, ANGRY, HAPPY, SAD}
 export(Expressions) var expression setget set_expression
 
-var is_speaking
 var is_looking_at_player
 var dialogue_is_finished
 var response
@@ -28,10 +27,6 @@ enum state {WAITING_FOR_ANSWER, ANSWER_RECIEVED}
 var quaternion_slerp_progress = 0
 var original_orientation
 var target_quaternion
-
-#var npcs = get_tree().get_root().get_node("Game/NPCs")
-
-signal ready_to_speak
 
 var last_location
 var total_delta = 0.0
@@ -125,10 +120,10 @@ remote func execute_puppet_says(msg):
     rpc("puppet_says", msg)
     
 # physics process is only enabled on the server
-func _physics_process(delta):
+func _physics_process(_delta):
 
     if next_motion_linear_velocity:
-        move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+        var _vel = move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
         next_motion_linear_velocity = null
     
     # the server is responsible to broadcast the position of all the player
@@ -224,12 +219,12 @@ func set_username(name):
     $NameHandle/Name.text = name
     
     
-func set_expression(expression):
+func set_expression(expr):
     var texture_basename = neutral_skin.resource_path.split("neutral")[0]
     
     var skin
     
-    match expression:
+    match expr:
         Expressions.NEUTRAL:
             skin = load(texture_basename + "neutral.png")
         Expressions.ANGRY:
@@ -252,25 +247,7 @@ func on_rotation_finished():
     target_quaternion = null
     quaternion_slerp_progress = 0
     
-func say(text, wait_time=2, force=false):
-#    $SpeechBubbleHandle/SpeechBubble/speech_bubble/Name.text = username
-    
-#    emit_signal("spoke")
-#    var player2 = get_tree().root.get_node("Game/Player")
-    
-#    if is_speaking() and not force:
-#        return
-        
-#    var dist = distance_to(player2)
-    
-    #For background dialogue
-#    if force:
-#        speech_bubble.say(text, wait_time)
-    
-    # NPC too far from Player? we don't hear it!
-#    if dist > max_earshot_distance:
-#        return
-    
+func say(text, wait_time=2):
     speech_bubble.say(text, speech_bubble.ButtonType.NONE, wait_time)
 
 func distance_to(object):

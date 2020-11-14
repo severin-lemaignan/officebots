@@ -11,7 +11,7 @@ puppet func set_puppet_transform(transform):
     self.transform = transform
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
     
     # this code should *only* be called by the server (where the physics is executed)
     assert(get_tree().is_network_server())

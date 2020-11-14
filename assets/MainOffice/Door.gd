@@ -24,7 +24,7 @@ func _ready():
     
     state = initial_state
     
-    $HandleHighlight.connect("highlight_clicked", self, "on_handle_clicked")
+    var _err = $HandleHighlight.connect("highlight_clicked", self, "on_handle_clicked")
 
 func on_handle_clicked():
     $Tween.remove_all()
@@ -42,7 +42,7 @@ func on_handle_clicked():
     $Tween.start()
 
 
-func _process(delta):
+func _process(_delta):
 
     if !local_player:
         return

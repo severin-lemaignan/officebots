@@ -17,9 +17,6 @@ const DEACCEL= 16
 onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
 
-signal spoke
-#signal done_speaking
-
 # each time I meet a new NPC, I add it to this list
 var known_npc = []
 
@@ -50,7 +47,7 @@ func _physics_process(delta):
     # puppet head pose overridden by animation
     #rpc_unreliable("set_puppet_transform", transform, $Rotation_helper/CameraTarget.get_global_transform().origin)
 
-puppet func puppet_says(msg):
+puppet func puppet_says(_msg):
     # do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
     pass
     

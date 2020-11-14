@@ -16,7 +16,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
     for i in range(NB_CHARACTERS):
         var tex = $Viewports.get_child(i).get_texture()
         $CenterContainer/VBoxContainer/PortraitsContainer.get_child(i).texture_normal = tex

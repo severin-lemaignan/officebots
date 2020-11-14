@@ -15,11 +15,11 @@ var prev_cursor
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    $Area2D.connect("mouse_entered", self, "on_enter_zone")
-    $Area2D.connect("mouse_exited", self, "on_leave_zone")
-    $Area2D.connect("input_event", self, "on_event")
+    var _err = $Area2D.connect("mouse_entered", self, "on_enter_zone")
+    _err = $Area2D.connect("mouse_exited", self, "on_leave_zone")
+    _err = $Area2D.connect("input_event", self, "on_event")
 
-func on_event(viewport, event, shape_idx):
+func on_event(_viewport, event, _shape_idx):
     if (event is InputEventMouseButton && event.pressed):
         print("Object picked!")
         emit_signal("highlight_clicked")

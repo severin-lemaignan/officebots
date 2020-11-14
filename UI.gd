@@ -14,7 +14,7 @@ signal on_chat_msg
 func _ready():
     chat.connect("text_entered", self, "on_chat")
     
-    $Top/HBoxContainer/exit.connect("pressed", self, "on_exit")
+    var _err = $Top/HBoxContainer/exit.connect("pressed", self, "on_exit")
     
     portrait.portrait_mode(true)
 

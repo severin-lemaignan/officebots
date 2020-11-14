@@ -7,8 +7,8 @@ func _ready():
     visible = false
     modulate = Color(1.0,1.0,1.0,0.0)
     
-    $CenterContainer/VBoxContainer/HBoxContainer/Ok.connect("pressed", self, "on_ok")
-    $CenterContainer/VBoxContainer/HBoxContainer/Cancel.connect("pressed", self, "on_cancel")
+    var _err = $CenterContainer/VBoxContainer/HBoxContainer/Ok.connect("pressed", self, "on_ok")
+    _err = $CenterContainer/VBoxContainer/HBoxContainer/Cancel.connect("pressed", self, "on_cancel")
     
 func show(msg = null):
     

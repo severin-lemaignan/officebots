@@ -7,9 +7,9 @@ var robot_server
 
 var game_instance
 
-func _init(game_instance):
+func _init(game):
     
-    self.game_instance = game_instance
+    self.game_instance = game
     
     print("STARTING ROBOTS WEBSOCKET SERVER")
     robot_server = WebSocketServer.new()
@@ -32,7 +32,7 @@ func _robot_connected(id, protocol):
     # Called on both clients and server when a peer connects. Send my info to it.
     print("New robot " + str(id) + " joined (protocol: " + protocol + ")")
     
-func _robot_disconnected(id, was_clean_close):
+func _robot_disconnected(id, _was_clean_close):
     print("Robot " + str(id) + " disconnected")
 
 func convert_coordinates_robotics2godot(x,y,z):

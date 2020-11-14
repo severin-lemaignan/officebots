@@ -15,7 +15,7 @@ func _ready():
     
     $Highlight.visible = false
     
-    $Highlight.connect("highlight_clicked", self, "on_highlight_clicked")
+    var _err = $Highlight.connect("highlight_clicked", self, "on_highlight_clicked")
 
 func on_highlight_clicked():
 
@@ -29,7 +29,7 @@ func on_highlight_clicked():
 #            local_player.release_object(self)
 #            state = OBJECT_STATE.resting
 
-func _process(delta):
+func _process(_delta):
 
     if !local_player:
         return
