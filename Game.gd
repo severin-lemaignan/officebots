@@ -172,31 +172,29 @@ func _physics_process(_delta):
     # 3. ray casting from robot to player to see if obstacle or not, using
     #    intersect_ray: https://docs.godotengine.org/en/stable/tutorials/physics/ray-casting.html
     
+
+func compute_visible_humans(robot):
+
+    for p in $Players.get_children():
+        if p in robot.players_in_fov:
+            var ob = is_object_visible(p.face, robot.camera)
+            if !ob or !ob.has_method("i_am_a_character"):
+                robot.players_in_fov.erase(p)
+        else:
+            var ob = is_object_visible(p.face, robot.camera)
+            if ob and ob.has_method("i_am_a_character"):
+                robot.players_in_fov.append(ob)
+                print("Robot " + robot.robot_name + " sees player " + p.username)
     
-    var visible_players = []
-    for r in $Robots.get_children():
-        for p in $Players.get_children():
-            if p in r.players_in_fov:
-                var ob = is_object_visible(p.face, r.camera)
-                if !ob:
-                    r.players_in_fov.erase(p)
-            else:
-                var ob = is_object_visible(p.face, r.camera)
-                if ob:
-                    r.players_in_fov.append(ob)
-                    print("Robot " + r.robot_name + " sees player " + p.username)
-                            
-func is_object_visible(object, camera, class_filter = "Character"):
+    return robot.players_in_fov
+                        
+func is_object_visible(object, camera):
     var target = object.global_transform.origin
     if is_point_in_frustum(target, camera):
         var space_state = get_world().direct_space_state
         var result = space_state.intersect_ray(camera.global_transform.origin, target)
         if result:
-            if class_filter:
-                if result.collider.is_class(class_filter):
-                    return result.collider
-            else:
-                return result.collider
+            return result.collider
 
     return null
 

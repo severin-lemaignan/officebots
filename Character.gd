@@ -98,6 +98,11 @@ func portrait_mode(mode):
         $FakePlayer/Camera.visible = false
         $OmniLight.visible = false
 
+# used to test in Game whether an object colliding with the ray cast for visibility testing
+# is indeed a character (via .has_method(i_am_a_character))
+func i_am_a_character():
+    pass
+    
 puppet func puppet_says(msg):
     print("Got something to say: " + msg)
     say(msg)
@@ -237,12 +242,12 @@ func set_expression(expr):
             
     $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", skin)
     
-func face(object):
-
-    target_quaternion = Quat(get_look_at_transform_basis(object))
-                                #$Root/Skeleton.get_bone_pose(17).origin))
-    return target_quaternion
-
+#func face(object):
+#
+#    target_quaternion = Quat(get_look_at_transform_basis(object))
+#                                #$Root/Skeleton.get_bone_pose(17).origin))
+#    return target_quaternion
+#
 
 func on_rotation_finished():
     target_quaternion = null

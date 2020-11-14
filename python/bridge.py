@@ -23,6 +23,7 @@ async def send_cmd():
         await websocket.send(cmd_str)
 
         ack = await websocket.recv()
+        ack = json.loads(ack)
         print(f"Server says: {ack}")
 
 asyncio.get_event_loop().run_until_complete(send_cmd())

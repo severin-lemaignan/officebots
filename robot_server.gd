@@ -58,18 +58,14 @@ func _on_robot_data(id):
         send_error(id, "Malformed JSON")
     
     
-    
-    var cmd = json.result[0]
-    
-    var name = json.result[1]
-    
-    
+    var name = json.result[0]
+    var cmd = json.result[1]
+
     var params
-    
     if json.result.size() == 3:
         params = json.result[2]
     
-    if cmd == "create-robot":
+    if cmd == "create":
         game_instance.rpc("add_robot", name)
         send_ok(id)
         return
@@ -78,21 +74,33 @@ func _on_robot_data(id):
     if name in game_instance.robots:
         robot = game_instance.robots[name]
     else:
-        send_error(id, "Unknown robot: " + name + ". Use create-robot to first create a robot")
+        send_error(id, "Unknown robot: " + name + ". Use 'create' to first create a robot")
         return
         
     match cmd:
         "navigate-to":
+            if params.size() != 0:
+                send_error(id, "navigate-to takes exactly 2 parameters (destination's x and y)")
+                return
+                
             robot.set_navigation_target(convert_coordinates_robotics2godot(params[0], params[1], 0))
             send_ok(id)
             return
         "stop":
+            if params.size() != 0:
+                send_error(id, "stop does not take any parameter")
+                return
+                
             robot.stop_navigation()
             send_ok(id)
             return
         "get-pos":
+            if params.size() != 0:
+                send_error(id, "get-pos does not take any parameter")
+                return
+                
             var pos = convert_coordinates_godot2robotics(robot.global_transform.origin)
-            send_ok(id, str([pos.x, pos.y]))
+            send_ok(id, [pos.x, pos.y])
             return
         "set-color":
             if params.size() != 1:
@@ -105,16 +113,27 @@ func _on_robot_data(id):
             robot.rpc("set_color", params[0])
             send_ok(id)
             return
+        "get-humans":
+            if params.size() != 0:
+                send_error(id, "get-humans does not take any parameter")
+                return
+            
+            var humans = game_instance.compute_visible_humans(robot)
+            var res = []
+            for h in humans:
+                var pos = convert_coordinates_godot2robotics(h.global_transform.origin)
+                res.append([h.username, pos.x, pos.y])
+
+            send_ok(id, res)
+            return
 
     send_error(id, "Unknown command: " + cmd)
 
 func send_error(id, msg):
-    robot_server.get_peer(id).put_packet(("[EE] " + msg).to_utf8())
+    robot_server.get_peer(id).put_packet(JSON.print(["EE",  msg]).to_utf8())
 
 func send_ok(id, msg = null):
-    if msg:
-        robot_server.get_peer(id).put_packet(("[OK] " + msg).to_utf8())
-    else:
-        robot_server.get_peer(id).put_packet(("[OK]").to_utf8())
+    robot_server.get_peer(id).put_packet(JSON.print(["OK", msg]).to_utf8())
+    
     
 ########################################################
