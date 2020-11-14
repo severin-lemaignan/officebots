@@ -8,6 +8,7 @@ const SERVER_PORT=6969
 
 var is_server : bool
 export(bool) var force_server = false
+var is_networking_started
 
 var local_player
 var player_name
@@ -69,24 +70,41 @@ func _ready():
     # 3. register_player -> add_player that creates Character node instance for each other peers on the new peer
     
     # called when a player joins the game
-    get_tree().connect("network_peer_connected", self, "_player_connected")
+    var _err = get_tree().connect("network_peer_connected", self, "_player_connected")
     
     # called when a player leaves the game
-    get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+    _err = get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
     
 
     # called when *I* connect to the server
-    get_tree().connect("connected_to_server", self, "_connected_ok")
-    get_tree().connect("connection_failed", self, "_connected_fail")
+    _err = get_tree().connect("connected_to_server", self, "_connected_ok")
+    _err = get_tree().connect("connection_failed", self, "_connected_fail")
     # called when the server disconnect, eg is killed
-    get_tree().connect("server_disconnected", self, "_server_disconnected")
+    _err = get_tree().connect("server_disconnected", self, "_server_disconnected")
     
+            
     if is_server:
         print("STARTING AS SERVER")
-        peer = WebSocketServer.new()
         
+        peer = WebSocketServer.new()
+
         # the last 'true' parameter enables the Godot high-level multiplayer API
-        peer.listen(SERVER_PORT, PoolStringArray(), true)
+        var error = peer.listen(SERVER_PORT, PoolStringArray(), true)
+        
+        if error != OK:
+            match error:
+                ERR_ALREADY_IN_USE:
+                    print("Port already in use! Most likely a server is already running. Exiting.")
+                    get_tree().quit(1)
+                    return
+                _:
+                    print("Error code " + str(error) + " when starting the server. Exiting.")
+                    get_tree().quit(1)
+                    return
+                    
+        get_tree().network_peer = peer
+        is_networking_started = true        
+        
         
         local_player = $FakePlayer
         configure_server()
@@ -96,8 +114,9 @@ func _ready():
         
     else:
         print("STARTING AS CLIENT")
-        peer = WebSocketClient.new()
         
+        
+    
         # wait for the character creation to be complete
         var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
         player_name = res[0]
@@ -105,16 +124,18 @@ func _ready():
         
         $CanvasLayer/UI.set_name_skin(player_name, player_skin)
         
+        Input.set_default_cursor_shape(Input.CURSOR_DRAG)
+        
         # then, initiate the connection to the server
         
+        peer = WebSocketClient.new()
         
         # the last 'true' parameter enables the Godot high-level multiplayer API
         peer.connect_to_url(SERVER_URL + ":" + str(SERVER_PORT), PoolStringArray(), true)
+        get_tree().network_peer = peer
         
-        Input.set_default_cursor_shape(Input.CURSOR_DRAG)
-    
-    get_tree().network_peer = peer
-    
+        is_networking_started = true
+
 
 
 func configure_server():
@@ -126,7 +147,7 @@ func configure_server():
     
 func _process(_delta):
     
-    if get_tree().has_network_peer() and get_tree().network_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+    if is_networking_started:
         # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
         get_tree().network_peer.poll()
         
@@ -290,7 +311,7 @@ remote func pre_configure_game():
     
     get_node("/root/Game/Players").add_child(local_player)
     
-    $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
+    var _err = $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
     $MainOffice.set_local_player(local_player)
 
     # Tell server (remember, server is always ID=1) that this peer is done pre-configuring.
