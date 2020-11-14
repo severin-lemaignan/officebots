@@ -22,7 +22,19 @@ var textures = {"black": load("res://assets/palette_texture_black.png"),
                 "beige": load("res://assets/palette_texture_salmon.png")
                }
 
+var meshes = {}
+
 func _ready():
+    
+    
+    # prepare materials for the different robot colors
+    for c in textures:
+        
+        meshes[c] = $robot/Robot.mesh.duplicate()
+        var mat = meshes[c].surface_get_material(0).duplicate()
+        mat.albedo_texture = textures[c]
+        meshes[c].surface_set_material(0, mat)
+    
     set_color("white")
     
     #set_screen_texture("res://assets/screen_tex_hello.png")
@@ -39,8 +51,8 @@ puppet func set_puppet_transform(transform):
     
 remotesync func set_color(color):
     
-    var material = $robot/Robot.mesh.surface_get_material(0)
-    material.albedo_texture = textures[color]
+    $robot/Robot.mesh = meshes[color]
+    
 
 remotesync func set_screen_texture(resource_path):
     var material = $robot/Screen.mesh.surface_get_material(1)
