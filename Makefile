@@ -1,29 +1,41 @@
 
 PROJECT_NAME="bots-at-work"
 
-HTML5_CLIENT=html5/index.pck
-SERVER_PCK=${PROJECT_NAME}-server.zip
-
 DIST=dist
+WEBDIST=${DIST}/html5
+
 GODOT=${HOME}/applis/godot/Godot_v3.2.1-stable_x11.64
 
+SERVER_PCK=${DIST}/${PROJECT_NAME}-server.zip
 
-${DIST}/${HTML5_CLIENT}:
-	mkdir -p ${DIST}/html5
-	${GODOT} --export HTML5 ${DIST}/html5/index.html
+SERVER=?kimsufi:research-severin/bots-at-work
 
-html: ${DIST}/${HTML5_CLIENT}
+all: linux
 
-${DIST}/${SERVER_PCK}:
-	${GODOT} --export-pack linux ${DIST}/${SERVER_PCK}
+linux:
+	mkdir -p ${DIST}
+	${GODOT} --export linux ${DIST}/${PROJECT_NAME}
 
-server: ${DIST}/${SERVER_PCK}
+run-server:
+	${DIST}/${PROJECT_NAME} --server
 
-deploy-client: html
-	scp ${DIST}/html5/* kimsufi:research-severin/bots-at-work
+run-client:
+	${DIST}/${PROJECT_NAME} --client
 
-deploy-server: server
-	scp ${DIST}/${SERVER_PCK} kimsufi:research-severin/bots-at-work
+web:
+	mkdir -p ${WEBDIST}
+	${GODOT} --export HTML5 ${WEBDIST}/index.html
+
+webserver:
+	${GODOT} --export-pack linux ${SERVER_PCK}
+
+deploy-client: web
+	scp ${WEBDIST}/* ${SERVER}
+
+deploy-server: webserver
+	scp ${SERVER_PCK} ${SERVER}
+
+deploy: deploy-client deploy-server
 
 clean:
 	rm -rf dist/*

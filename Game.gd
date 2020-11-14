@@ -2,12 +2,13 @@ extends Spatial
 
 # To start as a server, pass --server on the cmd line
 
+enum GameMode {CLIENT, SERVER}
 
 var SERVER_URL="localhost"
 const SERVER_PORT=6969
 
 var is_server : bool
-export(bool) var force_server = false
+export(GameMode) var run_as = GameMode.CLIENT
 var is_networking_started
 
 var local_player
@@ -31,23 +32,30 @@ func _ready():
     
     randomize()
     
-    var arguments = {"server": false}
+    var arguments = {"server": false, "client": false}
+    
     for argument in OS.get_cmdline_args():
         if argument.find("=") > -1:
             var key_value = argument.split("=")
             arguments[key_value[0].lstrip("--")] = key_value[1]
         if argument == "--server":
             arguments["server"] = true
+        if argument == "--client":
+            arguments["client"] = true
     
     # the web version are always clients;
     # the non-web versions are server iff '--server' argument is passed
-    if OS.get_name() == "HTML5" or (not arguments["server"] and not force_server):
+    if OS.get_name() == "HTML5" or \
+       arguments["client"] or \
+       (!arguments["server"] and run_as == GameMode.CLIENT):
+        
         is_server = false
         $FakePlayer/Camera.current = false
         
         if OS.get_name() == "HTML5":
             var SERVER_URL="research.skadge.org"
             print("Setting the game server to " + SERVER_URL + ":" + SERVER_PORT)
+            
     else:
         is_server = true
         $FakePlayer/Camera.current = true
