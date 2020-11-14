@@ -5,6 +5,8 @@ class_name Robot
 const SERVER_URL="localhost"
 const SERVER_PORT=6970
 
+var robot_name
+
 var server
 
 var navigation
@@ -24,8 +26,17 @@ var textures = {"black": load("res://assets/palette_texture_black.png"),
 
 var meshes = {}
 
+var players_in_fov = []
+
+# maximum distance for objects to be seen by the robot's camera
+# nothing beyond that distance is visible, whatever its size
+const CAMERA_FAR = 30
+
+onready var camera = $robot/Camera
+
 func _ready():
     
+    camera.far = CAMERA_FAR
     
     # prepare materials for the different robot colors
     for c in textures:
@@ -41,8 +52,8 @@ func _ready():
     
     # disable physics by default (will be only enabled on the server)
     set_physics_process(false)
-
-   
+    
+    
 func enable_collisions(val=true):
     $CollisionShape.disabled = !val
 
@@ -62,6 +73,7 @@ remotesync func set_screen_texture(resource_path):
 func _physics_process(_delta):
     assert(is_network_master())
     
+    
     if path_node < path.size():
         var direction = (path[path_node] - global_transform.origin)
         if direction.length() < 0.2:
@@ -70,6 +82,8 @@ func _physics_process(_delta):
             var _vel = move_and_slide(direction.normalized() * speed, Vector3.UP)
 
     rpc_unreliable("set_puppet_transform", transform)
+    
+    
 
 func set_navigation_target(target):
     print("Computing new navigation path for robot...")

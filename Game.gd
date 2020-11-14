@@ -123,7 +123,7 @@ func _ready():
     else:
         print("STARTING AS CLIENT")
         
-        
+        set_physics_process(false)
     
         # wait for the character creation to be complete
         var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
@@ -162,6 +162,54 @@ func _process(_delta):
         # only the server polls for the robot websocket server
         if is_network_master():
             robot_server.poll()
+
+# should only run on the server!
+func _physics_process(_delta):
+    assert(is_network_master())
+        # check visibility of players:
+    # 1. select robot's camera
+    # 2. quick discard using a VisbilityNotifier https://docs.godotengine.org/en/stable/classes/class_visibilitynotifier.html
+    # 3. ray casting from robot to player to see if obstacle or not, using
+    #    intersect_ray: https://docs.godotengine.org/en/stable/tutorials/physics/ray-casting.html
+    
+    
+    var visible_players = []
+    for r in $Robots.get_children():
+        for p in $Players.get_children():
+            if p in r.players_in_fov:
+                var ob = is_object_visible(p.face, r.camera)
+                if !ob:
+                    r.players_in_fov.erase(p)
+            else:
+                var ob = is_object_visible(p.face, r.camera)
+                if ob:
+                    r.players_in_fov.append(ob)
+                    print("Robot " + r.robot_name + " sees player " + p.username)
+                            
+func is_object_visible(object, camera, class_filter = "Character"):
+    var target = object.global_transform.origin
+    if is_point_in_frustum(target, camera):
+        var space_state = get_world().direct_space_state
+        var result = space_state.intersect_ray(camera.global_transform.origin, target)
+        if result:
+            if class_filter:
+                if result.collider.is_class(class_filter):
+                    return result.collider
+            else:
+                return result.collider
+
+    return null
+
+func is_point_in_frustum(point, camera):
+    var f = camera.get_frustum()
+    
+    return(!(f[0].is_point_over(point) or \
+             f[1].is_point_over(point) or \
+             f[2].is_point_over(point) or \
+             f[3].is_point_over(point) or \
+             f[4].is_point_over(point) or \
+             f[5].is_point_over(point)))
+    
 
 
 func shuffle_spawn_points():
@@ -259,12 +307,15 @@ func add_player(id):
     
     # physics *only* performed on server
     if get_tree().is_network_server():
-        player.enable_collisions(true)
+        player.call_deferred("enable_collisions", true)
         player.call_deferred("set_physics_process", true)
         
         var start_location = $SpawnPointsPlayers.get_child($Players.get_child_count()).transform
         player_info[id]["start_location"] = start_location
-        player.set_global_transform(start_location)
+        
+        player.call_deferred("set_global_transform", start_location)        
+
+        
     else:
         player.enable_collisions(false)
     
@@ -272,6 +323,8 @@ func add_player(id):
     player.set_deferred("local_player", local_player)
     player.call_deferred("set_username", player_info[id]["name"])
     player.call_deferred("set_base_skin", player_info[id]["skin"])
+    
+    
     
     get_node("/root/Game/Players").add_child(player)
     
@@ -285,11 +338,14 @@ remotesync func add_robot(name):
     robots[name] = robot
     
     robot.set_name(name)
+    robot.set_deferred("robot_name", name)
     
     # physics *only* performed on server
     if get_tree().is_network_server():
         robot.enable_collisions(true)
         robot.call_deferred("set_physics_process", true)
+        
+        
     else:
         robot.enable_collisions(false)
     

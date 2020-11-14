@@ -10,6 +10,7 @@ var local_player
 
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
+onready var face = $Face # used by Robot.gd to compute visibility of players
 
 var username = "Unknown player"
 export(float) var max_earshot_distance = 3
@@ -61,7 +62,7 @@ func _ready():
     set_physics_process(false)
     
     #say("My name is " + username, 5)
-    
+
 
 # gaze control doe snot work due to animations overriding head pose    
 #puppet func set_puppet_transform(puppet_transform, eye_target):
