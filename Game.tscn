@@ -8,6 +8,7 @@
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
+run_as = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

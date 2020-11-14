@@ -7,6 +7,8 @@ var robot_server
 
 var game_instance
 
+var screen_textures = {}
+
 func _init(game):
     
     self.game_instance = game
@@ -65,6 +67,25 @@ func _on_robot_data(id):
     if json.result.size() == 3:
         params = json.result[2]
     
+    if name == "server": # special server commands
+        match cmd:
+            "load-jpg":
+                var image = Image.new()
+                var jpg_buffer = Marshalls.base64_to_raw(params[1])
+                var err = image.load_jpg_from_buffer(jpg_buffer)
+                
+                if !err == OK:
+                    send_error(id, "Error code " + err + " while loading the jpg image")
+                    return
+
+                screen_textures[params[0]] = image
+                print("Successfully uploaded JPG image " + params[0] + " of size " + str(image.get_size()))
+                send_ok(id)
+                return
+            
+        send_error(id, "Unknown server command: " + cmd)
+        return
+    
     if cmd == "create":
         game_instance.rpc("add_robot", name)
         send_ok(id)
@@ -113,6 +134,18 @@ func _on_robot_data(id):
             robot.rpc("set_color", params[0])
             send_ok(id)
             return
+        "set-screen":
+            if params.size() != 1:
+                send_error(id, "set-screen requires exactly one parameter (the name of the image)")
+                return
+            var img = params[0]
+            if !(img in screen_textures):
+                send_error(id, "unknown image: " + img + " (images must first be uploaded with eg 'load-jpg')")
+                return
+            robot.rpc("set_screen_texture", screen_textures[img])
+            send_ok(id)
+            return
+        
         "get-humans":
             if params.size() != 0:
                 send_error(id, "get-humans does not take any parameter")

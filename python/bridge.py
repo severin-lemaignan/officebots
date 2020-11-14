@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# WS client example
 
 import asyncio
 import websockets
@@ -10,7 +9,7 @@ import sys
 import json
 
 if len(sys.argv) < 3:
-    print("Usage: bridge.py <cmd> <robot name> [<param1> <param2> ...]")
+    print("Usage: bridge.py <robot name> <cmd> [<param1> <param2> ...]")
     sys.exit(1)
 
 async def send_cmd():

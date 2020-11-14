@@ -65,9 +65,16 @@ remotesync func set_color(color):
     $robot/Robot.mesh = meshes[color]
     
 
-remotesync func set_screen_texture(resource_path):
-    var material = $robot/Screen.mesh.surface_get_material(1)
-    material.albedo_texture = load(resource_path)
+remotesync func set_screen_texture(image):
+    # TODO: cache image on the peers so that there is no need to re-upload them every time
+    var mesh = $robot/Screen.mesh.duplicate()
+    var material = $robot/Screen.mesh.surface_get_material(1).duplicate()
+    var tex = ImageTexture.new()
+    tex.create_from_image(image)
+    material.albedo_texture = tex
+    mesh.surface_set_material(1, material)
+    
+    $robot/Screen.mesh = mesh
     
 # should only run on the server!
 func _physics_process(_delta):
