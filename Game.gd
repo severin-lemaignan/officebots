@@ -247,8 +247,7 @@ func add_player(id):
     # -> the network master is 1 (eg, default)
     #player.set_network_master(1)
     
-    player.set_username(player_info[id]["name"])
-    player.set_base_skin(player_info[id]["skin"])
+    
     
     # physics *only* performed on server
     if get_tree().is_network_server():
@@ -262,7 +261,9 @@ func add_player(id):
         player.enable_collisions(false)
     
     
-    player.local_player = local_player
+    player.set_deferred("local_player", local_player)
+    player.call_deferred("set_username", player_info[id]["name"])
+    player.call_deferred("set_base_skin", player_info[id]["skin"])
     
     get_node("/root/Game/Players").add_child(player)
     
