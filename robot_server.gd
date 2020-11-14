@@ -95,11 +95,11 @@ func _on_robot_data(id):
             send_ok(id, str([pos.x, pos.y]))
             return
         "set-color":
-            if params.size() != 0:
-                send_error(id, "set-color requires exactly one parameter")
+            if params.size() != 1:
+                send_error(id, "set-color requires exactly one parameter (the color name)")
                 return
             var color = params[0]
-            if !(color in Robot.textures):
+            if !(color in robot.textures):
                 send_error(id, "unknown color: " + color)
                 return
             robot.rpc("set_color", params[0])
