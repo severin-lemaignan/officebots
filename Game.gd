@@ -15,6 +15,11 @@ var local_player
 var player_name
 var player_skin
 
+# dictionary of ImageTexture created by users of the Python API when
+# uploading images to the server.
+# used eg to set the texture on the robots' screens
+var screen_textures = {}
+
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
 
@@ -337,6 +342,7 @@ remotesync func add_robot(name):
     
     robot.set_name(name)
     robot.set_deferred("robot_name", name)
+    robot.set_deferred("game_instance", self)
     
     # physics *only* performed on server
     if get_tree().is_network_server():
@@ -352,7 +358,7 @@ remotesync func add_robot(name):
         var start_location = $SpawnPointsRobots.get_child($Robots.get_child_count()).transform
         robot.set_global_transform(start_location)
         
-        robot.navigation = $MainOffice.nav
+        robot.set_deferred("navigation", $MainOffice.nav)
     
     $Robots.add_child(robot)
     

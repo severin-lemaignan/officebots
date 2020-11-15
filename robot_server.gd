@@ -4,10 +4,7 @@ class_name RobotServer
 const ROBOT_SERVER_PORT=6970
 var robot_server
 
-
 var game_instance
-
-var screen_textures = {}
 
 func _init(game):
     
@@ -49,6 +46,19 @@ func convert_coordinates_godot2robotics(vec3):
     # Godot convention: y up
     return Vector3(vec3.z,vec3.x,vec3.y)
 
+puppet func puppet_load_image(jpg_buffer):
+    var img = Image.new()
+    
+    var err = img.load_jpg_from_buffer(jpg_buffer)
+    
+    if !err == OK:
+        print("Error code " + str(err) + " while loading the jpg image")
+        return
+
+    print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
+    game_instance.screen_textures[name] = ImageTexture.new()
+    game_instance.screen_textures[name].create_from_image(img)
+    
 func _on_robot_data(id):
     var data = robot_server.get_peer(id).get_packet()
     
@@ -60,52 +70,101 @@ func _on_robot_data(id):
         send_error(id, "Malformed JSON")
     
     
-    var name = json.result[0]
+    var target = json.result[0]
     var cmd = json.result[1]
 
     var params
     if json.result.size() == 3:
         params = json.result[2]
     
-    if name == "server": # special server commands
+    if target == "server": # special server commands
         match cmd:
+            #server-api
             "load-jpg":
-                var image = Image.new()
-                var jpg_buffer = Marshalls.base64_to_raw(params[1])
-                var err = image.load_jpg_from_buffer(jpg_buffer)
+                #
+                # uploads a named JPG image to the server, for future use (for 
+                # instance, for use as a texture on a robot's screen)
+                #
+                # params:
+                var name: String # the name of the image
+                var image: String # a base64-encoded JPG image
+                ####
+                
+                name = params[0]
+                image = params[1]
+                
+                var jpg_buffer = Marshalls.base64_to_raw(image)
+                
+                # first, try loading the image on the server, to ensure the jpg
+                # buffer is correct
+                var img = Image.new()
+                
+                var err = img.load_jpg_from_buffer(jpg_buffer)
                 
                 if !err == OK:
-                    send_error(id, "Error code " + err + " while loading the jpg image")
+                    send_error(id, "Error code " + str(err) + " while loading the jpg image")
                     return
+            
+                img.lock()
+                
+                #img.unlock()
+                print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
+                game_instance.screen_textures[name] = ImageTexture.new()
+                game_instance.screen_textures[name].create_from_image(img)
+                
+                # then, load the image on all the pother peers
+                rpc("puppet_load_image", jpg_buffer)
 
-                screen_textures[params[0]] = image
-                print("Successfully uploaded JPG image " + params[0] + " of size " + str(image.get_size()))
                 send_ok(id)
                 return
             
         send_error(id, "Unknown server command: " + cmd)
         return
     
-    if cmd == "create":
-        game_instance.rpc("add_robot", name)
-        send_ok(id)
-        return
+    match cmd:
+        #robot-api
+        "create":
+            #
+            # instantiates a new robot in the game
+            #
+            # params:
+            var name: String # the robot's name
+            ####
             
+            name = target
+            game_instance.rpc("add_robot", name)
+            send_ok(id)
+            return
+                
     var robot
-    if name in game_instance.robots:
-        robot = game_instance.robots[name]
+    if target in game_instance.robots:
+        robot = game_instance.robots[target]
     else:
-        send_error(id, "Unknown robot: " + name + ". Use 'create' to first create a robot")
+        send_error(id, "Unknown robot: " + target + ". Use 'create' to first create a robot")
         return
         
     match cmd:
+        #robot-api
         "navigate-to":
+            #
+            # plans a path to the given destination, and starts navigating to it.
+            #
+            # params:
+            var x: float # destination's x coordinate, in the world frame
+            var y: float # destination's y coordinate, in the world frame
+            ####
+
             if params.size() != 0:
                 send_error(id, "navigate-to takes exactly 2 parameters (destination's x and y)")
                 return
-                
-            robot.set_navigation_target(convert_coordinates_robotics2godot(params[0], params[1], 0))
-            send_ok(id)
+            x = params[0]
+            y = params[1]
+            
+            var res = robot.set_navigation_target(convert_coordinates_robotics2godot(x, y, 0))
+            if res[0]:
+                send_ok(id)
+            else:
+                send_error(id, res[1])
             return
         "stop":
             if params.size() != 0:
@@ -139,10 +198,10 @@ func _on_robot_data(id):
                 send_error(id, "set-screen requires exactly one parameter (the name of the image)")
                 return
             var img = params[0]
-            if !(img in screen_textures):
+            if !(img in game_instance.screen_textures):
                 send_error(id, "unknown image: " + img + " (images must first be uploaded with eg 'load-jpg')")
                 return
-            robot.rpc("set_screen_texture", screen_textures[img])
+            robot.rpc("set_screen_texture", img)
             send_ok(id)
             return
         

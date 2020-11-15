@@ -7,7 +7,8 @@ const SERVER_PORT=6970
 
 var robot_name
 
-var server
+# set by Game.gd upon instantion (cf Game.add_robot)
+var game_instance
 
 var navigation
 var path = []
@@ -65,12 +66,16 @@ remotesync func set_color(color):
     $robot/Robot.mesh = meshes[color]
     
 
-remotesync func set_screen_texture(image):
+remotesync func set_screen_texture(image_name):
     # TODO: cache image on the peers so that there is no need to re-upload them every time
+    
+    var tex = game_instance.screen_textures[image_name]
+    
+    tex.image.lock()
+    print(tex.image.get_pixel(320, 240))
     var mesh = $robot/Screen.mesh.duplicate()
     var material = $robot/Screen.mesh.surface_get_material(1).duplicate()
-    var tex = ImageTexture.new()
-    tex.create_from_image(image)
+
     material.albedo_texture = tex
     mesh.surface_set_material(1, material)
     
@@ -99,6 +104,9 @@ func set_navigation_target(target):
     
     if path.size() == 0:
         print("[!!] No path found to " + str(target))
+        return [false, "No path found"]
+        
+    return [true,""]
 
 func stop_navigation():
     path = []
