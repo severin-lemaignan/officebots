@@ -361,7 +361,12 @@ remotesync func add_robot(name):
         robot.set_deferred("navigation", $MainOffice.nav)
     
     $Robots.add_child(robot)
+
+remotesync func set_screen_texture(name, jpg_buffer):
+    screen_textures[name] = jpg_buffer
     
+func add_screen_texture(name, jpg_buffer):
+    rpc("set_screen_texture", name, jpg_buffer)
 
 remote func pre_configure_game():
     var selfPeerID = get_tree().get_network_unique_id()

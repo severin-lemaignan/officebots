@@ -47,17 +47,18 @@ func convert_coordinates_godot2robotics(vec3):
     return Vector3(vec3.z,vec3.x,vec3.y)
 
 puppet func puppet_load_image(jpg_buffer):
-    var img = Image.new()
-    
-    var err = img.load_jpg_from_buffer(jpg_buffer)
-    
-    if !err == OK:
-        print("Error code " + str(err) + " while loading the jpg image")
-        return
-
-    print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
-    game_instance.screen_textures[name] = ImageTexture.new()
-    game_instance.screen_textures[name].create_from_image(img)
+#    var img = Image.new()
+#
+#    var err = img.load_jpg_from_buffer(jpg_buffer)
+#
+#    if !err == OK:
+#        print("Error code " + str(err) + " while loading the jpg image")
+#        return
+#
+#    print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
+#    game_instance.screen_textures[name] = ImageTexture.new()
+#    game_instance.screen_textures[name].create_from_image(img)
+    game_instance.screen_textures[name] = jpg_buffer
     
 func _on_robot_data(id):
     var data = robot_server.get_peer(id).get_packet()
@@ -97,23 +98,21 @@ func _on_robot_data(id):
                 
                 # first, try loading the image on the server, to ensure the jpg
                 # buffer is correct
-                var img = Image.new()
+                #var img = Image.new()
                 
-                var err = img.load_jpg_from_buffer(jpg_buffer)
+                #var err = img.load_jpg_from_buffer(jpg_buffer)
                 
-                if !err == OK:
-                    send_error(id, "Error code " + str(err) + " while loading the jpg image")
-                    return
+                #if !err == OK:
+                #    send_error(id, "Error code " + str(err) + " while loading the jpg image")
+                #    return
             
-                img.lock()
-                
-                #img.unlock()
-                print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
-                game_instance.screen_textures[name] = ImageTexture.new()
-                game_instance.screen_textures[name].create_from_image(img)
+                #print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
+                #game_instance.screen_textures[name] = ImageTexture.new()
+                #game_instance.screen_textures[name].create_from_image(img)
+                game_instance.add_screen_texture(name, jpg_buffer)
                 
                 # then, load the image on all the pother peers
-                rpc("puppet_load_image", jpg_buffer)
+                
 
                 send_ok(id)
                 return
