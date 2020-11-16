@@ -70,16 +70,22 @@ remotesync func set_screen_texture(image_name):
     # TODO: cache image on the peers so that there is no need to re-upload them every time
     
     var jpg_buffer = game_instance.screen_textures[image_name]
+    var img = Image.new()
+    img.load_jpg_from_buffer(jpg_buffer)
+    img.lock()
     
-    #tex.image.lock()
-    #print(tex.image.get_pixel(320, 240))
-    var mesh = $robot/Screen.mesh.duplicate()
-    var material = $robot/Screen.mesh.surface_get_material(1).duplicate()
+    var tex = ImageTexture.new()
+    tex.create_from_image(img)
+    
+    #var mesh = $robot/Screen.mesh.duplicate()
+    #var material = $robot/Screen.mesh.surface_get_material(1).duplicate()
 
-    material.albedo_texture.image.load_jpg_from_buffer(jpg_buffer)
-    mesh.surface_set_material(1, material)
+    $robot/Screen.mesh.surface_get_material(1).albedo_texture = tex
+    #material.albedo_texture.set_data(img)
+
+    #mesh.surface_set_material(1, material)
     
-    $robot/Screen.mesh = mesh
+    #$robot/Screen.mesh = mesh
     
 # should only run on the server!
 func _physics_process(_delta):
