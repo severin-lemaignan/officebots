@@ -14,9 +14,11 @@ puppet func set_puppet_transform(transform):
 func _physics_process(_delta):
     
     # this code should *only* be called by the server (where the physics is executed)
-    assert(get_tree().is_network_server())
-    
-    # if the object has moved, update all the puppets
-    if prev_transform != transform:
-        rpc_unreliable("set_puppet_transform", transform)
-        prev_transform = transform
+    assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
+    if GameState.mode == GameState.SERVER:
+        assert(get_tree().is_network_master())
+        
+        # if the object has moved, update all the puppets
+        if prev_transform != transform:
+            rpc_unreliable("set_puppet_transform", transform)
+            prev_transform = transform

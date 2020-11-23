@@ -1,13 +1,16 @@
 extends Spatial
 
-# To start as a server, pass --server on the cmd line
+# set the initial game mode. Can be overridden by 
+# command-line arguments --server, --client, --standalone
 
-enum GameMode {CLIENT, SERVER, STANDALONE}
+enum modes {CLIENT, SERVER, STANDALONE}
+
+export(modes) var run_as = GameState.STANDALONE
 
 var SERVER_URL="localhost"
 const SERVER_PORT=6969
 
-export(GameMode) var run_as = GameMode.STANDALONE
+
 var is_networking_started
 
 var local_player
@@ -36,20 +39,22 @@ func _ready():
     
     randomize()
     
+    GameState.mode = run_as
+    
     for argument in OS.get_cmdline_args():
         if argument == "--server":
-            run_as = GameMode.SERVER
+            GameState.mode = GameState.SERVER
         if argument == "--client":
-            run_as = GameMode.CLIENT
+            GameState.mode = GameState.CLIENT
         if argument == "--standalone":
-            run_as = GameMode.STANDALONE
+            GameState.mode = GameState.STANDALONE
     
     # the web version are always clients;
-    if OS.get_name() == "HTML5" and run_as == GameMode.SERVER:
+    if OS.get_name() == "HTML5" and GameState.mode == GameState.SERVER:
         print("ERROR: when exporting to HTML5 platform, the game can *not* be in server mode")
         get_tree().quit(1)
     
-    if run_as == GameMode.CLIENT:
+    if GameState.mode == GameState.CLIENT:
 
         $FakePlayer/Camera.current = false
         
@@ -57,14 +62,15 @@ func _ready():
             var SERVER_URL="research.skadge.org"
             print("Setting the game server to " + SERVER_URL + ":" + SERVER_PORT)
     
-    elif run_as == GameMode.SERVER:
+    elif GameState.mode == GameState.SERVER:
 
         $FakePlayer/Camera.current = true
         $CanvasLayer/UI.visible = false
         $CanvasLayer/CharacterSelection.visible = false
     
-    elif run_as == GameMode.STANDALONE:
-        pass
+    elif GameState.mode == GameState.STANDALONE:
+        
+        $FakePlayer/Camera.current = false
         
     else:
         assert(false)
@@ -98,7 +104,7 @@ func _ready():
     _err = get_tree().connect("server_disconnected", self, "_server_disconnected")
     
             
-    if run_as == GameMode.SERVER:
+    if GameState.mode == GameState.SERVER:
         print("STARTING AS SERVER")
         
         peer = WebSocketServer.new()
@@ -122,12 +128,12 @@ func _ready():
         
         
         local_player = $FakePlayer
-        configure_server()
+        configure_physics()
         
         robot_server = RobotServer.new(self)
 
         
-    elif run_as == GameMode.CLIENT:
+    elif GameState.mode == GameState.CLIENT:
         print("STARTING AS CLIENT")
         
         set_physics_process(false)
@@ -151,17 +157,26 @@ func _ready():
         
         is_networking_started = true
 
-    elif run_as == GameMode.STANDALONE:
+    elif GameState.mode == GameState.STANDALONE:
         print("STARTING IN STANDALONE MODE")
-        print("ERROR: STANDALONE mode not yet implemented")
+
+        # wait for the character creation to be complete
+        var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+        player_name = res[0]
+        player_skin = res[1]
         
-        set_physics_process(false)
-        get_tree().quit(1)
+        $CanvasLayer/UI.set_name_skin(player_name, player_skin)
+        
+        Input.set_default_cursor_shape(Input.CURSOR_DRAG)
+        
+        configure_physics()
+        robot_server = RobotServer.new(self)
+        
         
         
 
 
-func configure_server():
+func configure_physics():
     shuffle_spawn_points()
     
     # enable physics calculations for all the dynamics objects, *on the server only*
@@ -180,7 +195,11 @@ func _process(_delta):
 
 # should only run on the server!
 func _physics_process(_delta):
-    assert(is_network_master())
+    
+    assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
+    if GameState.mode == GameState.SERVER:
+        assert(is_network_master())
+    
         # check visibility of players:
     # 1. select robot's camera
     # 2. quick discard using a VisbilityNotifier https://docs.godotengine.org/en/stable/classes/class_visibilitynotifier.html
