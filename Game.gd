@@ -3,9 +3,9 @@ extends Spatial
 # set the initial game mode. Can be overridden by 
 # command-line arguments --server, --client, --standalone
 
-enum modes {CLIENT, SERVER, STANDALONE}
+enum modes {UNSET, CLIENT, SERVER, STANDALONE}
 
-export(modes) var run_as = GameState.STANDALONE
+export(modes) var run_as = modes.UNSET
 
 var SERVER_URL="localhost"
 const SERVER_PORT=6969
@@ -39,8 +39,11 @@ func _ready():
     
     randomize()
     
-    GameState.mode = run_as
+    $CanvasLayer/GameModeSelection.visible = false
+    set_physics_process(false)
     
+    # highest priority for cmd line arguments.
+    # -> they override any other parameter
     for argument in OS.get_cmdline_args():
         if argument == "--server":
             GameState.mode = GameState.SERVER
@@ -48,7 +51,27 @@ func _ready():
             GameState.mode = GameState.CLIENT
         if argument == "--standalone":
             GameState.mode = GameState.STANDALONE
+
+    # then, if game mode has been set in Godot, use that:
+    if GameState.mode == GameState.UNSET:
+        GameState.mode = run_as
+        
+    # finally, if still not set, show the selection screen
+    if GameState.mode == GameState.UNSET:
+        $CanvasLayer/GameModeSelection.visible = true
+        var url = yield($CanvasLayer/GameModeSelection,"on_mode_set")
+
+        if url == null: # single player!
+            GameState.mode = GameState.STANDALONE
+        else:
+            GameState.mode = GameState.CLIENT
+            SERVER_URL=url
+            print("Setting the game server to " + SERVER_URL + ":" + str(SERVER_PORT))
     
+    # at that point, we should know our game mode
+    assert(GameState.mode != GameState.UNSET)
+    set_physics_process(true)
+        
     # the web version are always clients;
     if OS.get_name() == "HTML5" and GameState.mode == GameState.SERVER:
         print("ERROR: when exporting to HTML5 platform, the game can *not* be in server mode")
@@ -57,10 +80,6 @@ func _ready():
     if GameState.mode == GameState.CLIENT:
 
         $FakePlayer/Camera.current = false
-        
-        if OS.get_name() == "HTML5":
-            var SERVER_URL="research.skadge.org"
-            print("Setting the game server to " + SERVER_URL + ":" + SERVER_PORT)
     
     elif GameState.mode == GameState.SERVER:
 
