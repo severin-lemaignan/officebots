@@ -148,17 +148,27 @@ func process_movement(delta):
     vel.z = hvel.z
     
     if vel:
-    # execute the actual motion on the server, so that physics are computed
-    # the resulting new position will be updated by the server via 'set_puppet_transform'
-        rpc_unreliable_id(1, "execute_move_and_slide", vel)
+        if GameState.mode == GameState.CLIENT:
+            # execute the actual motion on the server, so that physics are computed
+            # the resulting new position will be updated by the server via 'set_puppet_transform'
+            rpc_unreliable_id(1, "execute_move_and_slide", vel)
+        elif GameState.mode == GameState.STANDALONE:
+            vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, GameState.MAX_SLOPE_ANGLE)
+        else:
+            assert(false)
 
 func _input(event):
     
     if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
         rotation_helper.rotate_x(deg2rad(event.relative.y * MOUSE_SENSITIVITY))
-        #self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
-        rpc_unreliable_id(1, "execute_set_rotation", deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
         
+        if GameState.mode == GameState.CLIENT:
+            rpc_unreliable_id(1, "execute_set_rotation", deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+        elif GameState.mode == GameState.STANDALONE:
+            self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+        else:
+            assert(false)
+            
         var camera_rot = rotation_helper.rotation_degrees
         camera_rot.x = clamp(camera_rot.x, -20, 30)
         rotation_helper.rotation_degrees = camera_rot

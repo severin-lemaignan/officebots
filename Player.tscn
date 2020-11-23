@@ -3,7 +3,7 @@
 [ext_resource path="res://Player.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.247559
+radius = 0.417241
 height = 1.11647
 
 [node name="Player" type="KinematicBody"]

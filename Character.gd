@@ -34,7 +34,7 @@ var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
 
-const MAX_SLOPE_ANGLE = 30
+
 var next_motion_linear_velocity
 
 var is_portrait_mode
@@ -129,7 +129,7 @@ remote func execute_puppet_says(msg):
 func _physics_process(_delta):
 
     if next_motion_linear_velocity:
-        var _vel = move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+        var _vel = move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, GameState.MAX_SLOPE_ANGLE)
         next_motion_linear_velocity = null
     
     # the server is responsible to broadcast the position of all the player

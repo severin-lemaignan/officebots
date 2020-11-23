@@ -172,9 +172,7 @@ func _ready():
         configure_physics()
         robot_server = RobotServer.new(self)
         
-        
-        
-
+        pre_configure_game()
 
 func configure_physics():
     shuffle_spawn_points()
@@ -274,11 +272,7 @@ func _server_disconnected():
     
 func _player_connected(id):
     # Called on both clients and server when a peer connects. Send my info to it.
-    
-    #if not get_tree().is_network_server():
-    #    rpc_id(id, "pre_register_player")
-        
-    
+
     var my_info =  { "name": player_name, "skin": player_skin }
     
     if id == 1:
@@ -295,16 +289,6 @@ func _player_disconnected(id):
     player_info.erase(id) # Erase player from info.
 
 ########################################################
-
-# excuted on every existing peer (incl server) when a new player joins
-#remote func pre_register_player():
-#    # Get the id of the RPC sender.
-#    var id = get_tree().get_rpc_sender_id()
-#    # Store the info
-#    player_info[id] = {}
-#
-#    if get_tree().is_network_server():
-#        print("New player connected -- pre-registering id: " + str(id))
 
 # excuted on every existing peer (incl server) when a new player joins
 remote func register_player(info):
@@ -398,9 +382,13 @@ func add_screen_texture(name, jpg_buffer):
     rpc("set_screen_texture", name, jpg_buffer)
 
 remote func pre_configure_game():
-    var selfPeerID = get_tree().get_network_unique_id()
-        
-    get_tree().set_pause(true)
+    
+    var selfPeerID = "myself" # used in STANDALONE mode
+    
+    if GameState.mode == GameState.CLIENT:
+        selfPeerID = get_tree().get_network_unique_id()  # used in CLIENT/SERVER mode
+            
+        get_tree().set_pause(true)
 
     
     # Load my player
@@ -417,10 +405,11 @@ remote func pre_configure_game():
     var _err = $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
     $MainOffice.set_local_player(local_player)
 
-    # Tell server (remember, server is always ID=1) that this peer is done pre-configuring.
-    rpc_id(1, "done_preconfiguring", selfPeerID)
-    
-    print("Done pre-configuring game. Waiting for the server to un-pause me...")
+    if GameState.mode == GameState.CLIENT:
+        # Tell server (remember, server is always ID=1) that this peer is done pre-configuring.
+        rpc_id(1, "done_preconfiguring", selfPeerID)
+        
+        print("Done pre-configuring game. Waiting for the server to un-pause me...")
 
 # server has accepted our player, we can start the game.
 # *if transform=null, the server has rejected our player*
