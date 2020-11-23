@@ -35,6 +35,9 @@ deploy-client: web
 deploy-server: webserver
 	scp ${SERVER_PCK} ${SERVER}
 
+edit:
+	${GODOT} project.godot
+
 deploy: deploy-client deploy-server
 
 clean:
