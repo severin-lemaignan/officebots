@@ -131,7 +131,7 @@ func _on_robot_data(id):
             ####
             
             name = target
-            game_instance.rpc("add_robot", name)
+            game_instance.add_robot(name)
             send_ok(id)
             return
                 
@@ -189,7 +189,7 @@ func _on_robot_data(id):
             if !(color in robot.textures):
                 send_error(id, "unknown color: " + color)
                 return
-            robot.rpc("set_color", params[0])
+            robot.set_color(params[0])
             send_ok(id)
             return
         "set-screen":
@@ -200,7 +200,7 @@ func _on_robot_data(id):
             if !(img in game_instance.screen_textures):
                 send_error(id, "unknown image: " + img + " (images must first be uploaded with eg 'load-jpg')")
                 return
-            robot.rpc("set_screen_texture", img)
+            robot.set_screen_texture(img)
             send_ok(id)
             return
         

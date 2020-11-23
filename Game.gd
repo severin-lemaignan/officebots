@@ -171,8 +171,10 @@ func _ready():
         
         configure_physics()
         robot_server = RobotServer.new(self)
+        is_networking_started = true   
         
         pre_configure_game()
+        
 
 func configure_physics():
     shuffle_spawn_points()
@@ -184,11 +186,13 @@ func configure_physics():
 func _process(_delta):
     
     if is_networking_started:
-        # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
-        get_tree().network_peer.poll()
         
-        # only the server polls for the robot websocket server
-        if is_network_master():
+        if GameState.mode == GameState.SERVER or GameState.mode == GameState.CLIENT:
+            # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
+            get_tree().network_peer.poll()
+        
+        # only the server polls for the robot websocket server (or the standalone client)
+        if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
             robot_server.poll()
 
 # should only run on the server!
@@ -347,7 +351,13 @@ func add_player(id):
     player_info[id]["object"] = player
     
 
-remotesync func add_robot(name):
+func add_robot(name):
+    add_robot_remote(name)
+    
+    if GameState.mode == GameState.SERVER:
+        rpc("add_robot_remote", name)
+    
+puppet func add_robot_remote(name):
     print("Adding robot " + str(name))
     var robot = preload("res://RobotBridge.tscn").instance()
     
@@ -358,7 +368,7 @@ remotesync func add_robot(name):
     robot.set_deferred("game_instance", self)
     
     # physics *only* performed on server
-    if get_tree().is_network_server():
+    if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
         robot.enable_collisions(true)
         robot.call_deferred("set_physics_process", true)
         
@@ -366,7 +376,7 @@ remotesync func add_robot(name):
     else:
         robot.enable_collisions(false)
     
-    if is_network_master():
+    if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
         
         var start_location = $SpawnPointsRobots.get_child($Robots.get_child_count()).transform
         robot.set_global_transform(start_location)
@@ -375,11 +385,16 @@ remotesync func add_robot(name):
     
     $Robots.add_child(robot)
 
-remotesync func set_screen_texture(name, jpg_buffer):
+puppet func set_screen_texture(name, jpg_buffer):
     screen_textures[name] = jpg_buffer
     
 func add_screen_texture(name, jpg_buffer):
-    rpc("set_screen_texture", name, jpg_buffer)
+    
+    set_screen_texture(name, jpg_buffer)
+    
+    # only in CLIENT/SERVER mode, no need in STANDALONE mode
+    if GameState.mode == GameState.SERVER:
+        rpc("set_screen_texture", name, jpg_buffer)
 
 remote func pre_configure_game():
     

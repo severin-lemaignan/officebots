@@ -61,12 +61,27 @@ func enable_collisions(val=true):
 puppet func set_puppet_transform(transform):
     self.transform = transform
     
-remotesync func set_color(color):
+func set_color(color):
+    
+    set_color_remote(color)
+    
+    # only in CLIENT/SERVER mode, no need in STANDALONE mode
+    if GameState.mode == GameState.SERVER:
+        rpc("set_color_remote", color)
+
+puppet func set_color_remote(color):
     
     $robot/Robot.mesh = meshes[color]
-    
 
-remotesync func set_screen_texture(image_name):
+func set_screen_texture(image_name):
+    
+    set_screen_texture_remote(image_name)
+    
+    # only in CLIENT/SERVER mode, no need in STANDALONE mode
+    if GameState.mode == GameState.SERVER:
+        rpc("set_screen_texture_remote", image_name)
+        
+puppet func set_screen_texture_remote(image_name):
     # TODO: cache image on the peers so that there is no need to re-upload them every time
     
     var jpg_buffer = game_instance.screen_textures[image_name]
@@ -89,7 +104,8 @@ remotesync func set_screen_texture(image_name):
     
 # should only run on the server!
 func _physics_process(_delta):
-    assert(is_network_master())
+    
+    assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
     
     
     if path_node < path.size():
@@ -99,7 +115,8 @@ func _physics_process(_delta):
         else:
             var _vel = move_and_slide(direction.normalized() * speed, Vector3.UP)
 
-    rpc_unreliable("set_puppet_transform", transform)
+    if GameState.mode == GameState.SERVER:
+        rpc_unreliable("set_puppet_transform", transform)
     
     
 
