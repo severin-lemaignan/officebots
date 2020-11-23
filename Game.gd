@@ -406,10 +406,16 @@ remote func pre_configure_game():
     $MainOffice.set_local_player(local_player)
 
     if GameState.mode == GameState.CLIENT:
+        # no local physics, all is managed by the server
+        local_player.toggle_collisions(false)
+        
         # Tell server (remember, server is always ID=1) that this peer is done pre-configuring.
         rpc_id(1, "done_preconfiguring", selfPeerID)
         
         print("Done pre-configuring game. Waiting for the server to un-pause me...")
+    
+    elif GameState.mode == GameState.STANDALONE:
+        local_player.toggle_collisions(true)
 
 # server has accepted our player, we can start the game.
 # *if transform=null, the server has rejected our player*

@@ -30,6 +30,8 @@ func _ready():
     #Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
     
+func toggle_collisions(enabled=true):
+    $CollisionShape.disabled = !enabled
 
 puppet func set_puppet_transform(puppet_transform):
 
@@ -39,9 +41,6 @@ func _physics_process(delta):
     
     process_input(delta)
     process_movement(delta)
-    
-    
-    
     
     # version that also communicate the gaze direction -- not working because
     # puppet head pose overridden by animation
