@@ -2,13 +2,12 @@ extends Spatial
 
 # To start as a server, pass --server on the cmd line
 
-enum GameMode {CLIENT, SERVER}
+enum GameMode {CLIENT, SERVER, STANDALONE}
 
 var SERVER_URL="localhost"
 const SERVER_PORT=6969
 
-var is_server : bool
-export(GameMode) var run_as = GameMode.CLIENT
+export(GameMode) var run_as = GameMode.STANDALONE
 var is_networking_started
 
 var local_player
@@ -37,35 +36,38 @@ func _ready():
     
     randomize()
     
-    var arguments = {"server": false, "client": false}
-    
     for argument in OS.get_cmdline_args():
-        if argument.find("=") > -1:
-            var key_value = argument.split("=")
-            arguments[key_value[0].lstrip("--")] = key_value[1]
         if argument == "--server":
-            arguments["server"] = true
+            run_as = GameMode.SERVER
         if argument == "--client":
-            arguments["client"] = true
+            run_as = GameMode.CLIENT
+        if argument == "--standalone":
+            run_as = GameMode.STANDALONE
     
     # the web version are always clients;
-    # the non-web versions are server iff '--server' argument is passed
-    if OS.get_name() == "HTML5" or \
-       arguments["client"] or \
-       (!arguments["server"] and run_as == GameMode.CLIENT):
-        
-        is_server = false
+    if OS.get_name() == "HTML5" and run_as == GameMode.SERVER:
+        print("ERROR: when exporting to HTML5 platform, the game can *not* be in server mode")
+        get_tree().quit(1)
+    
+    if run_as == GameMode.CLIENT:
+
         $FakePlayer/Camera.current = false
         
         if OS.get_name() == "HTML5":
             var SERVER_URL="research.skadge.org"
             print("Setting the game server to " + SERVER_URL + ":" + SERVER_PORT)
-            
-    else:
-        is_server = true
+    
+    elif run_as == GameMode.SERVER:
+
         $FakePlayer/Camera.current = true
         $CanvasLayer/UI.visible = false
         $CanvasLayer/CharacterSelection.visible = false
+    
+    elif run_as == GameMode.STANDALONE:
+        pass
+        
+    else:
+        assert(false)
         
     var peer
 
@@ -96,7 +98,7 @@ func _ready():
     _err = get_tree().connect("server_disconnected", self, "_server_disconnected")
     
             
-    if is_server:
+    if run_as == GameMode.SERVER:
         print("STARTING AS SERVER")
         
         peer = WebSocketServer.new()
@@ -125,7 +127,7 @@ func _ready():
         robot_server = RobotServer.new(self)
 
         
-    else:
+    elif run_as == GameMode.CLIENT:
         print("STARTING AS CLIENT")
         
         set_physics_process(false)
@@ -149,6 +151,14 @@ func _ready():
         
         is_networking_started = true
 
+    elif run_as == GameMode.STANDALONE:
+        print("STARTING IN STANDALONE MODE")
+        print("ERROR: STANDALONE mode not yet implemented")
+        
+        set_physics_process(false)
+        get_tree().quit(1)
+        
+        
 
 
 func configure_server():
