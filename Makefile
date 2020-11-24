@@ -9,8 +9,8 @@ GODOT_VERSION=3.2.3
 
 GODOT=${HOME}/applis/godot/Godot_v${GODOT_VERSION}-stable_x11.64
 GODOT_HEADLESS_BASE=Godot_v${GODOT_VERSION}-stable_linux_headless.64
-#GODOT_HEADLESS=${TOOLS}/${GODOT_HEADLESS_BASE}
-GODOT_HEADLESS=${GODOT}
+GODOT_HEADLESS=${TOOLS}/${GODOT_HEADLESS_BASE}
+#GODOT_HEADLESS=${GODOT}
 
 TEMPLATES_ROOT?=$(shell pwd)/${TOOLS}
 
@@ -28,14 +28,20 @@ all: linux
 
 download-godot-headless: ${GODOT_HEADLESS}
 
-${GODOT_HEADLESS}:
-	mkdir -p ${TOOLS}
+Godot_v${GODOT_VERSION}-stable_export_templates.tpz:
 	mkdir -p ${TOOLS}/godot/templates/${GODOT_VERSION}.stable
+	wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+	unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+	mv templates/* ${TOOLS}/godot/templates/${GODOT_VERSION}.stable/
+	rmdir templates
+
+${GODOT_HEADLESS_BASE}.zip:
+	mkdir -p ${TOOLS}
 	wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/${GODOT_HEADLESS_BASE}.zip
 	unzip ${GODOT_HEADLESS_BASE}.zip
 	mv ${GODOT_HEADLESS_BASE} ${TOOLS}
-	wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
-	mv templates ${TOOLS}
+
+${GODOT_HEADLESS}: Godot_v${GODOT_VERSION}-stable_export_templates.tpz ${GODOT_HEADLESS_BASE}.zip
 
 
 linux: ${GODOT_HEADLESS} ${DIST}/${PROJECT_NAME}
