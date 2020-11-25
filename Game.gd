@@ -31,6 +31,7 @@ export(String) var username = "John Doe"
 var player_info = {}
 
 var robots = {}
+var local_robot = null
 
 var robot_server
 
@@ -371,7 +372,7 @@ func add_player(id):
     
 
 func add_robot(name):
-    add_robot_remote(name)
+    local_robot = add_robot_remote(name)
     
     if GameState.mode == GameState.SERVER:
         rpc("add_robot_remote", name)
@@ -403,6 +404,8 @@ puppet func add_robot_remote(name):
         robot.set_deferred("navigation", $MainOffice.nav)
     
     $Robots.add_child(robot)
+    
+    return robot
 
 puppet func set_screen_texture(name, jpg_buffer):
     screen_textures[name] = jpg_buffer
