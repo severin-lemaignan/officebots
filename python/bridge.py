@@ -21,6 +21,7 @@ async def send_cmd():
         print(f"Sending cmd: {cmd_str}")
         await websocket.send(cmd_str)
 
+        print(f"Waiting for answer...")
         ack = await websocket.recv()
         ack = json.loads(ack)
         print(f"Server says: {ack}")
