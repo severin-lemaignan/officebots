@@ -4,10 +4,15 @@ onready var portrait = $CharacterViewport/Character
 
 onready var chat = $Bottom/Chat
 
+var robot_online = preload("res://assets/icons/robot-online.svg")
+var robot_online_hover = preload("res://assets/icons/robot-online.svg")
+var robot_offline = preload("res://assets/icons/robot-sleepy.svg")
+var robot_offline_hover = preload("res://assets/icons/robot-sleepy-hover.svg")
+var robot_connecting = preload("res://assets/icons/robot-connecting.svg")
+var robot_connecting_hover = preload("res://assets/icons/robot-connecting-hover.svg")
+
+
 signal on_chat_msg
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
 
 # Called when the node enters the scene tree for the first time.
@@ -15,6 +20,10 @@ func _ready():
     chat.connect("text_entered", self, "on_chat")
     
     var _err = $Top/HBoxContainer/exit.connect("pressed", self, "on_exit")
+    
+    _err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")
+    
+    _err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
     
     portrait.portrait_mode(true)
 
@@ -29,6 +38,32 @@ func on_exit():
     if output == "ok":
         get_tree().quit()
 
+func on_robot_clicked():
+    
+    # if we were DISCONNECTED, try to connect...
+    if GameState.robot_state == GameState.RobotState.DISCONNECTED:
+        GameState.emit_signal("robot_state_changed", GameState.RobotState.CONNECTING)
+        return
+        
+    # ...if we were trying to connect, disconnect
+    if GameState.robot_state == GameState.RobotState.CONNECTING:
+        GameState.emit_signal("robot_state_changed", GameState.RobotState.DISCONNECTED)
+        return
+
+func on_robot_state_changed(state):
+    
+    match state:
+        GameState.RobotState.DISCONNECTED:
+            $Top/HBoxContainer/robot.texture_normal = robot_offline
+            $Top/HBoxContainer/robot.texture_hover = robot_offline_hover
+        GameState.RobotState.CONNECTED:
+            $Top/HBoxContainer/robot.texture_normal = robot_online
+            $Top/HBoxContainer/robot.texture_hover = robot_online_hover
+        GameState.RobotState.CONNECTING:
+            $Top/HBoxContainer/robot.texture_normal = robot_connecting
+            $Top/HBoxContainer/robot.texture_hover = robot_connecting_hover
+
+        
 func on_chat(msg):
     emit_signal("on_chat_msg", msg)
     chat.text = ""

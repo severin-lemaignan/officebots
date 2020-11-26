@@ -27,13 +27,16 @@ func _init(game):
         pub_timer.one_shot = false
         pub_timer.connect("timeout", self, "publish_robot_state")
         game_instance.add_child(pub_timer)
-        
-        self.attempt_connect_relay_server()
-        
+
         robot_server.connect("data_received", self, "_on_robot_data")
     
+        GameState.connect("robot_state_changed", self, "on_robot_state_changed")
     
-
+func on_robot_state_changed(state):
+    
+    if state == GameState.RobotState.CONNECTING:
+        self.attempt_connect_relay_server()
+    
 func attempt_connect_relay_server():
     # the last 'false' parameter disables the Godot high-level multiplayer API
     var error = robot_server.connect_to_url("localhost:" + str(API_SERVER_PORT), PoolStringArray(), false)
@@ -62,20 +65,31 @@ func _on_connection_error():
     assert(GameState.mode==GameState.STANDALONE)
     connected = false
     
-    # wait 1/2 sec and try to reconnect
-    yield(game_instance.get_tree().create_timer(.5), "timeout")
-    print("Trying to reconnect to API server...")
-    self.attempt_connect_relay_server()
+    # we were connected? then try to reconnect!
+    if GameState.robot_state == GameState.RobotState.CONNECTED:
+        GameState.emit_signal("robot_state_changed", GameState.RobotState.CONNECTING)
+    
+    if GameState.robot_state == GameState.RobotState.CONNECTING:
+        
+        # wait 1/2 sec and try to reconnect
+        yield(game_instance.get_tree().create_timer(.5), "timeout")
+        print("Trying to reconnect to API server...")
+        self.attempt_connect_relay_server()
+    
+    # ... robot_state might also be 'DISCONNECTED' if the user clicked on the
+    # 'Connecting' icon to stop. In this case, don't do anything
+    
 
 
 func _on_connection_established(_protocol):
     assert(GameState.mode==GameState.STANDALONE)
     
     print("Connection established to the API server")
+    GameState.emit_signal("robot_state_changed", GameState.RobotState.CONNECTED)
     connected = true
     pub_timer.start()
 
-func _on_connection_closed(is_clean):
+func _on_connection_closed(_is_clean):
     connected = false
     print("Connection to the API server closed. Trying to reconnect...")
     self.attempt_connect_relay_server()
@@ -178,6 +192,9 @@ func process_incoming_data(data):
             var name: String # the robot's name
             ####
             
+            if target in game_instance.robots:
+                send_error(id, "A robot with the name <" + target + "> already exists")
+                return
             name = target
             game_instance.add_robot(name)
             send_ok(id)
