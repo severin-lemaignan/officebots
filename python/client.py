@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.INFO)
 
 import sys
 
-from officebots import OfficeBots
+from officebots import Robot
 
 logging.getLogger('officebots').setLevel(logging.DEBUG)
 
@@ -17,14 +17,18 @@ if len(sys.argv) < 3:
 
 cmd = [sys.argv[1], sys.argv[2], [x for x in sys.argv[3:]]]
 
-officebots = OfficeBots()
 
-async def controller():
+class MyRobot(Robot):
 
-    response = await officebots.execute(cmd)
 
-    print(response)
+    async def run(self):
 
-    officebots.stop()
+        #while True:
 
-officebots.run(controller)
+        response = await self.execute(cmd)
+
+        print(response)
+
+        self.stop()
+
+MyRobot().start()
