@@ -15,6 +15,9 @@ var path = []
 var path_node = 0
 var speed = 1
 
+var linear_velocity = null
+var angular_velocity = null
+
 var textures = {"black": load("res://assets/palette_texture_black.png"),
                 "blue": load("res://assets/palette_texture_blue.png"),
                 "yellow": load("res://assets/palette_texture_yellow.png"),
@@ -103,7 +106,7 @@ puppet func set_screen_texture_remote(image_name):
     #$robot/Screen.mesh = mesh
     
 # should only run on the server!
-func _physics_process(_delta):
+func _physics_process(delta):
     
     assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
     
@@ -115,11 +118,20 @@ func _physics_process(_delta):
         else:
             var _vel = move_and_slide(direction.normalized() * speed, Vector3.UP)
 
+    elif (linear_velocity or angular_velocity):
+        rotate_y(angular_velocity * delta)
+        var _vel = move_and_slide(Vector3(linear_velocity,0,0), Vector3.UP)
+        
     if GameState.mode == GameState.SERVER:
         rpc_unreliable("set_puppet_transform", transform)
     
     
-
+func set_v_w(v, w):
+    linear_velocity = v
+    angular_velocity = w
+    
+    return [true, ""]
+    
 func set_navigation_target(target):
     print("Computing new navigation path for robot...")
     path = navigation.get_simple_path(global_transform.origin, target)
@@ -131,7 +143,11 @@ func set_navigation_target(target):
         
     return [true,""]
 
-func stop_navigation():
+func stop():
+    
+    linear_velocity = null
+    angular_velocity = null
+    
     path = []
     path_node = 0
 

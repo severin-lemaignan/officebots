@@ -209,6 +209,29 @@ func process_incoming_data(data):
         
     match cmd:
         #robot-api
+        "cmd-vel":
+            #
+            # sets the linear and angular speed of the robot.
+            #
+            # params:
+            var v: float # linear velocity, in m/s
+            var w: float # angular velocity, in rad/s
+            ####
+
+            if params.size() != 2:
+                send_error(id, "cmd-vel takes exactly 2 parameters (linear (v) and angular (w) velocities)")
+                return
+            v = float(params[0])
+            w = float(params[1])
+            
+            var res = robot.set_v_w(v, w)
+            if res[0]:
+                send_ok(id)
+            else:
+                send_error(id, res[1])
+            return
+            
+        #robot-api
         "navigate-to":
             #
             # plans a path to the given destination, and starts navigating to it.
@@ -218,7 +241,7 @@ func process_incoming_data(data):
             var y: float # destination's y coordinate, in the world frame
             ####
 
-            if params.size() != 0:
+            if params.size() != 2:
                 send_error(id, "navigate-to takes exactly 2 parameters (destination's x and y)")
                 return
             x = params[0]
@@ -235,7 +258,7 @@ func process_incoming_data(data):
                 send_error(id, "stop does not take any parameter")
                 return
                 
-            robot.stop_navigation()
+            robot.stop()
             send_ok(id)
             return
         "get-pos":
