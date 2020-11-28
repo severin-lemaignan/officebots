@@ -120,7 +120,8 @@ func _physics_process(delta):
 
     elif (linear_velocity or angular_velocity):
         rotate_y(angular_velocity * delta)
-        var _vel = move_and_slide(Vector3(linear_velocity,0,0), Vector3.UP)
+        
+        var _vel = move_and_slide(global_transform.basis.xform(Vector3(linear_velocity,0,0)), Vector3.UP)
         
     if GameState.mode == GameState.SERVER:
         rpc_unreliable("set_puppet_transform", transform)

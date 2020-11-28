@@ -230,6 +230,29 @@ func process_incoming_data(data):
             else:
                 send_error(id, res[1])
             return
+        
+        #robot-api
+        "set-pos":
+            #
+            # sets the position and orientation of the robot (eg, teleport the robot).
+            #
+            # params:
+            var x: float # x coordinate in m
+            var y: float # y coordinate in m
+            var t: float # orientation, in rad
+            ####
+
+            if params.size() != 3:
+                send_error(id, "set-pos takes exactly 3 parameters (x, y, t)")
+                return
+            x = float(params[0])
+            y = float(params[1])
+            t = float(params[2])
+            
+            robot.transform.origin = convert_coordinates_robotics2godot(x,y,0)
+            robot.rotation.y = t
+            send_ok(id)
+            return
             
         #robot-api
         "navigate-to":
