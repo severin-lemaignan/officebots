@@ -15,8 +15,8 @@ var path = []
 var path_node = 0
 var speed = 1
 
-var linear_velocity = null
-var angular_velocity = null
+var linear_velocity = 0
+var angular_velocity = 0
 
 var textures = {"black": load("res://assets/palette_texture_black.png"),
                 "blue": load("res://assets/palette_texture_blue.png"),
@@ -121,6 +121,8 @@ func _physics_process(delta):
     elif (linear_velocity or angular_velocity):
         rotate_y(angular_velocity * delta)
         
+        # TODO: map back the resulting vel to local coordinates, and send it back to 
+        # client
         var _vel = move_and_slide(global_transform.basis.xform(Vector3(linear_velocity,0,0)), Vector3.UP)
         
     if GameState.mode == GameState.SERVER:
