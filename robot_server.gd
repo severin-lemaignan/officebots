@@ -57,7 +57,9 @@ func publish_robot_state():
 func get_state():
     var robot = game_instance.local_robot
     var pos = convert_coordinates_godot2robotics(robot.global_transform.origin)
-    return {"odom": [pos[0], pos[1], robot.rotation.y, robot.linear_velocity, robot.angular_velocity]}
+    return {"odom": [pos[0], pos[1], robot.rotation.y, robot.linear_velocity, robot.angular_velocity],
+            "laser_scan": robot.laser_ranges
+            }
     
 ##### NETWORK SIGNALS HANDLERS #####
 

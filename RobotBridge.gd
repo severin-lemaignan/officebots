@@ -18,6 +18,9 @@ var speed = 1
 var linear_velocity = 0
 var angular_velocity = 0
 
+var NB_RAYS = 20
+var laser_ranges = []
+
 var textures = {"black": load("res://assets/palette_texture_black.png"),
                 "blue": load("res://assets/palette_texture_blue.png"),
                 "yellow": load("res://assets/palette_texture_yellow.png"),
@@ -149,20 +152,22 @@ func set_navigation_target(target):
 
 func stop():
     
-    linear_velocity = null
-    angular_velocity = null
+    linear_velocity = 0
+    angular_velocity = 0
     
     path = []
     path_node = 0
 
 func laser_scan():
     var space_state = get_world().direct_space_state
-    var ranges = []
-    for i in range(1):
-        var target = global_transform.basis.xform(Vector3(1,0,0))
+    laser_ranges = []
+    
+    var theta = PI / (NB_RAYS + 1)
+    for i in range(NB_RAYS):
+        var angle = theta * (i + 1)
+        var target = global_transform.basis.xform(Vector3(0,0,20).rotated(Vector3(0,1,0), angle))
         var result = space_state.intersect_ray(global_transform.origin, target)
         if result:
-            ranges.append(global_transform.origin.direction_to(result.position))
+            laser_ranges.append(global_transform.origin.distance_to(result.position))
 
-    $LaserScannerLines.draw(ranges)
-    return ranges
+    $LaserScannerLines.draw(laser_ranges)

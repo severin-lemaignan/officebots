@@ -2,24 +2,22 @@ extends Spatial
 
 
 
-var NB_RAYS = 1
+var NB_RAYS = 20
 
 func _ready():
     for i in range(NB_RAYS):
-        var rayholder = Spatial.new()
-        var ray = MeshInstance.new()
-        ray.mesh = PlaneMesh.new()
-        
-        rayholder.add_child(ray)
-        
-        ray.translate(Vector3(1,0,0))
-        ray.scale = Vector3(1,1,0.01)
-        
-        add_child(rayholder)
+        var ray = Ray.new()
+        add_child(ray)
         
 
 func draw(ranges):
 
-    for idx in range(ranges.size()):
-        get_child(idx).scale = Vector3(ranges[idx],1,1)
+    var theta = PI / (NB_RAYS + 1)
+    
+    for i in range(NB_RAYS):
+        var angle = theta * (i + 1)
+        
+        var ray = get_child(i)
+        ray.set_distance(ranges[i])
+        ray.set_angle(PI/2 + angle)
         
