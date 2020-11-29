@@ -128,6 +128,7 @@ func _physics_process(delta):
     if GameState.mode == GameState.SERVER:
         rpc_unreliable("set_puppet_transform", transform)
     
+    laser_scan()
     
 func set_v_w(v, w):
     linear_velocity = v
@@ -154,3 +155,14 @@ func stop():
     path = []
     path_node = 0
 
+func laser_scan():
+    var space_state = get_world().direct_space_state
+    var ranges = []
+    for i in range(1):
+        var target = global_transform.basis.xform(Vector3(1,0,0))
+        var result = space_state.intersect_ray(global_transform.origin, target)
+        if result:
+            ranges.append(global_transform.origin.direction_to(result.position))
+
+    $LaserScannerLines.draw(ranges)
+    return ranges
