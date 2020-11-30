@@ -20,11 +20,12 @@ func _ready():
 
 func draw(ranges):
 
-    for i in range(get_parent().NB_RAYS):
-        var ray = get_child(i)
-        
-        if ranges[i] < 0:
-            ray.visible = false
-        else:
-            ray.visible = true
-            ray.set_distance(ranges[i])
+    if visible:
+        for i in range(get_parent().NB_RAYS):
+            var ray = get_child(i)
+            
+            if ranges[i] < 0:
+                ray.visible = false
+            else:
+                ray.visible = true
+                ray.set_distance(ranges[i])
