@@ -6,7 +6,7 @@ extends KinematicBody
 const GRAVITY = -24.8
 var vel = Vector3()
 const MAX_SPEED = 1.5
-const JUMP_SPEED = 1
+const JUMP_SPEED = 5
 const ACCEL = 2.5
 
 var dir = Vector3()
@@ -114,21 +114,12 @@ func process_input(_delta):
             vel.y = JUMP_SPEED
     # ----------------------------------
 
-    # ----------------------------------
-    # Capturing/Freeing the cursor
-    if Input.is_action_just_pressed("ui_capture_mouse"):
-        if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
-            Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-        else:
-            Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-    # ----------------------------------
-
 func process_movement(delta):
     dir.y = 0
     dir = dir.normalized()
 
-    #vel.y += delta * GRAVITY
-    vel.y = 0
+    vel.y += delta * GRAVITY
+    #vel.y = 0
 
     var hvel = vel
     hvel.y = 0
