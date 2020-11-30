@@ -1,5 +1,5 @@
 extends Spatial
-class_name Ray
+
 
 
 func set_angle(angle):

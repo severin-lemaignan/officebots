@@ -1,23 +1,30 @@
 extends Spatial
 
-
-
-var NB_RAYS = 20
+var ray_class = preload("res://Ray.tscn")
 
 func _ready():
-    for i in range(NB_RAYS):
-        var ray = Ray.new()
+    
+    var inc = PI / (get_parent().NB_RAYS - 1)
+    
+    var angle = -PI/2
+    
+    for i in range(get_parent().NB_RAYS):
+
+        var ray = ray_class.instance()
+        ray.name = "ray_" + str(i)
+        ray.transform.origin = Vector3(0,0.2,0)
+        ray.set_angle(angle)
         add_child(ray)
         
+        angle += inc
 
 func draw(ranges):
 
-    var theta = PI / (NB_RAYS + 1)
-    
-    for i in range(NB_RAYS):
-        var angle = theta * (i + 1)
-        
+    for i in range(get_parent().NB_RAYS):
         var ray = get_child(i)
-        ray.set_distance(ranges[i])
-        ray.set_angle(PI/2 + angle)
         
+        if ranges[i] < 0:
+            ray.visible = false
+        else:
+            ray.visible = true
+            ray.set_distance(ranges[i])

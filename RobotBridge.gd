@@ -18,7 +18,7 @@ var speed = 1
 var linear_velocity = 0
 var angular_velocity = 0
 
-var NB_RAYS = 20
+var NB_RAYS = 50
 var laser_ranges = []
 
 var textures = {"black": load("res://assets/palette_texture_black.png"),
@@ -165,9 +165,11 @@ func laser_scan():
     var theta = PI / (NB_RAYS + 1)
     for i in range(NB_RAYS):
         var angle = theta * (i + 1)
-        var target = global_transform.basis.xform(Vector3(0,0,20).rotated(Vector3(0,1,0), angle))
-        var result = space_state.intersect_ray(global_transform.origin, target)
+        var target = global_transform.basis.xform(Vector3(0,0.2,20).rotated(Vector3(0,1,0), angle))
+        var result = space_state.intersect_ray(global_transform.origin + Vector3(0,0.2,0), target)
         if result:
             laser_ranges.append(global_transform.origin.distance_to(result.position))
+        else:
+            laser_ranges.append(-1)
 
     $LaserScannerLines.draw(laser_ranges)

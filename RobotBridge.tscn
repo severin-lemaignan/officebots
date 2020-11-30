@@ -1,25 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://RobotBridge.gd" type="Script" id=1]
 [ext_resource path="res://assets/robot.glb" type="PackedScene" id=2]
 [ext_resource path="res://LaserScannerLines.gd" type="Script" id=3]
-[ext_resource path="res://Ray.gd" type="Script" id=4]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.490163, 1.14669, 0.554112 )
-
-[sub_resource type="PlaneMesh" id=2]
-size = Vector2( 1, 1 )
-
-[sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.862745, 0.294118, 0.294118, 1 )
-
-[sub_resource type="SphereMesh" id=4]
-material = SubResource( 3 )
-radius = 0.03
-height = 0.06
-radial_segments = 8
-rings = 4
 
 [node name="Robot" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -44,16 +30,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.23201, 1.44898, 1.04684 )
 [node name="LaserScannerLines" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
 script = ExtResource( 3 )
-
-[node name="Ray" type="Spatial" parent="LaserScannerLines"]
-script = ExtResource( 4 )
-
-[node name="RaySurface" type="MeshInstance" parent="LaserScannerLines/Ray"]
-transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 0.02, 1, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = SubResource( 3 )
-
-[node name="Impact" type="MeshInstance" parent="LaserScannerLines/Ray"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
-mesh = SubResource( 4 )
-material/0 = null
