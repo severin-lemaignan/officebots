@@ -17,9 +17,6 @@ const DEACCEL= 16
 onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
 
-# each time I meet a new NPC, I add it to this list
-var known_npc = []
-
 var MOUSE_SENSITIVITY = 0.1
 
 var pickedup_object_original_parent
@@ -164,10 +161,30 @@ func _input(event):
         rotation_helper.rotation_degrees = camera_rot
         
 
-    if not Input.is_action_just_pressed("mouselook") and Input.is_action_pressed("mouselook"):
-        Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    # trying to workaround HTML5 security:
+    # MOUSE_MODE_CAPTURED can *only* take place during an 'actual' event (eg
+    # a click, but not a motion)
+    # Therefore, if waiting *one frame* to change to mouselook (as done for non-HTML5
+    # platform), the mouselook won't trigger as it will take place during a 'mouse motion'
+    # event.
+    #
+    # The original reason for waiting one frame is to ensure the click events are
+    # properly register, eg to pickup objects. However, it seems to work in HTML5
+    # without waiting...
+    if OS.get_name() == "HTML5":
+        if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED and \
+        Input.is_action_pressed("mouselook"):
+                print("Capturing mouse")
+                Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+    else:
+        if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED and \
+        not Input.is_action_just_pressed("mouselook") and \
+        Input.is_action_pressed("mouselook"):
+                print("Capturing mouse")
+                Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-    if event.is_action_released("mouselook"):
-        Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-        release_object()
+    if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and \
+       event.is_action_released("mouselook"):
+            Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+            release_object()
 
