@@ -49,8 +49,9 @@ func _process(_delta):
 
     var dist = $HandleAnchor.get_global_transform().origin.distance_to(local_player.get_global_transform().origin)
     #print(str(dist) + " units from door handle")
-
-    if dist < MAX_DIST_HANDLEHIGHLIGHT:
+    
+    if dist < MAX_DIST_HANDLEHIGHLIGHT and \
+       local_player.is_facing($HandleAnchor.global_transform.origin):
 
         $HandleHighlight.visible = true
         

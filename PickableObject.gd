@@ -37,7 +37,8 @@ func _process(_delta):
     var dist = get_global_transform().origin.distance_to(local_player.get_global_transform().origin)
     #print(str(dist) + " units from door handle")
 
-    if dist < MAX_DIST_HIGHLIGHT:
+    if dist < MAX_DIST_HIGHLIGHT and \
+        local_player.is_facing(get_global_transform().origin):
 
         $Highlight.visible = true
         

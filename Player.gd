@@ -51,6 +51,12 @@ puppet func puppet_says(_msg):
 func say(msg):
     rpc_id(1, "execute_puppet_says", msg)
 
+# returns true if the player is facing 'point' (in global coordinates)
+func is_facing(point):
+    var local_point = point - global_transform.origin
+    var gaze = Vector3(0,0,1).rotated(Vector3(0,1,0), rotation.y)
+    return local_point.dot(gaze) > 0
+    
 func pickup_object(object):
     
     pickedup_object = object
@@ -102,6 +108,7 @@ func process_input(_delta):
     # Basis vectors are already normalized.
     dir += -cam_xform.basis.z * input_movement_vector.y
     dir += cam_xform.basis.x * input_movement_vector.x
+
     # ----------------------------------
 
     # ----------------------------------
