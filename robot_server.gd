@@ -144,42 +144,8 @@ func process_incoming_data(data):
     
     if target == "server": # special server commands
         match cmd:
-            #server-api
-            "load-jpg":
-                #
-                # uploads a named JPG image to the server, for future use (for 
-                # instance, for use as a texture on a robot's screen)
-                #
-                # params:
-                var name: String # the name of the image
-                var image: String # a base64-encoded JPG image
-                ####
-                
-                name = params[0]
-                image = params[1]
-                
-                var jpg_buffer = Marshalls.base64_to_raw(image)
-                
-                # first, try loading the image on the server, to ensure the jpg
-                # buffer is correct
-                #var img = Image.new()
-                
-                #var err = img.load_jpg_from_buffer(jpg_buffer)
-                
-                #if !err == OK:
-                #    send_error(id, "Error code " + str(err) + " while loading the jpg image")
-                #    return
-            
-                #print("Successfully loaded JPG image " + name + " of size " + str(img.get_size()))
-                #game_instance.screen_textures[name] = ImageTexture.new()
-                #game_instance.screen_textures[name].create_from_image(img)
-                game_instance.add_screen_texture(name, jpg_buffer)
-                
-                # then, load the image on all the pother peers
-                
-
-                send_ok(id)
-                return
+            _:
+                pass
             
         send_error(id, "Unknown server command: " + cmd)
         return
@@ -306,17 +272,30 @@ func process_incoming_data(data):
             send_ok(id)
             return
         "set-screen":
+            #
+            # uploads a JPG image and displays it onto the robot's screen
+            #
+            # params:
+            var image: String # a base64-encoded JPG image
+            ####
+            
             if params.size() != 1:
-                send_error(id, "set-screen requires exactly one parameter (the name of the image)")
+                send_error(id, "set-screen requires exactly one parameter (the base64-encoded JPG image)")
                 return
-            var img = params[0]
-            if !(img in game_instance.screen_textures):
-                send_error(id, "unknown image: " + img + " (images must first be uploaded with eg 'load-jpg')")
-                return
-            robot.set_screen_texture(img)
-            send_ok(id)
+            
+            image = params[0]                
+            var jpg_buffer = Marshalls.base64_to_raw(image)
+            
+            var err = robot.set_screen_texture(jpg_buffer)
+            
+            if err == OK:
+                send_ok(id)
+            elif err == ERR_PARSE_ERROR:
+                send_error(id, "Unable to decode the image. Is it a JPG?")
+            else:
+                send_error(id, "Error " + str(err) + " while loading the image")
             return
-        
+                
         "get-humans":
             if params.size() != 0:
                 send_error(id, "get-humans does not take any parameter")
@@ -334,6 +313,7 @@ func process_incoming_data(data):
     send_error(id, "Unknown command: " + cmd)
 
 func send_error(id, msg):
+    print("API ERROR: " + str(msg))
     robot_server.get_peer(1).put_packet(JSON.print([id,["EE",  msg]]).to_utf8())
 
 func send_ok(id, msg = null):

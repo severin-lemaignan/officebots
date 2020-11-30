@@ -79,34 +79,28 @@ puppet func set_color_remote(color):
     
     $robot/Robot.mesh = meshes[color]
 
-func set_screen_texture(image_name):
+func set_screen_texture(jpg_buffer):
     
-    set_screen_texture_remote(image_name)
+    var err = set_screen_texture_remote(jpg_buffer)
     
     # only in CLIENT/SERVER mode, no need in STANDALONE mode
     if GameState.mode == GameState.SERVER:
-        rpc("set_screen_texture_remote", image_name)
-        
-puppet func set_screen_texture_remote(image_name):
-    # TODO: cache image on the peers so that there is no need to re-upload them every time
+        rpc("set_screen_texture_remote", jpg_buffer)
     
-    var jpg_buffer = game_instance.screen_textures[image_name]
+    return err
+        
+puppet func set_screen_texture_remote(jpg_buffer):
+
     var img = Image.new()
-    img.load_jpg_from_buffer(jpg_buffer)
+    var err = img.load_jpg_from_buffer(jpg_buffer)
     img.lock()
     
     var tex = ImageTexture.new()
     tex.create_from_image(img)
     
-    #var mesh = $robot/Screen.mesh.duplicate()
-    #var material = $robot/Screen.mesh.surface_get_material(1).duplicate()
-
     $robot/Screen.mesh.surface_get_material(1).albedo_texture = tex
-    #material.albedo_texture.set_data(img)
-
-    #mesh.surface_set_material(1, material)
     
-    #$robot/Screen.mesh = mesh
+    return err
     
 # should only run on the server!
 func _physics_process(delta):

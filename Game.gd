@@ -407,17 +407,6 @@ puppet func add_robot_remote(name):
     
     return robot
 
-puppet func set_screen_texture(name, jpg_buffer):
-    screen_textures[name] = jpg_buffer
-    
-func add_screen_texture(name, jpg_buffer):
-    
-    set_screen_texture(name, jpg_buffer)
-    
-    # only in CLIENT/SERVER mode, no need in STANDALONE mode
-    if GameState.mode == GameState.SERVER:
-        rpc("set_screen_texture", name, jpg_buffer)
-
 remote func pre_configure_game():
     
     var selfPeerID = "myself" # used in STANDALONE mode
