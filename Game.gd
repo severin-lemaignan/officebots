@@ -35,6 +35,7 @@ var local_robot = null
 
 var robot_server
 
+onready var navmesh = $MainOffice.get_navmesh()
 
 func _ready():
     

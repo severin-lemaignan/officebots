@@ -16,6 +16,12 @@ func set_local_player(object):
     for d in $PickableObjects.get_children():
         d.local_player = object
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#    pass
+
+func get_navmesh():
+    var navmesh = $Navigation/NavigationMeshInstance.navmesh
+    var polygons = []
+    for idx in navmesh.get_polygon_count():
+        polygons.append(navmesh.get_polygon(idx))
+    
+    return polygons
+

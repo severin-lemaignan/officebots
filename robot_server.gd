@@ -144,9 +144,13 @@ func process_incoming_data(data):
     
     if target == "server": # special server commands
         match cmd:
-            _:
-                pass
-            
+            #robot-api
+            "get-navmesh":
+                if params.size() != 0:
+                    send_error(id, "get-navmesh does not take any parameter")
+                    return
+                send_ok(id, game_instance.navmesh)
+                return
         send_error(id, "Unknown server command: " + cmd)
         return
     
