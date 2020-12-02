@@ -18,7 +18,6 @@ var speed = 1
 var linear_velocity = 0
 var angular_velocity = 0
 
-var NB_RAYS = 50
 var laser_ranges = []
 
 var textures = {"black": load("res://assets/palette_texture_black.png"),
@@ -120,12 +119,12 @@ func _physics_process(delta):
         
         # TODO: map back the resulting vel to local coordinates, and send it back to 
         # client
-        var _vel = move_and_slide(global_transform.basis.xform(Vector3(linear_velocity,0,0)), Vector3.UP)
+        var _vel = move_and_slide(global_transform.basis.xform(Vector3(0,0,linear_velocity)), Vector3.UP)
         
     if GameState.mode == GameState.SERVER:
         rpc_unreliable("set_puppet_transform", transform)
     
-    laser_scan()
+    laser_ranges = $LaserScanner.laser_scan()
     
 func set_v_w(v, w):
     linear_velocity = v
@@ -152,18 +151,3 @@ func stop():
     path = []
     path_node = 0
 
-func laser_scan():
-    var space_state = get_world().direct_space_state
-    laser_ranges = []
-    
-    var theta = PI / (NB_RAYS + 1)
-    for i in range(NB_RAYS):
-        var angle = theta * (i + 1)
-        var target = global_transform.basis.xform(Vector3(0,0.2,20).rotated(Vector3(0,1,0), angle))
-        var result = space_state.intersect_ray(global_transform.origin + Vector3(0,0.2,0), target)
-        if result:
-            laser_ranges.append(global_transform.origin.distance_to(result.position))
-        else:
-            laser_ranges.append(-1)
-
-    $LaserScannerLines.draw(laser_ranges)

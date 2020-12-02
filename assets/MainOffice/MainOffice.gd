@@ -25,7 +25,7 @@ func get_navmesh():
     for idx in navmesh.get_polygon_count():
         var polygon = []
         for v in navmesh.get_polygon(idx):
-            var vertex = GameState.convert_coordinates_godot2robotics(vertices[v])
+            var vertex = GameState.convert_coordinates_godot2robotics(global_transform.xform(vertices[v]))
             polygon.append([vertex.x, vertex.y, vertex.z])
         
         polygons.append(polygon)
