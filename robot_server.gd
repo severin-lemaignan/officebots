@@ -56,7 +56,7 @@ func publish_robot_state():
 
 func get_state():
     var robot = game_instance.local_robot
-    var pos = convert_coordinates_godot2robotics(robot.global_transform.origin)
+    var pos = GameState.convert_coordinates_godot2robotics(robot.global_transform.origin)
     return {"odom": [pos[0], pos[1], robot.rotation.y, robot.linear_velocity, robot.angular_velocity],
             "laserscan": robot.laser_ranges
             }
@@ -96,17 +96,6 @@ func _on_connection_closed(_is_clean):
     print("Connection to the API server closed. Trying to reconnect...")
     self.attempt_connect_relay_server()
 
-func convert_coordinates_robotics2godot(x,y,z):
-    # Takes coordinates in the usual robotics conventions, and convert them to Godot's convention
-    # Robotics convention: z up
-    # Godot convention: y up
-    return Vector3(y,z,x)
-
-func convert_coordinates_godot2robotics(vec3):
-    # Takes coordinates in the usual robotics conventions, and convert them to Godot's convention
-    # Robotics convention: z up
-    # Godot convention: y up
-    return Vector3(vec3.z,vec3.x,vec3.y)
 
 puppet func puppet_load_image(jpg_buffer):
 #    var img = Image.new()
@@ -221,7 +210,7 @@ func process_incoming_data(data):
             y = float(params[1])
             t = float(params[2])
             
-            robot.transform.origin = convert_coordinates_robotics2godot(x,y,0)
+            robot.transform.origin = GameState.convert_coordinates_robotics2godot(x,y,0)
             robot.rotation.y = t
             send_ok(id)
             return
@@ -242,7 +231,7 @@ func process_incoming_data(data):
             x = params[0]
             y = params[1]
             
-            var res = robot.set_navigation_target(convert_coordinates_robotics2godot(x, y, 0))
+            var res = robot.set_navigation_target(GameState.convert_coordinates_robotics2godot(x, y, 0))
             if res[0]:
                 send_ok(id)
             else:
@@ -261,7 +250,7 @@ func process_incoming_data(data):
                 send_error(id, "get-pos does not take any parameter")
                 return
                 
-            var pos = convert_coordinates_godot2robotics(robot.global_transform.origin)
+            var pos = GameState.convert_coordinates_godot2robotics(robot.global_transform.origin)
             send_ok(id, [pos.x, pos.y])
             return
         "set-color":
@@ -308,7 +297,7 @@ func process_incoming_data(data):
             var humans = game_instance.compute_visible_humans(robot)
             var res = []
             for h in humans:
-                var pos = convert_coordinates_godot2robotics(h.global_transform.origin)
+                var pos = GameState.convert_coordinates_godot2robotics(h.global_transform.origin)
                 res.append([h.username, pos.x, pos.y])
 
             send_ok(id, res)

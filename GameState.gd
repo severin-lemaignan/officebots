@@ -16,3 +16,15 @@ func _ready():
 
 func on_robot_state_changed(state):
     robot_state = state
+
+func convert_coordinates_robotics2godot(x,y,z):
+    # Takes coordinates in the usual robotics conventions, and convert them to Godot's convention
+    # Robotics convention: z up
+    # Godot convention: y up
+    return Vector3(y,z,x)
+
+func convert_coordinates_godot2robotics(vec3):
+    # Takes coordinates in the usual robotics conventions, and convert them to Godot's convention
+    # Robotics convention: z up
+    # Godot convention: y up
+    return Vector3(vec3.z,vec3.x,vec3.y)

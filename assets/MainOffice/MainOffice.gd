@@ -20,8 +20,15 @@ func set_local_player(object):
 func get_navmesh():
     var navmesh = $Navigation/NavigationMeshInstance.navmesh
     var polygons = []
+    var vertices = navmesh.get_vertices()
+    
     for idx in navmesh.get_polygon_count():
-        polygons.append(navmesh.get_polygon(idx))
+        var polygon = []
+        for v in navmesh.get_polygon(idx):
+            var vertex = GameState.convert_coordinates_godot2robotics(vertices[v])
+            polygon.append([vertex.x, vertex.y, vertex.z])
+        
+        polygons.append(polygon)
     
     return polygons
 
