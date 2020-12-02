@@ -1,5 +1,5 @@
 
-PROJECT_NAME=bots-at-work
+PROJECT_NAME=officebots
 
 TOOLS=tools
 DIST=dist
@@ -9,14 +9,14 @@ GODOT_VERSION=3.2.3
 
 GODOT=${HOME}/applis/godot/Godot_v${GODOT_VERSION}-stable_x11.64
 GODOT_HEADLESS_BASE=Godot_v${GODOT_VERSION}-stable_linux_headless.64
-GODOT_HEADLESS=${TOOLS}/${GODOT_HEADLESS_BASE}
-#GODOT_HEADLESS=${GODOT}
+#GODOT_HEADLESS=${TOOLS}/${GODOT_HEADLESS_BASE}
+GODOT_HEADLESS=${GODOT}
 
 TEMPLATES_ROOT?=$(shell pwd)/${TOOLS}
 
 SERVER_PCK=${DIST}/${PROJECT_NAME}-server.zip
 
-SERVER=?kimsufi:research-severin/bots-at-work
+SERVER=kimsufi:research-severin/bots-at-work
 
 SOURCES := $(wildcard *.gd) $(wildcard *.tscn)
 
