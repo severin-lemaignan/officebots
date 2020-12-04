@@ -479,3 +479,21 @@ remote func done_preconfiguring(who):
     
     rpc_id(who, "post_configure_game", player_info[who]["start_location"])
 
+var debug_points = []
+
+# draws a point at a given position in the world coordinates
+func debug_point(pos):
+    
+    if pos in debug_points:
+        return
+    
+    var point = MeshInstance.new()
+    point.mesh = SphereMesh.new()
+    point.mesh.radius = 0.03
+    point.mesh.height = 0.06
+   
+    add_child(point)
+    
+    point.global_transform.origin = pos
+    
+    debug_points.append(pos)
