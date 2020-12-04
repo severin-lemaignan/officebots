@@ -19,8 +19,7 @@ signal on_chat_msg
 func _ready():
     chat.connect("text_entered", self, "on_chat")
     
-    var _err = $Top/HBoxContainer/exit.connect("pressed", self, "on_exit")
-    
+    var _err = $Top/HBoxContainer/settings.connect("pressed", self, "on_settings")    
     _err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")
     
     _err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
@@ -31,12 +30,8 @@ func set_name_skin(name, skin):
     $Top/HBoxContainer2/NameBox/Name.text = name
     portrait.set_base_skin(skin)
     
-func on_exit():
-    $ModalMessage.show()
-    var output = yield($ModalMessage, "on_choice")
-    
-    if output == "ok":
-        get_tree().quit()
+func on_settings():
+    $Settings.show()
 
 func on_robot_clicked():
     
