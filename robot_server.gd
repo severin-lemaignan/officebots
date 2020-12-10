@@ -45,7 +45,8 @@ func attempt_connect_relay_server():
     
 func poll():
 
-    robot_server.poll()
+    if GameState.mode == GameState.STANDALONE:
+        robot_server.poll()
 
 func publish_robot_state():
     if connected and game_instance.local_robot:
