@@ -17,9 +17,6 @@ export(float) var max_earshot_distance = 3
 export(float) var max_background_distance = 1
 export(Texture) var neutral_skin
 
-enum Expressions {NEUTRAL, ANGRY, HAPPY, SAD}
-export(Expressions) var expression setget set_expression
-
 var is_looking_at_player
 var dialogue_is_finished
 var response
@@ -48,7 +45,7 @@ func _ready():
     last_location = translation
 
     original_orientation = Quat(transform.basis.orthonormalized())
-    set_expression(Expressions.NEUTRAL)
+    set_expression(GameState.Expressions.NEUTRAL)
     
     # flip the tip of the speech bubble to place the speech bubble on the left of NPCs
     speech_bubble.flip_left()
@@ -111,6 +108,9 @@ puppet func set_puppet_transform(puppet_transform):
     
     transform = puppet_transform
 
+puppet func puppet_set_expression(expr):
+    set_expression(expr)
+    
 # this code is only supposed to be called on the server, where the physics takes place
 remote func execute_set_rotation(angle):
     assert(get_tree().is_network_server())
@@ -231,13 +231,13 @@ func set_expression(expr):
     var skin
     
     match expr:
-        Expressions.NEUTRAL:
+        GameState.Expressions.NEUTRAL:
             skin = load(texture_basename + "neutral.png")
-        Expressions.ANGRY:
+        GameState.Expressions.ANGRY:
             skin = load(texture_basename + "angry.png")
-        Expressions.HAPPY:
+        GameState.Expressions.HAPPY:
             skin = load(texture_basename + "happy.png")
-        Expressions.SAD:
+        GameState.Expressions.SAD:
             skin = load(texture_basename + "sad.png")
             
     $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", skin)

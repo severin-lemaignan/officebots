@@ -13,6 +13,7 @@ var robot_connecting_hover = preload("res://assets/icons/robot-connecting-hover.
 
 
 signal on_chat_msg
+signal on_expression
 
 
 # Called when the node enters the scene tree for the first time.
@@ -23,6 +24,11 @@ func _ready():
     _err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")
     
     _err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
+    
+    _err = $Bottom/Actions/HBoxContainer/happy.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.NEUTRAL])
+    _err = $Bottom/Actions/HBoxContainer/sad.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.SAD])
+    _err = $Bottom/Actions/HBoxContainer/angry.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.ANGRY])
+    _err = $Bottom/Actions/HBoxContainer/excited.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.HAPPY])
     
     portrait.portrait_mode(true)
 

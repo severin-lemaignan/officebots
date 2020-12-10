@@ -46,11 +46,19 @@ func _physics_process(delta):
 puppet func puppet_says(_msg):
     # do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
     pass
+
+puppet func puppet_set_expression(_msg):
+    # do nothing on the player itself! (but the other players, eg, the Characters will display the right expression)
+    pass
     
-# connect to the UI 'on_chat_msg' signal by Game.gd
+# connect to the UI 'on_chat_msg' signal in Game.gd
 func say(msg):
     rpc_id(1, "execute_puppet_says", msg)
 
+# connect to the UI 'on_set_expr' signal in Game.gd
+func set_expression(expr):
+    rpc("puppet_set_expression", expr)
+    
 # returns true if the player is facing 'point' (in global coordinates)
 func is_facing(point):
     var local_point = point - global_transform.origin

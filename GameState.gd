@@ -10,6 +10,7 @@ enum RobotState {DISCONNECTED, CONNECTING, CONNECTED}
 signal robot_state_changed
 var robot_state = RobotState.DISCONNECTED
 
+enum Expressions {NEUTRAL, ANGRY, HAPPY, SAD}
 
 func _ready():
     var _err = connect("robot_state_changed", self, "on_robot_state_changed")
