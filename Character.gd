@@ -95,6 +95,11 @@ func portrait_mode(mode):
         $FakePlayer/Camera.visible = false
         $OmniLight.visible = false
 
+func set_portrait_camera():
+    $FakePlayer/Camera.current = true
+func set_close_up_camera():
+    $"FakePlayer/Camera-closeup".current = true
+    
 # used to test in Game whether an object colliding with the ray cast for visibility testing
 # is indeed a character (via .has_method(i_am_a_character))
 func i_am_a_character():

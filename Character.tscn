@@ -1453,6 +1453,9 @@ __meta__ = {
 [node name="Camera" type="Camera" parent="FakePlayer"]
 transform = Transform( 1, 1.11759e-08, 8.9407e-08, 3.72529e-09, 1, 0, -2.98023e-08, 7.45058e-09, 1, 0, 0, 0 )
 
+[node name="Camera-closeup" type="Camera" parent="FakePlayer"]
+transform = Transform( 0.999143, 0.041369, 0.00163125, -0.0405403, 0.985599, -0.164173, -0.00839928, 0.163966, 0.986431, -0.0818328, 0.0624279, -0.320187 )
+
 [node name="PickupAnchor" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.532837 )
 
