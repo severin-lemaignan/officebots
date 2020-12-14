@@ -342,7 +342,7 @@ func add_player(id):
     
     # the server is ultimately controlling all the characters position
     # -> the network master is 1 (eg, default)
-    #player.set_network_master(1)
+    player.set_network_master(1)
     
     
     
@@ -358,7 +358,7 @@ func add_player(id):
 
         
     else:
-        player.enable_collisions(false)
+        player.call_deferred("enable_collisions", false)
     
     
     player.set_deferred("local_player", local_player)
@@ -430,6 +430,8 @@ remote func pre_configure_game():
     get_node("/root/Game/Players").add_child(local_player)
     
     var _err = $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
+    _err = $CanvasLayer/UI.connect("on_expression", local_player, "set_expression")
+    
     $MainOffice.set_local_player(local_player)
 
     if GameState.mode == GameState.CLIENT:

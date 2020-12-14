@@ -121,15 +121,26 @@ remote func execute_set_rotation(angle):
     assert(get_tree().is_network_server())
     rotate_y(angle)
     
-# this code is only supposed to be called on the server, where the physics takes place
+################################################################################
+#
+# these methods are only executed on the server, where the physics takes place
+#
 remote func execute_move_and_slide(linear_velocity):
 
     assert(get_tree().is_network_server())
     next_motion_linear_velocity = linear_velocity
     
 remote func execute_puppet_says(msg):
-    rpc("puppet_says", msg)
     
+    assert(get_tree().is_network_server())
+    rpc("puppet_says", msg)
+
+remote func execute_puppet_set_expression(msg):
+    
+    assert(get_tree().is_network_server())
+    rpc("puppet_set_expression", msg)
+###############################################################################
+
 # physics process is only enabled on the server
 func _physics_process(_delta):
 
