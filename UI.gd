@@ -25,12 +25,15 @@ func _ready():
     
     _err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
     
-    _err = $Bottom/Actions/HBoxContainer/happy.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.NEUTRAL])
-    _err = $Bottom/Actions/HBoxContainer/sad.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.SAD])
-    _err = $Bottom/Actions/HBoxContainer/angry.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.ANGRY])
-    _err = $Bottom/Actions/HBoxContainer/excited.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.HAPPY])
+    _err = $Bottom/Actions/ExpressionGroup/happy.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.NEUTRAL])
+    _err = $Bottom/Actions/ExpressionGroup/sad.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.SAD])
+    _err = $Bottom/Actions/ExpressionGroup/angry.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.ANGRY])
+    _err = $Bottom/Actions/ExpressionGroup/excited.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.HAPPY])
+    
+    connect("on_expression" ,portrait, "set_expression")
     
     portrait.portrait_mode(true)
+    portrait.set_close_up_camera()
 
 func set_name_skin(name, skin):
     $Top/HBoxContainer2/NameBox/Name.text = name

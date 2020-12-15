@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://RadialProgress.gd" type="Script" id=1]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 base_color: hint_color;
+uniform vec4 low_color: hint_color;
+uniform float value: hint_range(0, 100); // %
+uniform float low_threshold: hint_range(0, 100) = 30.; // %
+uniform float thickness: hint_range(0, 100) = 30.; // % thickness
+uniform float offset: hint_range(0, 100); // %
+uniform float smoothing: hint_range(0, 100) = 5.;
+
+void fragment() {
+	vec2 point = UV - vec2(0.5);
+	float PI = 3.14159265358979323846;
+    vec4 color = base_color;
+    if (value < low_threshold) color = low_color;
+    
+	float ang = (1. - atan(point.x, point.y) / PI) * 50. - offset;
+	if (ang < 0.)
+		ang += 100.;
+	float s = smoothing / 1000.;
+	float k = PI / 2. / s;
+	float r1 = .5 - thickness / 200.;
+	float r2 = .5;
+	float r = length(point);
+	float uy = (r2 - r) / (r2 - r1);
+	if (r > r2 || r < r1)
+		COLOR.a = 0.;
+	else {
+		if (ang <= value) 
+			COLOR = color;
+		else
+			COLOR.a = 0.;
+            
+		if ((r2 - r) < s)
+			COLOR.a = sin((r2 - r) * k);
+		if ((r - r1) < s)
+			COLOR.a = sin((r - r1) * k);
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/base_color = Color( 0, 0, 0, 0.737255 )
+shader_param/low_color = Color( 0.619608, 0.337255, 0.2, 0.678431 )
+shader_param/value = 100.0
+shader_param/low_threshold = 30.0
+shader_param/thickness = 30.0
+shader_param/offset = null
+shader_param/smoothing = 0.0
+
+[node name="RadialProgress" type="Panel"]
+material = SubResource( 2 )
+margin_right = 50.0
+margin_bottom = 50.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

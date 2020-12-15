@@ -1,7 +1,7 @@
 [gd_scene load_steps=26 format=2]
 
-[ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=1]
-[ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=2]
+[ext_resource path="res://ProgressButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=2]
 [ext_resource path="res://assets/icons/emoticon-angry.svg" type="Texture" id=3]
 [ext_resource path="res://assets/icons/emoticon-angry-outline.svg" type="Texture" id=4]
 [ext_resource path="res://assets/icons/emoticon-confused-outline.svg" type="Texture" id=5]
@@ -15,15 +15,15 @@
 [ext_resource path="res://assets/icons/settings.svg" type="Texture" id=13]
 [ext_resource path="res://default_theme.tres" type="Theme" id=14]
 [ext_resource path="res://assets/icons/timer-outline-hover.svg" type="Texture" id=15]
+[ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=16]
 [ext_resource path="res://assets/icons/hand-hover.svg" type="Texture" id=17]
 [ext_resource path="res://assets/icons/hand.svg" type="Texture" id=18]
 [ext_resource path="res://UI.gd" type="Script" id=19]
-[ext_resource path="res://expressions_buttongroup.tres" type="ButtonGroup" id=20]
+[ext_resource path="res://ExpressionGroup.gd" type="Script" id=20]
 [ext_resource path="res://TransientMessage.gd" type="Script" id=21]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=22]
 [ext_resource path="res://assets/icons/robot-sleepy-hover.svg" type="Texture" id=28]
 [ext_resource path="res://assets/icons/robot-sleepy.svg" type="Texture" id=29]
-[ext_resource path="res://Settings.tscn" type="PackedScene" id=30]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -79,73 +79,44 @@ margin_left = 674.0
 margin_right = 1004.0
 margin_bottom = 80.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Bottom/Actions"]
+[node name="ExpressionGroup" type="HBoxContainer" parent="Bottom/Actions"]
 margin_right = 266.0
 margin_bottom = 80.0
+script = ExtResource( 20 )
 
-[node name="happy" type="TextureButton" parent="Bottom/Actions/HBoxContainer"]
-margin_right = 50.0
+[node name="happy" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_bottom = 80.0
-rect_min_size = Vector2( 50, 50 )
-toggle_mode = true
-group = ExtResource( 20 )
-texture_normal = ExtResource( 1 )
-texture_pressed = ExtResource( 2 )
-texture_hover = ExtResource( 2 )
-expand = true
-stretch_mode = 5
+normal = ExtResource( 2 )
+pressed = ExtResource( 16 )
+timer = false
 
-[node name="excited" type="TextureButton" parent="Bottom/Actions/HBoxContainer"]
+[node name="excited" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 54.0
 margin_right = 104.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 50, 50 )
-toggle_mode = true
-group = ExtResource( 20 )
-texture_normal = ExtResource( 9 )
-texture_pressed = ExtResource( 11 )
-texture_hover = ExtResource( 11 )
-expand = true
-stretch_mode = 5
+normal = ExtResource( 9 )
+pressed = ExtResource( 11 )
 
-[node name="confused" type="TextureButton" parent="Bottom/Actions/HBoxContainer"]
+[node name="confused" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 108.0
 margin_right = 158.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 50, 50 )
-toggle_mode = true
-group = ExtResource( 20 )
-texture_normal = ExtResource( 5 )
-texture_pressed = ExtResource( 10 )
-texture_hover = ExtResource( 10 )
-expand = true
-stretch_mode = 5
+normal = ExtResource( 5 )
+pressed = ExtResource( 10 )
 
-[node name="sad" type="TextureButton" parent="Bottom/Actions/HBoxContainer"]
+[node name="sad" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 162.0
 margin_right = 212.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 50, 50 )
-toggle_mode = true
-group = ExtResource( 20 )
-texture_normal = ExtResource( 8 )
-texture_pressed = ExtResource( 7 )
-texture_hover = ExtResource( 7 )
-expand = true
-stretch_mode = 5
+normal = ExtResource( 8 )
+pressed = ExtResource( 7 )
 
-[node name="angry" type="TextureButton" parent="Bottom/Actions/HBoxContainer"]
+[node name="angry" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 216.0
 margin_right = 266.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 50, 50 )
-toggle_mode = true
-group = ExtResource( 20 )
-texture_normal = ExtResource( 4 )
-texture_pressed = ExtResource( 3 )
-texture_hover = ExtResource( 3 )
-expand = true
-stretch_mode = 5
+normal = ExtResource( 4 )
+pressed = ExtResource( 3 )
 
 [node name="wave" type="TextureButton" parent="Bottom/Actions"]
 margin_left = 270.0
@@ -155,7 +126,7 @@ rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 18 )
 texture_hover = ExtResource( 17 )
 expand = true
-stretch_mode = 5
+stretch_mode = 4
 __meta__ = {
 "_editor_description_": ""
 }
@@ -281,6 +252,3 @@ render_target_v_flip = true
 gui_disable_input = true
 
 [node name="Character" parent="CharacterViewport" instance=ExtResource( 22 )]
-
-[node name="Settings" parent="." instance=ExtResource( 30 )]
-script = null
