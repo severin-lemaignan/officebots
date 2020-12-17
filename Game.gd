@@ -33,6 +33,10 @@ var player_info = {}
 var robots = {}
 var local_robot = null
 
+# whether or not laserscans are displayed. Changed via the settings in the UI
+# (cf callback 'toggle_robots_lasers')
+var show_laserscans = false
+
 var robot_server
 
 onready var navmesh = $MainOffice.get_navmesh()
@@ -42,6 +46,8 @@ func _ready():
     randomize()
     
     $CanvasLayer/GameModeSelection.visible = false
+    var _err = $CanvasLayer/UI/Settings.connect("on_toggle_laser", self, "toggle_robots_lasers")
+    
     set_physics_process(false)
     
     # highest priority for cmd line arguments.
@@ -112,7 +118,7 @@ func _ready():
     # 3. register_player -> add_player that creates Character node instance for each other peers on the new peer
     
     # called when a player joins the game
-    var _err = get_tree().connect("network_peer_connected", self, "_player_connected")
+    _err = get_tree().connect("network_peer_connected", self, "_player_connected")
     
     # called when a player leaves the game
     _err = get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
@@ -387,6 +393,7 @@ puppet func add_robot_remote(name):
     robot.set_name(name)
     robot.set_deferred("robot_name", name)
     robot.set_deferred("game_instance", self)
+    robot.get_node("LaserScanner").visible = show_laserscans
     
     # physics *only* performed on server
     if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
@@ -407,6 +414,13 @@ puppet func add_robot_remote(name):
     $Robots.add_child(robot)
     
     return robot
+
+func toggle_robots_lasers(state):
+    
+    show_laserscans = state
+    
+    for robot in $Robots.get_children():
+        robot.get_node("LaserScanner").visible = state
 
 remote func pre_configure_game():
     

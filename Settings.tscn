@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://default_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Settings.gd" type="Script" id=2]
@@ -6,11 +6,15 @@
 [ext_resource path="res://assets/icons/checkbox-marked-circle.svg" type="Texture" id=4]
 [ext_resource path="res://assets/icons/cross-circle-outline.svg" type="Texture" id=5]
 [ext_resource path="res://assets/icons/cross-marked-circle.svg" type="Texture" id=6]
-[ext_resource path="res://assets/icons/exit-hover.svg" type="Texture" id=7]
-[ext_resource path="res://assets/icons/exit.svg" type="Texture" id=8]
+[ext_resource path="res://assets/icons/cancel.svg" type="Texture" id=7]
+[ext_resource path="res://assets/icons/ok-hover.svg" type="Texture" id=8]
 [ext_resource path="res://ModalMessage.gd" type="Script" id=9]
 [ext_resource path="res://assets/icons/checkbox.svg" type="Texture" id=10]
 [ext_resource path="res://assets/icons/checkbox-ticked.svg" type="Texture" id=11]
+[ext_resource path="res://assets/icons/cancel-hover.svg" type="Texture" id=12]
+[ext_resource path="res://assets/icons/exit-to-app-hover.svg" type="Texture" id=13]
+[ext_resource path="res://assets/icons/ok.svg" type="Texture" id=14]
+[ext_resource path="res://assets/icons/exit-to-app.svg" type="Texture" id=15]
 
 [node name="Settings" type="ColorRect"]
 anchor_right = 1.0
@@ -29,14 +33,14 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 365.0
-margin_top = 130.0
-margin_right = 658.0
-margin_bottom = 470.0
+margin_left = 344.0
+margin_top = 118.0
+margin_right = 679.0
+margin_bottom = 482.0
 custom_constants/separation = 20
 
 [node name="Settings" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_right = 293.0
+margin_right = 335.0
 margin_bottom = 38.0
 theme = ExtResource( 1 )
 text = "Settings"
@@ -44,7 +48,7 @@ align = 1
 
 [node name="Control3" type="Control" parent="CenterContainer/VBoxContainer"]
 margin_top = 58.0
-margin_right = 293.0
+margin_right = 335.0
 margin_bottom = 108.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
@@ -54,7 +58,7 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_top = 128.0
-margin_right = 293.0
+margin_right = 335.0
 margin_bottom = 178.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
@@ -66,14 +70,14 @@ text = "Laser visible"
 
 [node name="Control" type="Control" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 margin_left = 189.0
-margin_right = 239.0
+margin_right = 281.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 
 [node name="LaserEnabled" type="TextureButton" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 243.0
-margin_right = 293.0
+margin_left = 285.0
+margin_right = 335.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
 toggle_mode = true
@@ -83,59 +87,56 @@ expand = true
 
 [node name="Control2" type="Control" parent="CenterContainer/VBoxContainer"]
 margin_top = 198.0
-margin_right = 293.0
+margin_right = 335.0
 margin_bottom = 248.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_top = 268.0
-margin_right = 293.0
-margin_bottom = 340.0
+margin_right = 335.0
+margin_bottom = 364.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ok" type="TextureButton" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 72.0
-margin_bottom = 72.0
+margin_right = 73.0
+margin_bottom = 96.0
 toggle_mode = true
-texture_normal = ExtResource( 3 )
-texture_hover = ExtResource( 4 )
+texture_normal = ExtResource( 14 )
+texture_hover = ExtResource( 8 )
 
-[node name="Close" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
-visible = false
-margin_left = 76.0
-margin_top = 17.0
-margin_right = 156.0
-margin_bottom = 55.0
-theme = ExtResource( 1 )
-text = "Close"
+[node name="Control5" type="Control" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 77.0
+margin_right = 127.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_horizontal = 3
+
+[node name="cancel" type="TextureButton" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 131.0
+margin_right = 204.0
+margin_bottom = 96.0
+toggle_mode = true
+texture_normal = ExtResource( 7 )
+texture_hover = ExtResource( 12 )
 
 [node name="Control4" type="Control" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 76.0
-margin_right = 217.0
-margin_bottom = 72.0
+margin_left = 208.0
+margin_right = 258.0
+margin_bottom = 96.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 
 [node name="exit" type="TextureButton" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 221.0
-margin_right = 293.0
-margin_bottom = 72.0
+margin_left = 262.0
+margin_right = 335.0
+margin_bottom = 96.0
 toggle_mode = true
-texture_normal = ExtResource( 8 )
-texture_hover = ExtResource( 7 )
-
-[node name="ExitLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer2"]
-visible = false
-margin_left = 290.0
-margin_top = 17.0
-margin_right = 347.0
-margin_bottom = 55.0
-theme = ExtResource( 1 )
-text = "Exit"
+texture_normal = ExtResource( 15 )
+texture_hover = ExtResource( 13 )
 
 [node name="Tween" type="Tween" parent="."]
 

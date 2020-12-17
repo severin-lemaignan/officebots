@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://ProgressButton.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/icons/emoji-excited.svg" type="Texture" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://ExpressionGroup.gd" type="Script" id=20]
 [ext_resource path="res://TransientMessage.gd" type="Script" id=21]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Settings.tscn" type="PackedScene" id=23]
 [ext_resource path="res://assets/icons/robot-sleepy-hover.svg" type="Texture" id=28]
 [ext_resource path="res://assets/icons/robot-sleepy.svg" type="Texture" id=29]
 
@@ -245,6 +246,9 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="TransientMessage"]
+
+[node name="Settings" parent="." instance=ExtResource( 23 )]
+visible = false
 
 [node name="CharacterViewport" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
