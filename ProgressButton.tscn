@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=1]
-[ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=2]
+[ext_resource path="res://assets/icons/emoji-happy.svg" type="Texture" id=1]
+[ext_resource path="res://assets/icons/emoji-happy-active.svg" type="Texture" id=2]
 [ext_resource path="res://expressions_buttongroup.tres" type="ButtonGroup" id=3]
 [ext_resource path="res://RadialProgress.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ProgressButton.gd" type="Script" id=5]
@@ -20,12 +20,12 @@ visible = false
 
 [node name="button" type="TextureButton" parent="."]
 margin_right = 50.0
-margin_bottom = 50.0
+margin_bottom = 80.0
 toggle_mode = true
 group = ExtResource( 3 )
-texture_normal = ExtResource( 2 )
-texture_pressed = ExtResource( 1 )
-texture_hover = ExtResource( 1 )
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 2 )
 expand = true
 stretch_mode = 5
 __meta__ = {

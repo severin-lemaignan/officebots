@@ -1,21 +1,21 @@
 [gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://ProgressButton.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/icons/emoticon-happy-outline.svg" type="Texture" id=2]
-[ext_resource path="res://assets/icons/emoticon-angry.svg" type="Texture" id=3]
-[ext_resource path="res://assets/icons/emoticon-angry-outline.svg" type="Texture" id=4]
-[ext_resource path="res://assets/icons/emoticon-confused-outline.svg" type="Texture" id=5]
+[ext_resource path="res://assets/icons/emoji-excited.svg" type="Texture" id=2]
+[ext_resource path="res://assets/icons/emoji-confused.svg" type="Texture" id=3]
+[ext_resource path="res://assets/icons/emoji-confused-active.svg" type="Texture" id=4]
+[ext_resource path="res://assets/icons/emoji-sad.svg" type="Texture" id=5]
 [ext_resource path="res://assets/characters/char1.png" type="Texture" id=6]
-[ext_resource path="res://assets/icons/emoticon-sad.svg" type="Texture" id=7]
-[ext_resource path="res://assets/icons/emoticon-sad-outline.svg" type="Texture" id=8]
-[ext_resource path="res://assets/icons/emoticon-excited-outline.svg" type="Texture" id=9]
-[ext_resource path="res://assets/icons/emoticon-confused.svg" type="Texture" id=10]
-[ext_resource path="res://assets/icons/emoticon-excited.svg" type="Texture" id=11]
+[ext_resource path="res://assets/icons/emoji-sad-active.svg" type="Texture" id=7]
+[ext_resource path="res://assets/icons/emoji-happy.svg" type="Texture" id=8]
+[ext_resource path="res://assets/icons/emoji-angry.svg" type="Texture" id=9]
+[ext_resource path="res://assets/icons/emoji-happy-active.svg" type="Texture" id=10]
+[ext_resource path="res://assets/icons/emoji-angry-active.svg" type="Texture" id=11]
 [ext_resource path="res://assets/icons/timer-outline.svg" type="Texture" id=12]
 [ext_resource path="res://assets/icons/settings.svg" type="Texture" id=13]
 [ext_resource path="res://default_theme.tres" type="Theme" id=14]
 [ext_resource path="res://assets/icons/timer-outline-hover.svg" type="Texture" id=15]
-[ext_resource path="res://assets/icons/emoticon-happy.svg" type="Texture" id=16]
+[ext_resource path="res://assets/icons/emoji-excited-active.svg" type="Texture" id=16]
 [ext_resource path="res://assets/icons/hand-hover.svg" type="Texture" id=17]
 [ext_resource path="res://assets/icons/hand.svg" type="Texture" id=18]
 [ext_resource path="res://UI.gd" type="Script" id=19]
@@ -86,37 +86,42 @@ script = ExtResource( 20 )
 
 [node name="happy" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_bottom = 80.0
-normal = ExtResource( 2 )
-pressed = ExtResource( 16 )
+rect_min_size = Vector2( 50, 80 )
+normal = ExtResource( 8 )
+pressed = ExtResource( 10 )
 timer = false
 
 [node name="excited" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 54.0
 margin_right = 104.0
 margin_bottom = 80.0
-normal = ExtResource( 9 )
-pressed = ExtResource( 11 )
+rect_min_size = Vector2( 50, 80 )
+normal = ExtResource( 2 )
+pressed = ExtResource( 16 )
 
 [node name="confused" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 108.0
 margin_right = 158.0
 margin_bottom = 80.0
-normal = ExtResource( 5 )
-pressed = ExtResource( 10 )
+rect_min_size = Vector2( 50, 80 )
+normal = ExtResource( 3 )
+pressed = ExtResource( 4 )
 
 [node name="sad" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 162.0
 margin_right = 212.0
 margin_bottom = 80.0
-normal = ExtResource( 8 )
+rect_min_size = Vector2( 50, 80 )
+normal = ExtResource( 5 )
 pressed = ExtResource( 7 )
 
 [node name="angry" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
 margin_left = 216.0
 margin_right = 266.0
 margin_bottom = 80.0
-normal = ExtResource( 4 )
-pressed = ExtResource( 3 )
+rect_min_size = Vector2( 50, 80 )
+normal = ExtResource( 9 )
+pressed = ExtResource( 11 )
 
 [node name="wave" type="TextureButton" parent="Bottom/Actions"]
 margin_left = 270.0
