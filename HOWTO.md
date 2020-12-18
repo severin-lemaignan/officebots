@@ -18,3 +18,15 @@ DYnamic object = object that can move when colliding
 6. Attach the script `InteractiveObject.gd` to the rigid body
 
 
+Add new pickable object
+-----------------------
+
+1. select the mesh
+2. reparent to `PickableObjects`
+3. add a `PickableObject.tscn` child
+4. clear the transforms of the `PickableObject`
+5. Drag the `PickableObject` outside of the mesh and move the mesh as a child of the pickable object instance
+6. create the collision mesh: select the mesh, then 'Create Single Convex
+   Collision Sibling'
+7. Rename the pickable object as appropriate
+
