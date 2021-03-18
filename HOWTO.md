@@ -1,11 +1,13 @@
 How To
 ======
 
+
 Add new dynamic object
 ----------------------
 
 DYnamic object = object that can move when colliding
 
+0. Select and open `MainOffice.tscn`
 1. select the mesh
 2. create a `RigidBody` child
 3. Drag the `RigidBody` outside of the mesh (eg re-parent the rigidbody to the
@@ -21,6 +23,7 @@ DYnamic object = object that can move when colliding
 Add new pickable object
 -----------------------
 
+0. Select and open `MainOffice.tscn`
 1. select the mesh
 2. reparent to `PickableObjects`
 3. add a `PickableObject.tscn` child
