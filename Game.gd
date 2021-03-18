@@ -16,7 +16,7 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 ###############################################################################
 
 var SERVER_URL="localhost"
-const SERVER_PORT=6969
+var SERVER_PORT=6969
 
 
 var is_networking_started
@@ -70,7 +70,12 @@ func _ready():
         if "--name=" in argument:
             player_name = argument.right(7)
             player_skin = "res://assets/characters/skins/casualFemaleA_neutral.png"
-
+        if "--server=" in argument:
+            SERVER_URL = argument.right(9)
+            
+        if "--port=" in argument:
+            SERVER_PORT = argument.right(7).to_int()
+            
     # then, if game mode has been set in Godot, use that:
     if GameState.mode == GameState.UNSET:
         GameState.mode = run_as

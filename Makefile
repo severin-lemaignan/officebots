@@ -18,6 +18,9 @@ SERVER_PCK=${DIST}/${PROJECT_NAME}-server.zip
 
 SERVER=kimsufi:research-severin/bots-at-work
 
+REMOTE_SERVER_URL=https://officebots.skadge.org
+REMOTE_SERVER_PORT=6969
+
 SOURCES := $(wildcard *.gd) $(wildcard *.tscn)
 
 RANDNAME:=$(shell python -c 'from random import choice; print(choice(["Tommy","Nisha","Eshal","Giselle","Kyal","Aditya","Isl","Matteo","Santiago","Keeleigh","Maggie","Arya","Evelyn","Ammara","Harry","Bianka","Amna","Shiloh","Omari","Lilah","Yusef","Sabiha","Suhail","Arla","Remy","Umaima","Cohen","Elsie","Dominick","Kamila","Maheen","Terrell","Oakley","Kishan","Amit","Britany","Beatriz","Katharine","Rehaan","Clayton","Tala","Ibraheem","Mazie","Clare","Velma","Kim","Honor","Shabaz","Jan","Moesha","Mindy"]));')
@@ -53,16 +56,23 @@ ${DIST}/${PROJECT_NAME}: $(SOURCES)
 	XDG_DATA_HOME=${TEMPLATES_ROOT} ${GODOT_HEADLESS} --export linux ${DIST}/${PROJECT_NAME}
 
 run-standalone:
+	@echo -en "\033]0;Officebot standalone\a"
 	${DIST}/${PROJECT_NAME} --standalone
+	@echo -en "\033]0;Terminal\a"
 
 run-server:
-	@echo -en "\033]0;Officebot server\a"
+	@echo -en "\033]0;Officebot local server\a"
 	${DIST}/${PROJECT_NAME} --server
 	@echo -en "\033]0;Terminal\a"
 
 run-client:
-	@echo -en "\033]0;Officebot client '$(RANDNAME)'\a"
+	@echo -en "\033]0;Officebot client '$(RANDNAME)' - localhost\a"
 	${DIST}/${PROJECT_NAME} --client --name=$(RANDNAME)
+	@echo -en "\033]0;Terminal\a"
+
+run-client-remote:
+	@echo -en "\033]0;Officebot client '$(RANDNAME)' - $(REMOTE_SERVER_URL)\a"
+	${DIST}/${PROJECT_NAME} --client --name=$(RANDNAME) --server=$(REMOTE_SERVER_URL) --port=$(REMOTE_SERVER_PORT)
 	@echo -en "\033]0;Terminal\a"
 
 web: ${GODOT_HEADLESS} ${WEBDIST}/index.wasm
@@ -77,13 +87,19 @@ ${SERVER_PCK}: $(SOURCES)
 webserver: ${GODOT_HEADLESS} ${SERVER_PCK}
 
 deploy-client: web
+	@echo -en "\033]0;Deploying client to $(SERVER)...\a"
 	scp ${WEBDIST}/* ${SERVER}
+	@echo -en "\033]0;Terminal\a"
 
 deploy-server: webserver
+	@echo -en "\033]0;Deploying server to $(SERVER)...\a"
 	scp ${SERVER_PCK} ${SERVER}
+	@echo -en "\033]0;Terminal\a"
 
 edit:
+	@echo -en "\033]0;Godot editor\a"
 	${GODOT} project.godot
+	@echo -en "\033]0;Terminal\a"
 
 deploy: deploy-client deploy-server
 
