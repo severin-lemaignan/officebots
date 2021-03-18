@@ -20,6 +20,8 @@ SERVER=kimsufi:research-severin/bots-at-work
 
 SOURCES := $(wildcard *.gd) $(wildcard *.tscn)
 
+RANDNAME:=$(shell python -c 'from random import choice; print(choice(["Tommy","Nisha","Eshal","Giselle","Kyal","Aditya","Isl","Matteo","Santiago","Keeleigh","Maggie","Arya","Evelyn","Ammara","Harry","Bianka","Amna","Shiloh","Omari","Lilah","Yusef","Sabiha","Suhail","Arla","Remy","Umaima","Cohen","Elsie","Dominick","Kamila","Maheen","Terrell","Oakley","Kishan","Amit","Britany","Beatriz","Katharine","Rehaan","Clayton","Tala","Ibraheem","Mazie","Clare","Velma","Kim","Honor","Shabaz","Jan","Moesha","Mindy"]));')
+
 # .PHONY means these rules get executed even if
 # files of those names exist.
 .PHONY: all clean
@@ -54,10 +56,14 @@ run-standalone:
 	${DIST}/${PROJECT_NAME} --standalone
 
 run-server:
+	@echo -en "\033]0;Officebot server\a"
 	${DIST}/${PROJECT_NAME} --server
+	@echo -en "\033]0;Terminal\a"
 
 run-client:
-	${DIST}/${PROJECT_NAME} --client
+	@echo -en "\033]0;Officebot client '$(RANDNAME)'\a"
+	${DIST}/${PROJECT_NAME} --client --name=$(RANDNAME)
+	@echo -en "\033]0;Terminal\a"
 
 web: ${GODOT_HEADLESS} ${WEBDIST}/index.wasm
 

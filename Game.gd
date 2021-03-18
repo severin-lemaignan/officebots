@@ -67,6 +67,9 @@ func _ready():
             GameState.mode = GameState.CLIENT
         if argument == "--standalone":
             GameState.mode = GameState.STANDALONE
+        if "--name=" in argument:
+            player_name = argument.right(7)
+            player_skin = "res://assets/characters/skins/casualFemaleA_neutral.png"
 
     # then, if game mode has been set in Godot, use that:
     if GameState.mode == GameState.UNSET:
@@ -105,6 +108,10 @@ func _ready():
     if GameState.mode == GameState.CLIENT:
 
         $FakePlayer/Camera.current = false
+        
+        # the name of the player was given on cmd-line? no need to choose the dialog
+        if player_name:
+            $CanvasLayer/CharacterSelection.visible = false
     
     elif GameState.mode == GameState.SERVER:
 
@@ -115,6 +122,10 @@ func _ready():
     elif GameState.mode == GameState.STANDALONE:
         
         $FakePlayer/Camera.current = false
+        
+        # the name of the player was given on cmd-line? no need to choose the dialog
+        if player_name:
+            $CanvasLayer/CharacterSelection.visible = false
         
     else:
         assert(false)
@@ -183,10 +194,11 @@ func _ready():
         
         set_physics_process(false)
     
-        # wait for the character creation to be complete
-        var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
-        player_name = res[0]
-        player_skin = res[1]
+        # if we do not already have the player name, wait for the character creation to be complete
+        if not player_name:
+            var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+            player_name = res[0]
+            player_skin = res[1]
         
         $CanvasLayer/UI.set_name_skin(player_name, player_skin)
         
@@ -205,10 +217,11 @@ func _ready():
     elif GameState.mode == GameState.STANDALONE:
         print("STARTING IN STANDALONE MODE")
 
-        # wait for the character creation to be complete
-        var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
-        player_name = res[0]
-        player_skin = res[1]
+        # if we do not already have the player name, wait for the character creation to be complete
+        if not player_name:
+            var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+            player_name = res[0]
+            player_skin = res[1]
         
         $CanvasLayer/UI.set_name_skin(player_name, player_skin)
         
