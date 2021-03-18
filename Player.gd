@@ -130,8 +130,7 @@ func process_movement(delta):
     dir.y = 0
     dir = dir.normalized()
 
-    vel.y += delta * GRAVITY
-    #vel.y = 0
+    vel.y = 0 # -> gravity managed by the server in Character._process_physics
 
     var hvel = vel
     hvel.y = 0
@@ -155,6 +154,7 @@ func process_movement(delta):
             # the resulting new position will be updated by the server via 'set_puppet_transform'
             rpc_unreliable_id(1, "execute_move_and_slide", vel)
         elif GameState.mode == GameState.STANDALONE:
+            vel.y += GameState.GRAVITY * delta
             vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, GameState.MAX_SLOPE_ANGLE)
         else:
             assert(false)

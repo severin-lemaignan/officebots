@@ -32,7 +32,7 @@ var anim_to_play = "Idle"
 var current_anim
 
 
-var next_motion_linear_velocity
+var velocity = Vector3.ZERO
 
 var is_portrait_mode
 
@@ -110,7 +110,7 @@ puppet func puppet_says(msg):
     say(msg)
     
 puppet func set_puppet_transform(puppet_transform):
-    
+
     transform = puppet_transform
 
 puppet func puppet_set_expression(expr):
@@ -128,7 +128,7 @@ remote func execute_set_rotation(angle):
 remote func execute_move_and_slide(linear_velocity):
 
     assert(get_tree().is_network_server())
-    next_motion_linear_velocity = linear_velocity
+    velocity += linear_velocity
     
 remote func execute_puppet_says(msg):
     
@@ -142,11 +142,11 @@ remote func execute_puppet_set_expression(msg):
 ###############################################################################
 
 # physics process is only enabled on the server
-func _physics_process(_delta):
+func _physics_process(delta):
 
-    if next_motion_linear_velocity:
-        var _vel = move_and_slide(next_motion_linear_velocity, Vector3(0, 1, 0), 0.05, 4, GameState.MAX_SLOPE_ANGLE)
-        next_motion_linear_velocity = null
+    velocity.y += GameState.GRAVITY * delta
+
+    velocity = move_and_slide(velocity, Vector3.UP, 0.05, 4, GameState.MAX_SLOPE_ANGLE)
     
     # the server is responsible to broadcast the position of all the player
     # once the physics is computed

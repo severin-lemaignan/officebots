@@ -1,5 +1,7 @@
 extends Node
 
+const GRAVITY = -24.8
+
 const MAX_SLOPE_ANGLE = deg2rad(30) # max angle that characters can climb
 
 enum {UNSET, CLIENT, SERVER, STANDALONE}
