@@ -245,7 +245,7 @@ func _ready():
 func configure_physics():
     shuffle_spawn_points()
     
-    # enable physics calculations for all the dynamics objects, *on the server only*
+    # enable physics calculations for all the dynamics objects, *on the server only* (or in stand-alone mode)
     for o in $MainOffice/DynamicObstacles.get_children():
         o.call_deferred("set_physics_process", true)
     
@@ -499,6 +499,8 @@ remote func pre_configure_game():
     
     elif GameState.mode == GameState.STANDALONE:
         local_player.toggle_collisions(true)
+        var start_location = $SpawnPointsPlayers.get_child($Players.get_child_count()).transform
+        local_player.transform = start_location
 
 # server has accepted our player, we can start the game.
 # *if transform=null, the server has rejected our player*
