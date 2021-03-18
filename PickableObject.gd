@@ -7,6 +7,8 @@ enum OBJECT_STATE {
     resting
    }
 
+export(float, 0, 2, 0.1) var pickup_area_size = 1.0
+
 var state = OBJECT_STATE.resting
 
 var MAX_DIST_HIGHLIGHT = 3.0
@@ -17,18 +19,12 @@ func _ready():
     
     var _err = $Highlight.connect("highlight_clicked", self, "on_highlight_clicked")
 
+    $Highlight.set_scale(pickup_area_size)
+    
 func on_highlight_clicked():
 
     local_player.pickup_object(self)
-    
-#    match state:
-#        OBJECT_STATE.resting:
-#            local_player.pickup_object(self)
-#            state = OBJECT_STATE.picked
-#        OBJECT_STATE.picked:
-#            local_player.release_object(self)
-#            state = OBJECT_STATE.resting
-
+   
 func _process(_delta):
 
     if !local_player:

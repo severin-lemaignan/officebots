@@ -68,6 +68,9 @@ func is_facing(point):
     
 func pickup_object(object):
     
+    if pickedup_object:
+        return
+        
     pickedup_object = object
     
     pickedup_object_original_parent = object.get_parent()
