@@ -31,6 +31,8 @@ var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
 
+const EPSILON = 0.01
+const EPSILON_SQUARED = EPSILON * EPSILON
 
 var velocity = Vector3.ZERO
 
@@ -120,6 +122,7 @@ puppet func puppet_set_expression(expr):
 remote func execute_set_rotation(angle):
     assert(get_tree().is_network_server())
     rotate_y(angle)
+    rpc_unreliable("set_puppet_transform", transform)
     
 ################################################################################
 #
@@ -128,7 +131,7 @@ remote func execute_set_rotation(angle):
 remote func execute_move_and_slide(linear_velocity):
 
     assert(get_tree().is_network_server())
-    velocity += linear_velocity
+    velocity = linear_velocity
     
 remote func execute_puppet_says(msg):
     
@@ -145,12 +148,15 @@ remote func execute_puppet_set_expression(msg):
 func _physics_process(delta):
 
     velocity.y += GameState.GRAVITY * delta
-
-    velocity = move_and_slide(velocity, Vector3.UP, 0.05, 4, GameState.MAX_SLOPE_ANGLE)
+  
+    velocity = move_and_slide(velocity, Vector3.UP)
     
-    # the server is responsible to broadcast the position of all the player
-    # once the physics is computed
-    rpc_unreliable("set_puppet_transform", transform)
+    
+    
+    if velocity.length_squared() > EPSILON_SQUARED:
+        # the server is responsible to broadcast the position of all the player
+        # once the physics is computed
+        rpc_unreliable("set_puppet_transform", transform)
     
     
 func _process(delta):

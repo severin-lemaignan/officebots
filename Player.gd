@@ -3,8 +3,9 @@ extends KinematicBody
 # mouselook + motion based on godot FPS tutorial:
 # https://docs.godotengine.org/en/stable/tutorials/3d/fps_tutorial/part_one.html
 
-const GRAVITY = -24.8
-var vel = Vector3()
+var vel = Vector3.ZERO
+var prev_vel = Vector3.ZERO
+
 const MAX_SPEED = 1.5
 const JUMP_SPEED = 5
 const ACCEL = 2.5
@@ -148,7 +149,7 @@ func process_movement(delta):
     vel.x = hvel.x
     vel.z = hvel.z
     
-    if vel:
+    if vel != prev_vel:
         if GameState.mode == GameState.CLIENT:
             # execute the actual motion on the server, so that physics are computed
             # the resulting new position will be updated by the server via 'set_puppet_transform'
@@ -158,6 +159,8 @@ func process_movement(delta):
             vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, GameState.MAX_SLOPE_ANGLE)
         else:
             assert(false)
+    
+    prev_vel = vel
 
 func _input(event):
     
