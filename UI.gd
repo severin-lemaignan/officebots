@@ -20,10 +20,13 @@ signal on_expression
 func _ready():
     chat.connect("text_entered", self, "on_chat")
     
-    var _err = $Top/HBoxContainer/settings.connect("pressed", self, "on_settings")    
-    _err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")
+    var _err = $Top/HBoxContainer/settings.connect("pressed", self, "on_settings") 
     
-    _err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
+    if GameState.robots_enabled():
+        _err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")    
+        _err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
+    else:
+        $Top/HBoxContainer/robot.hide()
     
     _err = $Bottom/Actions/ExpressionGroup/happy.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.NEUTRAL])
     _err = $Bottom/Actions/ExpressionGroup/sad.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.SAD])
@@ -42,6 +45,12 @@ func set_name_skin(name, skin):
 func on_settings():
     $Settings.show()
 
+func toggle_robots_support(active):
+    if active:
+        $Top/HBoxContainer/robot.show()
+    else:
+        $Top/HBoxContainer/robot.hide()
+        
 func on_robot_clicked():
     
     # if we were DISCONNECTED, try to connect...

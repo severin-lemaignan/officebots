@@ -1,11 +1,19 @@
 extends Spatial
 
+####### THESE ENUMS ARE *ONLY* FOR CONFIGURATION IN THE GODOT EDITOR UI ########
+####### See GameState for the actual global variables used in the code #########
+
 # set the initial game mode. Can be overridden by 
 # command-line arguments --server, --client, --standalone
-
 enum modes {UNSET, CLIENT, SERVER, STANDALONE}
-
 export(modes) var run_as = modes.UNSET
+
+# by default, the game supports adding robots; robots can be disabled if eg
+# it is only played online with human users.
+enum RobotsMode {ROBOTS, NO_ROBOTS}
+export(RobotsMode) var has_robots = RobotsMode.ROBOTS
+
+###############################################################################
 
 var SERVER_URL="localhost"
 const SERVER_PORT=6969
@@ -78,6 +86,15 @@ func _ready():
     
     # at that point, we should know our game mode
     assert(GameState.mode != GameState.UNSET)
+    
+    # do we support robots or not?
+    GameState.robots_mode = has_robots
+    if GameState.robots_enabled():
+        $CanvasLayer/UI.toggle_robots_support(true)
+    else:
+        $CanvasLayer/UI.toggle_robots_support(false)
+        print("INFO: Robot support disabled.")
+    
     set_physics_process(true)
         
     # the web version are always clients;
@@ -157,7 +174,8 @@ func _ready():
         local_player = $FakePlayer
         configure_physics()
         
-        robot_server = RobotServer.new(self)
+        if GameState.robots_enabled():
+            robot_server = RobotServer.new(self)
 
         
     elif GameState.mode == GameState.CLIENT:
@@ -197,7 +215,10 @@ func _ready():
         Input.set_default_cursor_shape(Input.CURSOR_DRAG)
         
         configure_physics()
-        robot_server = RobotServer.new(self)
+        
+        if GameState.robots_enabled():
+            robot_server = RobotServer.new(self)
+            
         is_networking_started = true   
         
         pre_configure_game()
@@ -218,9 +239,10 @@ func _process(_delta):
             # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
             get_tree().network_peer.poll()
         
-        # only the server polls for the robot websocket server (or the standalone client)
-        if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
-            robot_server.poll()
+        if GameState.robots_enabled():
+            # only the server polls for the robot websocket server (or the standalone client)
+            if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
+                robot_server.poll()
 
 # should only run on the server!
 func _physics_process(_delta):
