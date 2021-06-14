@@ -40,27 +40,27 @@ var is_portrait_mode
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    randomize()
-    
-    local_player = $FakePlayer
+	randomize()
+	
+	local_player = $FakePlayer
 
-    last_location = translation
+	last_location = translation
 
-    original_orientation = Quat(transform.basis.orthonormalized())
-    set_expression(GameState.Expressions.NEUTRAL)
-    
-    # flip the tip of the speech bubble to place the speech bubble on the left of NPCs
-    speech_bubble.flip_left()
-    
-    # by default, disable camera + light
-    portrait_mode(false)
-    
-    # physics calculation disabled by default
-    # will be re-enabled on the server only when the character is
-    # created
-    set_physics_process(false)
-    
-    #say("My name is " + username, 5)
+	original_orientation = Quat(transform.basis.orthonormalized())
+	set_expression(GameState.Expressions.NEUTRAL)
+	
+	# flip the tip of the speech bubble to place the speech bubble on the left of NPCs
+	speech_bubble.flip_left()
+	
+	# by default, disable camera + light
+	portrait_mode(false)
+	
+	# physics calculation disabled by default
+	# will be re-enabled on the server only when the character is
+	# created
+	set_physics_process(false)
+	
+	#say("My name is " + username, 5)
 
 
 # gaze control doe snot work due to animations overriding head pose    
@@ -75,195 +75,195 @@ func _ready():
 #                                 Transform(face(eye_target), tr.origin))
 
 func enable_collisions(val=true):
-    $CollisionShape.disabled = !val
-    
+	$CollisionShape.disabled = !val
+	
 func portrait_mode(mode):
-    
-    is_portrait_mode = mode
-    
-    if mode == true:
-        
-        $FakePlayer/Camera.visible = true
-        $OmniLight.visible = true
-        
-        anim_player.current_animation = "Idle"
-        anim_player.seek(randf() * anim_player.current_animation_length)
-        anim_player.play()
-        
-        $NameHandle/Name.visible = false
+	
+	is_portrait_mode = mode
+	
+	if mode == true:
+		
+		$FakePlayer/Camera.visible = true
+		$OmniLight.visible = true
+		
+		anim_player.current_animation = "Idle"
+		anim_player.seek(randf() * anim_player.current_animation_length)
+		anim_player.play()
+		
+		$NameHandle/Name.visible = false
 
-    
-    else:
-        $FakePlayer/Camera.visible = false
-        $OmniLight.visible = false
+	
+	else:
+		$FakePlayer/Camera.visible = false
+		$OmniLight.visible = false
 
 func set_portrait_camera():
-    $FakePlayer/Camera.current = true
+	$FakePlayer/Camera.current = true
 func set_close_up_camera():
-    $"FakePlayer/Camera-closeup".current = true
-    
+	$"FakePlayer/Camera-closeup".current = true
+	
 # used to test in Game whether an object colliding with the ray cast for visibility testing
 # is indeed a character (via .has_method(i_am_a_character))
 func i_am_a_character():
-    pass
-    
+	pass
+	
 puppet func puppet_says(msg):
-    print("Got something to say: " + msg)
-    say(msg)
-    
+	print("Got something to say: " + msg)
+	say(msg)
+	
 puppet func set_puppet_transform(puppet_transform):
 
-    transform = puppet_transform
+	transform = puppet_transform
 
 puppet func puppet_set_expression(expr):
-    set_expression(expr)
-    
+	set_expression(expr)
+	
 # this code is only supposed to be called on the server, where the physics takes place
 remote func execute_set_rotation(angle):
-    assert(get_tree().is_network_server())
-    rotate_y(angle)
-    rpc_unreliable("set_puppet_transform", transform)
-    
+	assert(get_tree().is_network_server())
+	rotate_y(angle)
+	rpc_unreliable("set_puppet_transform", transform)
+	
 ################################################################################
 #
 # these methods are only executed on the server, where the physics takes place
 #
 remote func execute_move_and_slide(linear_velocity):
 
-    assert(get_tree().is_network_server())
-    velocity = linear_velocity
-    
+	assert(get_tree().is_network_server())
+	velocity = linear_velocity
+	
 remote func execute_puppet_says(msg):
-    
-    assert(get_tree().is_network_server())
-    rpc("puppet_says", msg)
+	
+	assert(get_tree().is_network_server())
+	rpc("puppet_says", msg)
 
 remote func execute_puppet_set_expression(msg):
-    
-    assert(get_tree().is_network_server())
-    rpc("puppet_set_expression", msg)
+	
+	assert(get_tree().is_network_server())
+	rpc("puppet_set_expression", msg)
 ###############################################################################
 
 # physics process is only enabled on the server
 func _physics_process(delta):
 
-    velocity.y += GameState.GRAVITY * delta
+	velocity.y += GameState.GRAVITY * delta
   
-    velocity = move_and_slide(velocity, Vector3.UP)
-    
-    
-    
-    if velocity.length_squared() > EPSILON_SQUARED:
-        # the server is responsible to broadcast the position of all the player
-        # once the physics is computed
-        rpc_unreliable("set_puppet_transform", transform)
-    
-    
+	velocity = move_and_slide(velocity, Vector3.UP)
+	
+	
+	
+	if velocity.length_squared() > EPSILON_SQUARED:
+		# the server is responsible to broadcast the position of all the player
+		# once the physics is computed
+		rpc_unreliable("set_puppet_transform", transform)
+	
+	
 func _process(delta):
-    
-    
-    
-    # we buffer a bit as the peer main loop might run faster
-    # that the pace at which puppet controller sends position
-    # updates. By waiting ~0.1s, we make sure the character would have moved,
-    # hence properly setting the animation
-    total_delta += delta
-    
-    if total_delta > 0.1:
-        total_delta = 0
-        
-        if translation.distance_squared_to(last_location) > 0.001:
-            anim_to_play = "Walk"
-        else:
-            anim_to_play = "Idle"
-            
-        current_anim = anim_player.get_current_animation()
-        
-        if current_anim != anim_to_play:
-            anim_player.play(anim_to_play)
-    
-        last_location = translation
+	
+	
+	
+	# we buffer a bit as the peer main loop might run faster
+	# that the pace at which puppet controller sends position
+	# updates. By waiting ~0.1s, we make sure the character would have moved,
+	# hence properly setting the animation
+	total_delta += delta
+	
+	if total_delta > 0.1:
+		total_delta = 0
+		
+		if translation.distance_squared_to(last_location) > 0.001:
+			anim_to_play = "Walk"
+		else:
+			anim_to_play = "Idle"
+			
+		current_anim = anim_player.get_current_animation()
+		
+		if current_anim != anim_to_play:
+			anim_player.play(anim_to_play)
+	
+		last_location = translation
 
-    if is_portrait_mode:
-        return
-        
-    # manage speech bubble, incl updating scale and orientation based on
-    # player distance
-    var dist = distance_to(local_player)
-    $SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
-            
-    if speech_bubble.is_speaking:
+	if is_portrait_mode:
+		return
+		
+	# manage speech bubble, incl updating scale and orientation based on
+	# player distance
+	var dist = distance_to(local_player)
+	$SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
+			
+	if speech_bubble.is_speaking:
 
-        var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/SpeechBubbleAnchor.get_global_transform().origin)
-        speech_bubble_handle.position = screenPos
+		var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/SpeechBubbleAnchor.get_global_transform().origin)
+		speech_bubble_handle.position = screenPos
 
-        # Scale the speech bubble based on distance to player
-        var bubble_scale = max(0.5, min(2, 1 / dist))
-        speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
+		# Scale the speech bubble based on distance to player
+		var bubble_scale = max(0.5, min(2, 1 / dist))
+		speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
 
-    if dist < 10:
-        $NameHandle.visible = true
-        var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/NameAnchor.get_global_transform().origin)
-        $NameHandle.position = screenPos
+	if dist < 10:
+		$NameHandle.visible = true
+		var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/NameAnchor.get_global_transform().origin)
+		$NameHandle.position = screenPos
 
-        var name_scale = max(0.5, min(2, 1 / dist))
-        $NameHandle.scale = Vector2(name_scale, name_scale)
-    else:
-        $NameHandle.visible = false
-        
+		var name_scale = max(0.5, min(2, 1 / dist))
+		$NameHandle.scale = Vector2(name_scale, name_scale)
+	else:
+		$NameHandle.visible = false
+		
 
 
-    
+	
 #######################################################
 
 func is_speaking():
-    return speech_bubble.is_speaking
+	return speech_bubble.is_speaking
 
 func get_look_at_transform_basis(target,
-                                 eye = self.transform.origin,
-                                 up = Vector3(0,1,0)):
-    # reimplemented from Godot's source at core/math/transform.cpp
-    # to enable Tweening + +Z forward
-    
-    #var v_z = -(eye - target.get_global_transform().origin)
-    var v_z = -(eye - target)
-    v_z = v_z.normalized()
-    var v_y = up
-    var v_x = v_y.cross(v_z)
-    
-    v_y = v_z.cross(v_x)
-    
-    v_x = v_x.normalized()
-    v_y = v_y.normalized()
-    
-    return Transform(v_x, v_y, v_z, eye).basis
+								 eye = self.transform.origin,
+								 up = Vector3(0,1,0)):
+	# reimplemented from Godot's source at core/math/transform.cpp
+	# to enable Tweening + +Z forward
+	
+	#var v_z = -(eye - target.get_global_transform().origin)
+	var v_z = -(eye - target)
+	v_z = v_z.normalized()
+	var v_y = up
+	var v_x = v_y.cross(v_z)
+	
+	v_y = v_z.cross(v_x)
+	
+	v_x = v_x.normalized()
+	v_y = v_y.normalized()
+	
+	return Transform(v_x, v_y, v_z, eye).basis
 
 func set_base_skin(resource_path):
-    neutral_skin = load(resource_path)
-    $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", neutral_skin)
+	neutral_skin = load(resource_path)
+	$Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", neutral_skin)
 
 func set_username(name):
-    username = name
-    $NameHandle/Name.text = name
-    
-    
+	username = name
+	$NameHandle/Name.text = name
+	
+	
 func set_expression(expr):
-    var texture_basename = neutral_skin.resource_path.split("neutral")[0]
-    
-    var skin
-    
-    match expr:
-        GameState.Expressions.NEUTRAL:
-            skin = load(texture_basename + "neutral.png")
-        GameState.Expressions.ANGRY:
-            skin = load(texture_basename + "angry.png")
-        GameState.Expressions.HAPPY:
-            skin = load(texture_basename + "happy.png")
-        GameState.Expressions.SAD:
-            skin = load(texture_basename + "sad.png")
-            
-    $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", skin)
-    
+	var texture_basename = neutral_skin.resource_path.split("neutral")[0]
+	
+	var skin
+	
+	match expr:
+		GameState.Expressions.NEUTRAL:
+			skin = load(texture_basename + "neutral.png")
+		GameState.Expressions.ANGRY:
+			skin = load(texture_basename + "angry.png")
+		GameState.Expressions.HAPPY:
+			skin = load(texture_basename + "happy.png")
+		GameState.Expressions.SAD:
+			skin = load(texture_basename + "sad.png")
+			
+	$Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", skin)
+	
 #func face(object):
 #
 #    target_quaternion = Quat(get_look_at_transform_basis(object))
@@ -272,24 +272,24 @@ func set_expression(expr):
 #
 
 func on_rotation_finished():
-    target_quaternion = null
-    quaternion_slerp_progress = 0
-    
+	target_quaternion = null
+	quaternion_slerp_progress = 0
+	
 func say(text, wait_time=2):
-    speech_bubble.say(text, speech_bubble.ButtonType.NONE, wait_time)
+	speech_bubble.say(text, speech_bubble.ButtonType.NONE, wait_time)
 
 func distance_to(object):
-    return get_global_transform().origin.distance_to(object.get_global_transform().origin)
+	return get_global_transform().origin.distance_to(object.get_global_transform().origin)
 
 func quaternions_distance(q1, q2):
-    # -> 0 if same orientation, -> 1 if 180deg apart
-    # based on https://math.stackexchange.com/a/90098
-    var dist = 1 - pow(q1.dot(q2), 2)
-    #print(dist)
-    
-    return dist
+	# -> 0 if same orientation, -> 1 if 180deg apart
+	# based on https://math.stackexchange.com/a/90098
+	var dist = 1 - pow(q1.dot(q2), 2)
+	#print(dist)
+	
+	return dist
 
-    
+	
 #func _physics_process(delta):
 #    
 #    if target_quaternion:
