@@ -9,7 +9,7 @@
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-run_as = 1
+run_as = 3
 has_robots = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -96,3 +96,8 @@ transform = Transform( 0.84233, 0, 0.538961, 0, 1, 0, -0.538961, 0, 0.84233, 8.6
 transform = Transform( 0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 4.62514, 0, -3.97963 )
 
 [node name="Robots" type="Spatial" parent="."]
+
+[node name="timer_save" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+[connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
