@@ -589,8 +589,8 @@ func create_file(name):
         print("Error opening file")
     else: 
         print("file created for the user with id %s"%name )
-    file.store_line(dateRFC1123)
-    file.store_line("user : %s"%name )
+    #file.store_line(dateRFC1123)
+    #file.store_line("user : %s"%name )
     file.store_line( " time,x,z,rotation, expression, is_speaking")
     
     file.close()
