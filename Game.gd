@@ -257,6 +257,9 @@ func configure_physics():
     # enable physics calculations for all the dynamics objects, *on the server only* (or in stand-alone mode)
     for o in $MainOffice/DynamicObstacles.get_children():
         o.call_deferred("set_physics_process", true)
+    for o in $MainOffice/PickableObjects.get_children():
+        o.call_deferred("set_physics_process", true)
+    
     
 func _process(_delta):
     
