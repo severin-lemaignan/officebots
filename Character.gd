@@ -32,6 +32,9 @@ var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
 
+var pickedup_object_original_parent
+var pickedup_object
+
 const EPSILON = 0.01
 const EPSILON_SQUARED = EPSILON * EPSILON
 
@@ -64,7 +67,7 @@ func _ready():
     #say("My name is " + username, 5)
 
 
-# gaze control doe snot work due to animations overriding head pose    
+# gaze control does not work due to animations overriding head pose    
 #puppet func set_puppet_transform(puppet_transform, eye_target):
 #    # eye_target is a (x,y,z) point (in world coordinates) that the player
 #    # is looking at
@@ -125,6 +128,31 @@ remote func execute_set_rotation(angle):
     rotate_y(angle)
     rpc_unreliable("set_puppet_transform", transform)
     
+remote func pickup_object(object_path):
+
+    var object = get_node(object_path)
+
+    pickedup_object = object
+    
+    pickedup_object_original_parent = object.get_parent()
+    pickedup_object_original_parent.remove_child(object)
+    
+    
+    $PickupAnchor.add_child(object)
+    object.set_picked()
+    
+    object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
+    
+remote func release_object():
+    
+    if pickedup_object:
+        
+        $PickupAnchor.remove_child(pickedup_object)
+        pickedup_object_original_parent.add_child(pickedup_object)
+        pickedup_object.set_global_transform($PickupAnchor.get_global_transform())
+        pickedup_object.set_released()
+        pickedup_object = null
+        
 ################################################################################
 #
 # these methods are only executed on the server, where the physics takes place
