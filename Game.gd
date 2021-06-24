@@ -15,8 +15,13 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 
 ###############################################################################
 
-var SERVER_URL="localhost"
+var SERVER_URL="127.0.0.1"
+
 var SERVER_PORT=6969
+
+var time_start=0 
+var time_now=0
+
 
 
 var is_networking_started
@@ -50,6 +55,10 @@ var robot_server
 onready var navmesh = $MainOffice.get_navmesh()
 
 func _ready():
+    
+    
+    time_start= OS.get_unix_time()
+        
     
     randomize()
     
@@ -168,7 +177,7 @@ func _ready():
         print("STARTING AS SERVER")
         
         peer = WebSocketServer.new()
-
+        
         # the last 'true' parameter enables the Godot high-level multiplayer API
         var error = peer.listen(SERVER_PORT, PoolStringArray(), true)
         
@@ -251,7 +260,10 @@ func configure_physics():
     
 func _process(_delta):
     
+
+        
     if is_networking_started:
+        
         
         if GameState.mode == GameState.SERVER or GameState.mode == GameState.CLIENT:
             # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
@@ -350,6 +362,7 @@ func _player_connected(id):
         print("Sending my player to the server")
     else:
         print("New player " + str(id) + " joined")
+        create_file(str(id))
         
     if not get_tree().is_network_server():
         rpc_id(id, "register_player", my_info)
@@ -369,9 +382,10 @@ remote func register_player(info):
     player_info[id] = info
     
     add_player(id)
-    
+
     if get_tree().is_network_server():
         print("Player " + player_info[id]["name"] + " (peer id #" + str(id) + "): registration & initialization complete")
+        
 
 func remove_player(id):
     player_info[id]["object"].queue_free()
@@ -385,6 +399,7 @@ func add_player(id):
     # RPC calls
     
     player.set_name(str(id))
+    
     
     # the server is ultimately controlling all the characters position
     # -> the network master is 1 (eg, default)
@@ -555,3 +570,77 @@ func debug_point(pos):
     point.global_transform.origin = pos
     
     debug_points.append(pos)
+    
+    
+######### save data ###########
+var file = File.new()
+var path ="res://logs"
+var all_expr=["happy", "angry", "excited", "sad"]
+
+
+#create a file and add the first line: the user id 
+func create_file(name): 
+    
+    
+    var path_modified = path + "/%s"%name + ".csv"
+    
+    file.open(path_modified ,file.WRITE)
+    if file.open(path_modified , file.WRITE) != 0:
+        print("Error opening file")
+    else: 
+        print("file created for the user with id %s"%name )
+    #file.store_line(dateRFC1123)
+    #file.store_line("user : %s"%name )
+    file.store_line( " time,x,z,rotation, expression, is_speaking")
+    
+    file.close()
+    
+func save_data(name, data): #save the data in the csv file nammed name.csv
+    var path_modified = path + "/%s"%name + ".csv"
+    file.open(path_modified,file.READ_WRITE)
+    file.seek_end()
+    file.store_line(data)
+    
+    file.close()
+
+
+# for each player, this function will create and save a string on a csv file with the position, orientation and expression of the player
+ 
+func pre_save(): 
+    for p in $Players.get_children(): 
+        var ID = p.get_name()
+        var time = OS.get_unix_time()
+        var mood = all_expr[p.expression]
+        print(p.global_transform.origin[0])
+        print("%.3f"%p.global_transform.origin[0])
+        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + "%s"%mood + "," + "%s"%p.is_speaking
+        save_data(ID,data)
+        
+        
+        #print(player_info)
+    #for who in player_info: 
+        #print(who) # print the id of the player 
+        
+func time_played(): 
+    time_now= OS.get_unix_time()
+    var elapsed = time_now - time_start
+    return elapsed
+
+
+func _on_timer_save_timeout():
+    if GameState.mode == GameState.SERVER:
+        pre_save()
+    pass # Replace with function body.
+
+
+var time = OS.get_datetime()
+var nameweekday= ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+var namemonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+var dayofweek = time["weekday"]   # from 0 to 6 --> Sunday to Saturday
+var day = time["day"]                         #   1-31
+var month= time["month"]               #   1-12
+var year= time["year"]             
+var hour= time["hour"]                     #   0-23
+var minute= time["minute"]             #   0-59
+var second= time["second"]  
+var dateRFC1123 = str(nameweekday[dayofweek]) + ", " + str("%02d" % [day]) + " " + str(namemonth[month-1]) + " " + str(year) + " " + str("%02d" % [hour]) + ":" + str("%02d" % [minute]) + ":" + str("%02d" % [second]) + " GMT"

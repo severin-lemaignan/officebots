@@ -1461,3 +1461,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.532837 )
 
 [node name="Face" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34926, 0.321754 )
+
+[node name="Timer_is_speaking" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+[connection signal="timeout" from="Timer_is_speaking" to="." method="_on_Timer_is_speaking_timeout"]

@@ -7,7 +7,8 @@ onready var anim_player = $AnimationPlayer
 # used to ensure the speech bubbles of the other players
 # are oriented to face this player
 var local_player
-
+var expression = 0 #to export the expression 
+var is_speaking=false 
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
 onready var face = $Face # used by Robot.gd to compute visibility of players
@@ -134,12 +135,14 @@ remote func execute_move_and_slide(linear_velocity):
     velocity = linear_velocity
     
 remote func execute_puppet_says(msg):
-    
+    is_speaking=true
+    $Timer_is_speaking.start()
     assert(get_tree().is_network_server())
     rpc("puppet_says", msg)
+    
 
 remote func execute_puppet_set_expression(msg):
-    
+    expression = msg
     assert(get_tree().is_network_server())
     rpc("puppet_set_expression", msg)
 ###############################################################################
@@ -255,12 +258,16 @@ func set_expression(expr):
     match expr:
         GameState.Expressions.NEUTRAL:
             skin = load(texture_basename + "neutral.png")
+            
         GameState.Expressions.ANGRY:
             skin = load(texture_basename + "angry.png")
+            
         GameState.Expressions.HAPPY:
             skin = load(texture_basename + "happy.png")
+            
         GameState.Expressions.SAD:
             skin = load(texture_basename + "sad.png")
+            
             
     $Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", skin)
     
@@ -321,3 +328,7 @@ func quaternions_distance(q1, q2):
 #
 
 
+
+# Once the client is speaking, the var is_speaking is true for the next 5 seconds 
+func _on_Timer_is_speaking_timeout():
+    is_speaking=false

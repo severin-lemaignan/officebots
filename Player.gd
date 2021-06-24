@@ -58,6 +58,7 @@ func say(msg):
 
 # connect to the UI 'on_set_expr' signal in Game.gd
 func set_expression(expr):
+    
     rpc_id(1, "execute_puppet_set_expression", expr)
     
 # returns true if the player is facing 'point' (in global coordinates)
