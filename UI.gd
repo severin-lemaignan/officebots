@@ -10,7 +10,7 @@ var robot_offline = preload("res://assets/icons/robot-sleepy.svg")
 var robot_offline_hover = preload("res://assets/icons/robot-sleepy-hover.svg")
 var robot_connecting = preload("res://assets/icons/robot-connecting.svg")
 var robot_connecting_hover = preload("res://assets/icons/robot-connecting-hover.svg")
-
+var score = 0
 
 signal on_chat_msg
 signal on_expression
@@ -37,6 +37,7 @@ func _ready():
     
     portrait.portrait_mode(true)
     portrait.set_close_up_camera()
+    
 
 func set_name_skin(name, skin):
     $Top/HBoxContainer2/NameBox/Name.text = name
@@ -84,3 +85,11 @@ func on_chat(msg):
 func _process(_delta):
     var tex = $CharacterViewport.get_texture()
     $Top/HBoxContainer2/Portrait.texture = tex
+    
+remote func set_score(new_points): 
+    score+= new_points    
+    $Top/HBoxContainer/Score.text="Score =  %s"%score
+    
+remote func set_mission_description(description): 
+    print("in ")
+    $Top/VBoxContainer/Missiondescription.text=  description

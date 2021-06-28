@@ -253,7 +253,7 @@ func _ready():
 
 func configure_physics():
     shuffle_spawn_points()
-    
+    #shuffle_missions()
     # enable physics calculations for all the dynamics objects, *on the server only* (or in stand-alone mode)
     for o in $MainOffice/DynamicObstacles.get_children():
         o.call_deferred("set_physics_process", true)
@@ -263,7 +263,7 @@ func configure_physics():
     
 func _process(_delta):
     
-
+    
         
     if is_networking_started:
         
@@ -283,7 +283,7 @@ func _physics_process(_delta):
     assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
     if GameState.mode == GameState.SERVER:
         assert(is_network_master())
-    
+        are_missions_done()
         # check visibility of players:
     # 1. select robot's camera
     # 2. quick discard using a VisbilityNotifier https://docs.godotengine.org/en/stable/classes/class_visibilitynotifier.html
@@ -531,7 +531,7 @@ remote func post_configure_game(transform):
         print("Starting the game!")
         local_player.transform = transform
         get_tree().set_pause(false)
-
+    
 
 
 # Executed on the server only
@@ -548,13 +548,14 @@ remote func done_preconfiguring(who):
         return
         
     print("Player #" + str(who) + " is ready.")
+    
     players_done.append(who)
 
     # start the game immediately for whoever is connecting, passing the
     # start location of the player
     
     rpc_id(who, "post_configure_game", player_info[who]["start_location"])
-
+    new_mission(who)
 var debug_points = []
 
 # draws a point at a given position in the world coordinates
@@ -593,6 +594,7 @@ func create_file(name):
         return
     else: 
         print("file created for the user with id %s"%name )
+    
     #file.store_line(dateRFC1123)
     #file.store_line("user : %s"%name )
     file.store_line( " time,x,z,rotation, expression, is_speaking")
@@ -617,10 +619,10 @@ func save_data(name, data): #save the data in the csv file nammed name.csv
 func pre_save(): 
     for p in $Players.get_children(): 
         var ID = p.get_name()
+        
         var time = OS.get_unix_time()
         var mood = all_expr[p.expression]
-        print(p.global_transform.origin[0])
-        print("%.3f"%p.global_transform.origin[0])
+        
         var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + "%s"%mood + "," + "%s"%p.is_speaking
         save_data(ID,data)
         
@@ -640,15 +642,65 @@ func _on_timer_save_timeout():
         pre_save()
     pass # Replace with function body.
 
+######     Mission 
+remote func update_score(new_points):
+    $CanvasLayer/UI.set_score(new_points)
+    print("in update score after mission")
+#show the descirption of the mission on the client screen 
+remote func show_mission(description): 
+    print("in show")
+    $CanvasLayer/UI.set_mission_description(description)
+    
 
-var time = OS.get_datetime()
-var nameweekday= ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-var namemonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-var dayofweek = time["weekday"]   # from 0 to 6 --> Sunday to Saturday
-var day = time["day"]                         #   1-31
-var month= time["month"]               #   1-12
-var year= time["year"]             
-var hour= time["hour"]                     #   0-23
-var minute= time["minute"]             #   0-59
-var second= time["second"]  
-var dateRFC1123 = str(nameweekday[dayofweek]) + ", " + str("%02d" % [day]) + " " + str(namemonth[month-1]) + " " + str(year) + " " + str("%02d" % [hour]) + ":" + str("%02d" % [minute]) + ":" + str("%02d" % [second]) + " GMT"
+func shuffle_missions():
+    var order = range($Missions.get_child_count())
+
+    order.shuffle()
+    for p in range(order.size()):
+        var child = $Missions.get_child(order[p])
+        $Missions.move_child(child, p)
+        
+
+
+func index_mission(): 
+    var nb_missions= $Missions.get_child_count()
+    var random_generator = RandomNumberGenerator.new()
+    random_generator.randomize()
+    var random_value = random_generator.randi_range(0, nb_missions-1)
+    
+    return int(random_value)
+
+
+
+# give a new mission to the player     
+remote func new_mission(id):
+    
+    
+    var id_mission=index_mission()
+    print(id_mission)
+    var mission = $Missions.get_child(id_mission)
+    
+    #mission.is_mission_done()
+    #print(mission)
+    var description = mission.description
+    
+    var character = get_node("Players/%s"%id)
+    character.mission = "%s"%mission.get_name()
+    
+    rpc_id(int(id),"show_mission",description)
+    
+
+#check if players have done their missions      
+func are_missions_done(): 
+     for p in $Players.get_children(): 
+        p.mission
+
+        var ID = p.get_name()
+        
+        get_node("Missions/" + p.mission).is_mission_done(p)   
+        if get_node("Missions/" + p.mission).mission_done ==true: 
+            
+            rpc_id(int(ID),"update_score",1)
+            get_node("Missions/" + p.mission).mission_done=false
+            new_mission(ID)
+

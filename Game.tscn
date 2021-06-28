@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://GameModeSelection.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game.gd" type="Script" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://FakePlayer.gd" type="Script" id=5]
 [ext_resource path="res://CharacterSelection.tscn" type="PackedScene" id=6]
+[ext_resource path="res://M1.gd" type="Script" id=7]
+[ext_resource path="res://M2.gd" type="Script" id=8]
+[ext_resource path="res://M3.gd" type="Script" id=9]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
@@ -100,4 +103,15 @@ transform = Transform( 0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 4
 [node name="timer_save" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
+
+[node name="Missions" type="Node" parent="."]
+
+[node name="M1" type="Node" parent="Missions"]
+script = ExtResource( 7 )
+
+[node name="M2" type="Node" parent="Missions"]
+script = ExtResource( 8 )
+
+[node name="M3" type="Node" parent="Missions"]
+script = ExtResource( 9 )
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]

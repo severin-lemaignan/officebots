@@ -174,17 +174,44 @@ text = "Séverin"
 
 [node name="Control" type="Control" parent="Top"]
 margin_left = 218.0
-margin_right = 788.0
+margin_right = 399.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
+[node name="VBoxContainer" type="VBoxContainer" parent="Top"]
+margin_left = 403.0
+margin_right = 613.0
+margin_bottom = 80.0
+grow_horizontal = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="Top/VBoxContainer"]
+margin_right = 210.0
+margin_bottom = 38.0
+theme = ExtResource( 14 )
+text = "Your Mission : "
+
+[node name="Missiondescription" type="Label" parent="Top/VBoxContainer"]
+margin_top = 42.0
+margin_right = 210.0
+margin_bottom = 80.0
+theme = ExtResource( 14 )
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Top"]
-margin_left = 792.0
+margin_left = 617.0
 margin_right = 1004.0
 margin_bottom = 80.0
 
+[node name="Score" type="Label" parent="Top/HBoxContainer"]
+margin_top = 21.0
+margin_right = 171.0
+margin_bottom = 59.0
+theme = ExtResource( 14 )
+text = "Score :  0     "
+
 [node name="robot" type="TextureButton" parent="Top/HBoxContainer"]
-margin_right = 60.0
+margin_left = 175.0
+margin_right = 235.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 29 )
@@ -196,15 +223,15 @@ __meta__ = {
 }
 
 [node name="spacer" type="Control" parent="Top/HBoxContainer"]
-margin_left = 64.0
-margin_right = 84.0
+margin_left = 239.0
+margin_right = 259.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 20, 0 )
 size_flags_horizontal = 3
 
 [node name="away" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 88.0
-margin_right = 148.0
+margin_left = 263.0
+margin_right = 323.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 12 )
@@ -216,8 +243,8 @@ __meta__ = {
 }
 
 [node name="settings" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 152.0
-margin_right = 212.0
+margin_left = 327.0
+margin_right = 387.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 13 )

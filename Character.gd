@@ -9,6 +9,7 @@ onready var anim_player = $AnimationPlayer
 var local_player
 var expression = 0 #to export the expression 
 var is_speaking=false 
+var mission = "no mission"
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
 onready var face = $Face # used by Robot.gd to compute visibility of players
@@ -177,7 +178,7 @@ remote func execute_puppet_set_expression(msg):
 
 # physics process is only enabled on the server
 func _physics_process(delta):
-
+    
     velocity.y += GameState.GRAVITY * delta
   
     velocity = move_and_slide(velocity, Vector3.UP)
@@ -360,3 +361,4 @@ func quaternions_distance(q1, q2):
 # Once the client is speaking, the var is_speaking is true for the next 5 seconds 
 func _on_Timer_is_speaking_timeout():
     is_speaking=false
+
