@@ -585,8 +585,9 @@ func create_file(name):
     var path_modified = path + "/%s"%name + ".csv"
     
     file.open(path_modified ,file.WRITE)
-    if file.open(path_modified , file.WRITE) != 0:
-        print("Error opening file")
+    if not file.is_open():
+        print("Error opening file: " + path_modified)
+        return
     else: 
         print("file created for the user with id %s"%name )
     #file.store_line(dateRFC1123)
@@ -598,6 +599,10 @@ func create_file(name):
 func save_data(name, data): #save the data in the csv file nammed name.csv
     var path_modified = path + "/%s"%name + ".csv"
     file.open(path_modified,file.READ_WRITE)
+    if not file.is_open():
+        print("Error opening file: " + path_modified)
+        return
+    
     file.seek_end()
     file.store_line(data)
     
