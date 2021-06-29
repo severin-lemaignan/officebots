@@ -14,14 +14,13 @@ var dir = Vector3()
 
 const DEACCEL= 16
 
+var pickedup_object_original_parent
+var pickedup_object
 
 onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
 
 var MOUSE_SENSITIVITY = 0.1
-
-var pickedup_object_original_parent
-var pickedup_object
 
 func _ready():
 
@@ -60,42 +59,46 @@ func say(msg):
 func set_expression(expr):
     
     rpc_id(1, "execute_puppet_set_expression", expr)
+
+func pickup_object(object):
     
+    
+    # already holding an object?
+    if pickedup_object:
+        return
+
+    
+    rpc("pickup_object", str(object.get_path()))
+    
+    pickedup_object = object
+    
+    pickedup_object_original_parent = object.get_parent()
+    pickedup_object_original_parent.remove_child(object)
+    
+    $Rotation_helper/Camera/PickupAnchor.add_child(object)
+    object.set_picked()
+    
+    object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
+
+
+func release_object():
+    
+    if pickedup_object:
+        rpc("release_object")
+        
+        $Rotation_helper/Camera/PickupAnchor.remove_child(pickedup_object)
+        pickedup_object_original_parent.add_child(pickedup_object)
+        pickedup_object.set_global_transform($Rotation_helper/Camera/PickupAnchor.get_global_transform())
+        pickedup_object.set_released()
+        pickedup_object = null
+
 # returns true if the player is facing 'point' (in global coordinates)
 func is_facing(point):
     var local_point = point - global_transform.origin
     var gaze = Vector3(0,0,1).rotated(Vector3(0,1,0), rotation.y)
     return local_point.dot(gaze) > 0
     
-func pickup_object(object):
-    
-    if pickedup_object:
-        return
-        
-    pickedup_object = object
-    
-    pickedup_object_original_parent = object.get_parent()
-    pickedup_object_original_parent.remove_child(object)
-    
-    
-    $Rotation_helper/Camera/PickupAnchor.add_child(object)
-    object.mode = RigidBody.MODE_STATIC
-    
-    object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
 
-func release_object():
-    if pickedup_object:
-        
-        $Rotation_helper/Camera/PickupAnchor.remove_child(pickedup_object)
-        pickedup_object_original_parent.add_child(pickedup_object)
-        
-        pickedup_object.set_global_transform($Rotation_helper/Camera/PickupAnchor.get_global_transform())
-        
-        pickedup_object.mode = RigidBody.MODE_RIGID
-        pickedup_object.sleeping = false
-        
-        pickedup_object = null
-        
 func process_input(_delta):
 
     # ----------------------------------
