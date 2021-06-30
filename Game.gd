@@ -645,10 +645,10 @@ func _on_timer_save_timeout():
 ######     Mission 
 remote func update_score(new_points):
     $CanvasLayer/UI.set_score(new_points)
-    print("in update score after mission")
-#show the descirption of the mission on the client screen 
+    
+#this function will show the description of the mission on the client's screen 
 remote func show_mission(description): 
-    print("in show")
+    
     $CanvasLayer/UI.set_mission_description(description)
     
 
@@ -662,42 +662,51 @@ func shuffle_missions():
         
 
 
-func index_mission(): 
-    var nb_missions= $Missions.get_child_count()
+func random_index(n): 
+    
     var random_generator = RandomNumberGenerator.new()
     random_generator.randomize()
-    var random_value = random_generator.randi_range(0, nb_missions-1)
+    var random_value = random_generator.randi_range(0, n-1)
     
     return int(random_value)
 
 
 
-# give a new mission to the player     
+# this function will give a new mission to the player     
 remote func new_mission(id):
     
-    
-    var id_mission=index_mission()
-    print(id_mission)
+    var nb_missions= $Missions.get_child_count()
+    var id_mission=random_index(nb_missions)
+    var index_target
     var mission = $Missions.get_child(id_mission)
+    if mission.mission_with_target==true: 
+        var nb_players= $Players.get_child_count()
+        index_target = random_index(nb_players)
+        while $Players.get_child(index_target).get_name()==id: 
+            index_target = random_index(nb_players)
+        
     
-    #mission.is_mission_done()
-    #print(mission)
     var description = mission.description
     
     var character = get_node("Players/%s"%id)
     character.mission = "%s"%mission.get_name()
+    if mission.mission_with_target==true: 
+        character.target_for_mission = $Players.get_child(index_target).get_name()
     
     rpc_id(int(id),"show_mission",description)
     
 
-#check if players have done their missions      
+#this function will check if players have done their missions      
 func are_missions_done(): 
      for p in $Players.get_children(): 
-        p.mission
 
         var ID = p.get_name()
-        
-        get_node("Missions/" + p.mission).is_mission_done(p)   
+        if get_node("Missions/" + p.mission).mission_with_target==true: 
+            var id_target =  p.target_for_mission
+            var node_target = get_node("Players/%s"%id_target) 
+            get_node("Missions/" + p.mission).is_mission_done(p,node_target) 
+        else: 
+            get_node("Missions/" + p.mission).is_mission_done(p)   
         if get_node("Missions/" + p.mission).mission_done ==true: 
             
             rpc_id(int(ID),"update_score",1)

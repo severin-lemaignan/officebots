@@ -3,7 +3,7 @@ extends Node
   
 var id_mission=2
 var mission_done= false 
-
+var mission_with_target = false 
 
 var description = "the coffee machine "
 

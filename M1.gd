@@ -3,7 +3,7 @@ extends Node
  
 var id_mission=1
 var mission_done= false 
-
+var mission_with_target= false
 var description = "the end of the corridor" #"bring the lunch box on the pool table  "
 
 func _ready():

@@ -10,6 +10,7 @@ var local_player
 var expression = 0 #to export the expression 
 var is_speaking=false 
 var mission = "no mission"
+var target_for_mission
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
 onready var face = $Face # used by Robot.gd to compute visibility of players
