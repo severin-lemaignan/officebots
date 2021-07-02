@@ -21,7 +21,7 @@ var SERVER_PORT=6969
 
 var time_start=0 
 var time_now=0
-
+var total_time = 600 #total time of the game in seconds
 
 
 var is_networking_started
@@ -263,7 +263,7 @@ func configure_physics():
     
 func _process(_delta):
     
-    
+    show_time()
         
     if is_networking_started:
         
@@ -284,6 +284,8 @@ func _physics_process(_delta):
     if GameState.mode == GameState.SERVER:
         assert(is_network_master())
         are_missions_done()
+        
+        
         # check visibility of players:
     # 1. select robot's camera
     # 2. quick discard using a VisbilityNotifier https://docs.godotengine.org/en/stable/classes/class_visibilitynotifier.html
@@ -636,7 +638,30 @@ func time_played():
     var elapsed = time_now - time_start
     return elapsed
 
-
+func show_time(): 
+    var time_sec = total_time - time_played()
+    if time_sec ==0: 
+        show_message(' Time out !  END OF THE GAME')
+    else : 
+        var time_min =0
+        while time_sec>59: 
+            time_min+=1
+            time_sec-=60
+        var remaining_time=""
+        if time_min>0: 
+            remaining_time+= String(time_min)
+        else: 
+            remaining_time += '0'
+        remaining_time+=":"
+        if (time_sec > 9):
+            remaining_time += String(time_sec)
+        else:
+            remaining_time += "0" + String(time_sec)
+    
+        $CanvasLayer/UI/Time.text = remaining_time
+    
+    
+    
 func _on_timer_save_timeout():
     if GameState.mode == GameState.SERVER:
         pre_save()
@@ -650,6 +675,9 @@ remote func update_score(new_points):
 remote func show_mission(description): 
     
     $CanvasLayer/UI.set_mission_description(description)
+    
+remote func show_message(text): 
+    $CanvasLayer/UI.show_message(text)
     
 
 func shuffle_missions():
@@ -679,10 +707,13 @@ remote func new_mission(id):
     var id_mission=random_index(nb_missions)
     var index_target
     var mission = $Missions.get_child(id_mission)
+    while $Players.get_child_count()==1 and mission.mission_with_target==true:
+        id_mission=random_index(nb_missions)
+        mission = $Missions.get_child(id_mission)
     if mission.mission_with_target==true: 
         var nb_players= $Players.get_child_count()
         index_target = random_index(nb_players)
-        while $Players.get_child(index_target).get_name()==id: 
+        while int($Players.get_child(index_target).get_name())==int(id): 
             index_target = random_index(nb_players)
         
     
@@ -691,24 +722,33 @@ remote func new_mission(id):
     var character = get_node("Players/%s"%id)
     character.mission = "%s"%mission.get_name()
     if mission.mission_with_target==true: 
-        character.target_for_mission = $Players.get_child(index_target).get_name()
-    
-    rpc_id(int(id),"show_mission",description)
+        var id_target = $Players.get_child(index_target).get_name()
+        character.target_for_mission = id_target
+  
+        
+        rpc_id(int(id),"show_mission","%s  "%id_target+description)
+    else: 
+        rpc_id(int(id),"show_mission",description)
     
 
 #this function will check if players have done their missions      
 func are_missions_done(): 
      for p in $Players.get_children(): 
-
+        if p.mission == null  : 
+            return
         var ID = p.get_name()
         if get_node("Missions/" + p.mission).mission_with_target==true: 
             var id_target =  p.target_for_mission
             var node_target = get_node("Players/%s"%id_target) 
             get_node("Missions/" + p.mission).is_mission_done(p,node_target) 
+        elif get_node("Missions/" + p.mission).mission_with_object==true:
+            var object = get_node("Missions/" + p.mission).object
+            var node_object = get_node(object) 
+            get_node("Missions/" + p.mission).is_mission_done(p,node_object) 
         else: 
             get_node("Missions/" + p.mission).is_mission_done(p)   
         if get_node("Missions/" + p.mission).mission_done ==true: 
-            
+            rpc_id(int(ID), "show_message","Mission Done ! ")
             rpc_id(int(ID),"update_score",1)
             get_node("Missions/" + p.mission).mission_done=false
             new_mission(ID)

@@ -91,5 +91,17 @@ remote func set_score(new_points):
     $Top/HBoxContainer/Score.text="Score =  %s"%score
     
 remote func set_mission_description(description): 
-    print("in ")
+    
     $Top/VBoxContainer/Missiondescription.text=  description
+    
+remote func show_message(text): 
+    $Message.text = text
+    print("in show message UI ")
+    $Message.show()
+    $MessageTimer.start()
+
+
+
+func _on_MessageTimer_timeout():
+    $Message.hide()
+    pass 

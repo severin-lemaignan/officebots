@@ -288,3 +288,29 @@ render_target_v_flip = true
 gui_disable_input = true
 
 [node name="Character" parent="CharacterViewport" instance=ExtResource( 22 )]
+
+[node name="Time" type="Label" parent="."]
+margin_left = 32.1086
+margin_top = 108.218
+margin_right = 72.1086
+margin_bottom = 122.218
+theme = ExtResource( 14 )
+text = "Time: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message" type="Label" parent="."]
+margin_left = 246.0
+margin_top = 187.0
+margin_right = 754.0
+margin_bottom = 285.0
+theme = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+[connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]

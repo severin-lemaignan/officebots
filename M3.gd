@@ -4,6 +4,7 @@ extends Node
 var id_mission=3
 var mission_done= false 
 var mission_with_target = false 
+var mission_with_object = false
 var description = "behind pool table" 
 
 # Called when the node enters the scene tree for the first time.

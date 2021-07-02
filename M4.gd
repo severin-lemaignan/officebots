@@ -6,9 +6,10 @@ extends Node
 var id_mission=4
 var mission_done = false 
 var mission_with_target = true 
-var room = false 
+var mission_with_object = false
 
-var description = "target behind the pool table " 
+
+var description = "needs to go behind the pool table " 
 
 #var target = true 
 #var room = true 
