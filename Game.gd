@@ -263,7 +263,7 @@ func configure_physics():
     
 func _process(_delta):
     
-    show_time()
+    
         
     if is_networking_started:
         
@@ -271,6 +271,8 @@ func _process(_delta):
         if GameState.mode == GameState.SERVER or GameState.mode == GameState.CLIENT:
             # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
             get_tree().network_peer.poll()
+        if GameState.mode == GameState.SERVER: 
+            update_time()
         
         if GameState.robots_enabled():
             # only the server polls for the robot websocket server (or the standalone client)
@@ -638,7 +640,7 @@ func time_played():
     var elapsed = time_now - time_start
     return elapsed
 
-func show_time(): 
+func update_time(): 
     var time_sec = total_time - time_played()
     if time_sec ==0: 
         show_message(' Time out !  END OF THE GAME')
@@ -657,10 +659,14 @@ func show_time():
             remaining_time += String(time_sec)
         else:
             remaining_time += "0" + String(time_sec)
+        for p in $Players.get_children():
+            var ID = p.get_name()
+            $CanvasLayer/UI/Time.text  = remaining_time
+            
+            rpc_id(int(ID),'show_time', remaining_time)
     
-        $CanvasLayer/UI/Time.text = remaining_time
-    
-    
+remote func show_time(remaining_time): 
+    $CanvasLayer/UI/Time.text  = remaining_time
     
 func _on_timer_save_timeout():
     if GameState.mode == GameState.SERVER:
