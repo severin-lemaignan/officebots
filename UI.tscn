@@ -313,4 +313,15 @@ __meta__ = {
 [node name="MessageTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="Score2" type="Label" parent="."]
+anchor_left = 0.032
+anchor_top = 0.258
+anchor_right = 0.118
+anchor_bottom = 0.344
+margin_right = 40.0
+margin_bottom = 14.0
+theme = ExtResource( 14 )
+text = "Score: 0 
+"
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]

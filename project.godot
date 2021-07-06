@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Character.gd"
 }, {
-"base": "RigidBody",
-"class": "InteractiveObject",
-"language": "GDScript",
-"path": "res://InteractiveObject.gd"
-}, {
 "base": "KinematicBody",
 "class": "Robot",
 "language": "GDScript",
@@ -31,7 +26,6 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Character": "",
-"InteractiveObject": "",
 "Robot": "",
 "RobotServer": ""
 }

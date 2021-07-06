@@ -727,12 +727,15 @@ remote func new_mission(id):
     
     var character = get_node("Players/%s"%id)
     character.mission = "%s"%mission.get_name()
+    mission.player=get_node("Players/%s"%id)
     if mission.mission_with_target==true: 
         var id_target = $Players.get_child(index_target).get_name()
         character.target_for_mission = id_target
+        print(player_info[id_target])
   
-        
+       
         rpc_id(int(id),"show_mission","%s  "%id_target+description)
+        
     else: 
         rpc_id(int(id),"show_mission",description)
     
@@ -758,4 +761,6 @@ func are_missions_done():
             rpc_id(int(ID),"update_score",1)
             get_node("Missions/" + p.mission).mission_done=false
             new_mission(ID)
+
+
 

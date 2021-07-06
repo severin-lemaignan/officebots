@@ -89,7 +89,7 @@ func _process(_delta):
 remote func set_score(new_points): 
     score+= new_points    
     $Top/HBoxContainer/Score.text="Score =  %s"%score
-    
+    $Score2.text="Score =  %s"%score
 remote func set_mission_description(description): 
     
     $Top/VBoxContainer/Missiondescription.text=  description

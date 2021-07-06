@@ -1,6 +1,6 @@
 extends Node
 
- 
+var player 
 var id_mission=3
 var mission_done= false 
 var mission_with_target = false 
@@ -20,11 +20,17 @@ func _ready():
 func is_mission_done(p):
     var position = p.global_transform.origin[0]
     if position > 8.60 : 
-        mission_done = true 
-        print ("Mission %s"%id_mission + " is done for the player %s"%p.get_name())
-        
+        #mission_done = true 
+        #print ("Mission %s"%id_mission + " is done for the player %s"%p.get_name())
+        pass  # the var misson done is updated in the function 'on_M3_body_entered'
     return mission_done
     
     
     
 #PickableObjects/Lunchbox
+
+
+func _on_M3_body_entered(body):
+    mission_done = true 
+    print("body entered into M3 ")
+    
