@@ -13,6 +13,7 @@ export(modes) var run_as = modes.UNSET
 enum RobotsMode {ROBOTS, NO_ROBOTS}
 export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 
+export(bool) var enable_focus_blur = true
 ###############################################################################
 
 var SERVER_URL="127.0.0.1"
@@ -56,6 +57,7 @@ onready var navmesh = $MainOffice.get_navmesh()
 
 func _ready():
     
+    $CanvasLayer/Effects/VignetteEffect.visible = enable_focus_blur
     
     time_start= OS.get_unix_time()
         
