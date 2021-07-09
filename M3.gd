@@ -1,7 +1,7 @@
 extends Node
 
 var player 
-var id_mission=3
+var id_mission=2
 var mission_done= false 
 var mission_with_target = false 
 var mission_with_object = false
@@ -17,20 +17,25 @@ func _ready():
 #func _process(delta):
 #    pass
 
-func is_mission_done(p):
-    var position = p.global_transform.origin[0]
-    if position > 8.60 : 
-        #mission_done = true 
-        #print ("Mission %s"%id_mission + " is done for the player %s"%p.get_name())
-        pass  # the var misson done is updated in the function 'on_M3_body_entered'
-    return mission_done
-    
-    
-    
-#PickableObjects/Lunchbox
+#func is_mission_done(p):
+#    var position = p.global_transform.origin[0]
+#    if position > 8.60 : 
+#        #mission_done = true 
+#        #print ("Mission %s"%id_mission + " is done for the player %s"%p.get_name())
+#        pass  # the var misson done is updated in the function 'on_M3_body_entered'
+#    return mission_done
+#
+#
 
 
-func _on_M3_body_entered(body):
+
+func _on_M3_body_entered():
     mission_done = true 
-    print("body entered into M3 ")
+func is_mission_done(): 
+    pass
+
+func mission_done():
+    
+    mission_done = true 
+    
     

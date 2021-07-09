@@ -6,7 +6,7 @@ extends KinematicBody
 var vel = Vector3.ZERO
 var prev_vel = Vector3.ZERO
 
-const MAX_SPEED = 1.5
+const MAX_SPEED = 4.5#1.5
 const JUMP_SPEED = 5
 const ACCEL = 2.5
 

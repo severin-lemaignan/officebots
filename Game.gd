@@ -255,7 +255,7 @@ func _ready():
 
 func configure_physics():
     shuffle_spawn_points()
-    #shuffle_missions()
+    
     # enable physics calculations for all the dynamics objects, *on the server only* (or in stand-alone mode)
     for o in $MainOffice/DynamicObstacles.get_children():
         o.call_deferred("set_physics_process", true)
@@ -275,6 +275,7 @@ func _process(_delta):
             get_tree().network_peer.poll()
         if GameState.mode == GameState.SERVER: 
             update_time()
+            print(mission_ongoing)
         
         if GameState.robots_enabled():
             # only the server polls for the robot websocket server (or the standalone client)
@@ -686,16 +687,6 @@ remote func show_mission(description):
     
 remote func show_message(text): 
     $CanvasLayer/UI.show_message(text)
-    
-
-func shuffle_missions():
-    var order = range($Missions.get_child_count())
-
-    order.shuffle()
-    for p in range(order.size()):
-        var child = $Missions.get_child(order[p])
-        $Missions.move_child(child, p)
-        
 
 
 func random_index(n): 
@@ -708,61 +699,96 @@ func random_index(n):
 
 
 
-# this function will give a new mission to the player     
+# this function will give a new mission to the player   
+var mission_ongoing=[]
+func mission_free(id):
+    for i in mission_ongoing: 
+        if i==id: 
+            return false
+    return true 
+    
 remote func new_mission(id):
     
-    var nb_missions= $Missions.get_child_count()
+    var nb_missions = 4#get_node("Missions").get_child_count()
     var id_mission=random_index(nb_missions)
     var index_target
-    var mission = $Missions.get_child(id_mission)
-    while $Players.get_child_count()==1 and mission.mission_with_target==true:
+    var path_mission = "res://M%s.tscn"%(id_mission+1)
+    
+    var mission = load(path_mission).instance()
+    
+    while ($Players.get_child_count()==1 and mission.mission_with_target==true) or (mission_free(id_mission)==false):
         id_mission=random_index(nb_missions)
-        mission = $Missions.get_child(id_mission)
+        path_mission = "res://M%s.tscn"%(id_mission+1)
+        mission = load(path_mission).instance()
+    mission_ongoing.append(id_mission)
+    if mission.mission_with_object == true : 
+        mission.object=get_node(mission.object_path)
+    var description = mission.description
     if mission.mission_with_target==true: 
         var nb_players= $Players.get_child_count()
         index_target = random_index(nb_players)
         while int($Players.get_child(index_target).get_name())==int(id): 
             index_target = random_index(nb_players)
-        
-    
-    var description = mission.description
-    
-    var character = get_node("Players/%s"%id)
-    character.mission = "%s"%mission.get_name()
-    mission.player=get_node("Players/%s"%id)
-    if mission.mission_with_target==true: 
-        var id_target = $Players.get_child(index_target).get_name()
-        character.target_for_mission = id_target
-        print(player_info[id_target])
-  
-       
-        rpc_id(int(id),"show_mission","%s  "%id_target+description)
-        
+        mission.target=$Players.get_child(index_target)
+        rpc_id(int(id),"show_mission","%s  "%mission.target.get_name()+description)
     else: 
         rpc_id(int(id),"show_mission",description)
+            
+    mission.player=get_node("Players/%s"%id)
+    #mission.set_name(id)
+    get_node("Missions").add_child(mission)   
+    
+    
+   
+    
     
 
 #this function will check if players have done their missions      
-func are_missions_done(): 
-     for p in $Players.get_children(): 
-        if p.mission == null  : 
-            return
-        var ID = p.get_name()
-        if get_node("Missions/" + p.mission).mission_with_target==true: 
-            var id_target =  p.target_for_mission
-            var node_target = get_node("Players/%s"%id_target) 
-            get_node("Missions/" + p.mission).is_mission_done(p,node_target) 
-        elif get_node("Missions/" + p.mission).mission_with_object==true:
-            var object = get_node("Missions/" + p.mission).object
-            var node_object = get_node(object) 
-            get_node("Missions/" + p.mission).is_mission_done(p,node_object) 
-        else: 
-            get_node("Missions/" + p.mission).is_mission_done(p)   
-        if get_node("Missions/" + p.mission).mission_done ==true: 
+func are_missions_done():
+    if $Missions.get_child_count()==0: 
+        return  
+    for m in $Missions.get_children():
+        m.is_mission_done()
+        if m.mission_done == true :
+            m.mission_done = false
+            var id_mission=m.id_mission
+            var ID = m.player.get_name()
             rpc_id(int(ID), "show_message","Mission Done ! ")
             rpc_id(int(ID),"update_score",1)
-            get_node("Missions/" + p.mission).mission_done=false
+            
+            m.free()
+            var i = mission_ongoing.find(id_mission)
+            mission_ongoing.remove(i)
+            #mission_ongoing.remove(mission_ongoing.index(id_mission))
+        
+
             new_mission(ID)
+             
+
+    
+### link mission- Area to end a mission 
+
+func _on_M1_body_entered(body):
+    var node_mission=get_node_or_null("Missions/M1")
+    
+    
+    for m in $Missions.get_children(): 
+        print(m.get_name())
+    if node_mission!=null:
+        node_mission.mission_done()
+        print($Missions.get_child_count())
+    
+    pass # Replace with function body.
 
 
-
+func _on_M3_body_entered(body):
+    var node_mission=get_node_or_null("Missions/M3")
+    
+    
+    for m in $Missions.get_children(): 
+        print(m.get_name())
+    if node_mission!=null: 
+        node_mission.mission_done()
+        
+    
+    pass # Replace with function body.
