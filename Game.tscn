@@ -11,9 +11,18 @@
 [ext_resource path="res://M1.gd" type="Script" id=9]
 [ext_resource path="res://M3.gd" type="Script" id=10]
 
-[sub_resource type="CylinderShape" id=1]
+[sub_resource type="ProceduralSky" id=1]
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="Environment" id=2]
+background_sky = SubResource( 1 )
+ambient_light_color = Color( 0.780392, 0.639216, 0.494118, 0 )
+tonemap_mode = 2
+tonemap_exposure = 1.28
+tonemap_white = 0.44
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_bias = 0.1
+adjustment_enabled = true
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
@@ -29,6 +38,11 @@ has_robots = 1
 [node name="GameModeSelection" parent="CanvasLayer" instance=ExtResource( 1 )]
 
 [node name="Players" type="Spatial" parent="."]
+
+[node name="Sun" type="DirectionalLight" parent="."]
+transform = Transform( 0.965926, -1.43934e-08, -0.258819, 0.224144, 0.5, 0.836516, 0.12941, -0.866025, 0.482963, -26.2575, 9.56182, 11.3093 )
+shadow_enabled = true
+directional_shadow_mode = 1
 
 [node name="MainOffice" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.06984, 0.177475, 2.40717 )
@@ -136,6 +150,8 @@ shape = SubResource( 1 )
 [node name="CollisionShape" type="CollisionShape" parent="Mission_Target/M3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 2.3, 10, 0, -1.3 )
 shape = SubResource( 2 )
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
 [connection signal="body_entered" from="Mission_Target/M1" to="Missions/M1" method="_on_M1_body_entered"]
 [connection signal="body_entered" from="Mission_Target/M3" to="Missions/M3" method="_on_M3_body_entered"]
