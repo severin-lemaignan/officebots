@@ -16,6 +16,8 @@ var robot_state = RobotState.DISCONNECTED
 
 enum Expressions {NEUTRAL, ANGRY, HAPPY, SAD}
 
+const DISTANCE_AUDIBLE = 4 #m: max distance to hear what a player says
+
 func _ready():
     var _err = connect("robot_state_changed", self, "on_robot_state_changed")
 

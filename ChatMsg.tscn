@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://ChatMsg.gd" type="Script" id=1]
+[ext_resource path="res://ChatMsgOwn.tres" type="StyleBox" id=2]
+[ext_resource path="res://default_theme.tres" type="Theme" id=3]
+[ext_resource path="res://default_boldfont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://default_italicfont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://default_font.tres" type="DynamicFont" id=6]
+
+[node name="ChatMsg" type="MarginContainer"]
+anchor_right = 1.0
+custom_constants/margin_right = 14
+custom_constants/margin_top = 14
+custom_constants/margin_left = 14
+custom_constants/margin_bottom = 14
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="PanelContainer" parent="."]
+margin_left = 14.0
+margin_top = 14.0
+margin_right = 1010.0
+margin_bottom = 53.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container"]
+margin_right = 996.0
+margin_bottom = 39.0
+
+[node name="Author" type="RichTextLabel" parent="Container/VBoxContainer"]
+margin_right = 996.0
+margin_bottom = 18.0
+theme = ExtResource( 3 )
+custom_fonts/italics_font = ExtResource( 5 )
+custom_fonts/bold_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[b][color=#458772]User A[/color][/b]"
+text = "User A"
+fit_content_height = true
+scroll_active = false
+
+[node name="Text" type="Label" parent="Container/VBoxContainer"]
+margin_top = 22.0
+margin_right = 996.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 6 )
+text = "This is a message. Cool cool cool"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
