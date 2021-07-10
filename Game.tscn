@@ -18,18 +18,9 @@
 shader = ExtResource( 13 )
 shader_param/vignette = ExtResource( 12 )
 
-[sub_resource type="ProceduralSky" id=2]
+[sub_resource type="BoxShape" id=2]
 
-[sub_resource type="Environment" id=3]
-background_sky = SubResource( 2 )
-ambient_light_color = Color( 0.780392, 0.639216, 0.494118, 0 )
-tonemap_mode = 2
-tonemap_exposure = 1.28
-tonemap_white = 0.44
-ssao_enabled = true
-ssao_radius = 1.5
-ssao_bias = 0.1
-adjustment_enabled = true
+[sub_resource type="CylinderShape" id=3]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
@@ -171,14 +162,13 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Mission_Target/M1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -1.3 )
+shape = SubResource( 2 )
 
 [node name="M3" type="Area" parent="Mission_Target"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Mission_Target/M3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 2.3, 10, 0, -1.3 )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 3 )
+shape = SubResource( 3 )
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
 [connection signal="body_entered" from="Mission_Target/M1" to="Missions/M1" method="_on_M1_body_entered"]
 [connection signal="body_entered" from="Mission_Target/M3" to="Missions/M3" method="_on_M3_body_entered"]
