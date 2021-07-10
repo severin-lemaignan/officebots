@@ -44,6 +44,9 @@ export(String) var username = "John Doe"
 # Player info, associate ID to data
 var player_info = {}
 
+# stores the distances between players
+var players_distances = {}
+
 var robots = {}
 var local_robot = null
 
@@ -134,6 +137,7 @@ func _ready():
         $FakePlayer/Camera.current = true
         $CanvasLayer/UI.visible = false
         $CanvasLayer/CharacterSelection.visible = false
+        $CanvasLayer/Effects.visible = false
     
     elif GameState.mode == GameState.STANDALONE:
         
@@ -273,6 +277,9 @@ func _process(_delta):
         if GameState.mode == GameState.SERVER or GameState.mode == GameState.CLIENT:
             # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
             get_tree().network_peer.poll()
+        if GameState.mode == GameState.SERVER: 
+            update_time()
+            update_players_proximity()
         
         if GameState.robots_enabled():
             # only the server polls for the robot websocket server (or the standalone client)
@@ -503,7 +510,8 @@ remote func pre_configure_game():
     
     get_node("/root/Game/Players").add_child(local_player)
     
-    var _err = $CanvasLayer/UI.connect("on_chat_msg", local_player, "say")
+    var _err = $CanvasLayer/Chat.connect("on_chat_msg", local_player, "say")
+    _err = local_player.connect("player_list_updated", $CanvasLayer/Chat, "set_list_players_in_range")
     _err = $CanvasLayer/UI.connect("on_expression", local_player, "set_expression")
     
     $MainOffice.set_local_player(local_player)
@@ -595,6 +603,7 @@ func create_file(name):
         return
     else: 
         print("file created for the user with id %s"%name )
+    
     #file.store_line(dateRFC1123)
     #file.store_line("user : %s"%name )
     file.store_line( " time,x,z,rotation, expression, is_speaking")
@@ -619,10 +628,10 @@ func save_data(name, data): #save the data in the csv file nammed name.csv
 func pre_save(): 
     for p in $Players.get_children(): 
         var ID = p.get_name()
+        
         var time = OS.get_unix_time()
         var mood = all_expr[p.expression]
-        print(p.global_transform.origin[0])
-        print("%.3f"%p.global_transform.origin[0])
+        
         var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + "%s"%mood + "," + "%s"%p.is_speaking
         save_data(ID,data)
         
@@ -642,15 +651,67 @@ func _on_timer_save_timeout():
         pre_save()
     pass # Replace with function body.
 
+func update_players_proximity():
+    # only executed on server
+    
+    var players = $Players.get_children()
+    
+    var now_in_range = {}
+    var now_not_in_range = {}
+    
+    var min_dist = GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE
+    
+    for idx in range(players.size()):
+        var p1 = players[idx]
+        if not players_distances.has(p1):
+            players_distances[p1] = {}
+            
+        for idx2 in range(idx + 1, players.size()):
+            var p2 = players[idx2]
+            if not players_distances.has(p2):
+                players_distances[p2] = {}
+            
+            var dist = p1.translation.distance_squared_to(p2.translation)
+            
+            if not players_distances[p1].has(p2):
+                players_distances[p1][p2] = dist
+            
+            if not players_distances[p2].has(p1):
+                players_distances[p2][p1] = dist
+            
+            var prev_dist = players_distances[p1][p2]
+            
+            if dist < min_dist and prev_dist > min_dist:
+                # p1 and p2 are now in range
+                if not now_in_range.has(p1):
+                    now_in_range[p1] = [p2]
+                else:
+                    now_in_range[p1].append(p2)
+                
+                if not now_in_range.has(p2):
+                    now_in_range[p2] = [p1]
+                else:
+                    now_in_range[p2].append(p1)
+                
+                print(p1.username + " and " + p2.username + " in range")
+                $CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " in range")
+            
+            elif dist > min_dist and prev_dist < min_dist:
+                # p1 and p2 are not in range anymore
+                if not now_not_in_range.has(p1):
+                    now_not_in_range[p1] = [p2]
+                else:
+                    now_not_in_range[p1].append(p2)
+                
+                if not now_not_in_range.has(p2):
+                    now_not_in_range[p2] = [p1]
+                else:
+                    now_not_in_range[p2].append(p1)
+                
+                print(p1.username + " and " + p2.username + " not in range anymore")
+                $CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
+            
+            players_distances[p1][p2] = dist
+            players_distances[p2][p1] = dist
+    
 
-var time = OS.get_datetime()
-var nameweekday= ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-var namemonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-var dayofweek = time["weekday"]   # from 0 to 6 --> Sunday to Saturday
-var day = time["day"]                         #   1-31
-var month= time["month"]               #   1-12
-var year= time["year"]             
-var hour= time["hour"]                     #   0-23
-var minute= time["minute"]             #   0-59
-var second= time["second"]  
-var dateRFC1123 = str(nameweekday[dayofweek]) + ", " + str("%02d" % [day]) + " " + str(namemonth[month-1]) + " " + str(year) + " " + str("%02d" % [hour]) + ":" + str("%02d" % [minute]) + ":" + str("%02d" % [second]) + " GMT"

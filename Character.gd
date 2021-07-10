@@ -23,6 +23,7 @@ var dialogue_is_finished
 var response
 enum state {WAITING_FOR_ANSWER, ANSWER_RECIEVED}
 
+
 var quaternion_slerp_progress = 0
 var original_orientation
 var target_quaternion
@@ -113,6 +114,8 @@ func i_am_a_character():
     
 puppet func puppet_says(msg):
     print("Got something to say: " + msg)
+    
+    # TODO: only do it if player in audible range
     say(msg)
     
 puppet func set_puppet_transform(puppet_transform):
@@ -121,6 +124,11 @@ puppet func set_puppet_transform(puppet_transform):
 
 puppet func puppet_set_expression(expr):
     set_expression(expr)
+
+puppet func puppet_update_players_in_range(in_range, not_in_range):
+    # do nothing on the characters, only the Player need to update the UI
+    pass
+        
     
 # this code is only supposed to be called on the server, where the physics takes place
 remote func execute_set_rotation(angle):
@@ -163,9 +171,11 @@ remote func execute_move_and_slide(linear_velocity):
     velocity = linear_velocity
     
 remote func execute_puppet_says(msg):
+    assert(get_tree().is_network_server())
+    
     is_speaking=true
     $Timer_is_speaking.start()
-    assert(get_tree().is_network_server())
+    
     rpc("puppet_says", msg)
     
 

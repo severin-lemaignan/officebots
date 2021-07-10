@@ -14,6 +14,9 @@ var dir = Vector3()
 
 const DEACCEL= 16
 
+var players_in_range = []
+signal player_list_updated
+
 var pickedup_object_original_parent
 var pickedup_object
 
@@ -21,6 +24,7 @@ onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
 
 var MOUSE_SENSITIVITY = 0.1
+
 
 func _ready():
 
@@ -50,6 +54,18 @@ puppet func puppet_says(_msg):
 puppet func puppet_set_expression(_msg):
     # do nothing on the player itself! (but the other players, eg, the Characters will display the right expression)
     pass
+
+puppet func puppet_update_players_in_range(in_range, not_in_range):
+    
+    if in_range.empty() and not_in_range.empty():
+        return
+        
+    players_in_range.append_array(in_range)
+    for p in not_in_range:
+        players_in_range.erase(p)
+    
+    # connected to Chat UI in Game.gd
+    emit_signal("player_list_updated", players_in_range)
     
 # connect to the UI 'on_chat_msg' signal in Game.gd
 func say(msg):

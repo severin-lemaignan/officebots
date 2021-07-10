@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Character.gd"
 }, {
+"base": "MarginContainer",
+"class": "ChatMsg",
+"language": "GDScript",
+"path": "res://ChatMsg.gd"
+}, {
 "base": "RigidBody",
 "class": "InteractiveObject",
 "language": "GDScript",
@@ -31,6 +36,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Character": "",
+"ChatMsg": "",
 "InteractiveObject": "",
 "Robot": "",
 "RobotServer": ""
