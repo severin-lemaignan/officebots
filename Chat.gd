@@ -5,6 +5,7 @@ signal on_chat_msg
 onready var textinput = $VBoxContainer/HBoxContainer/TextInput
 
 var chatmsg = preload("res://ChatMsg.tscn")
+var presencelabel = preload("res://PresenceLabel.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,11 +40,15 @@ func set_list_players_in_range(players):
     for n in $VBoxContainer/ListPlayersInRange.get_children():
         $VBoxContainer/ListPlayersInRange.remove_child(n)
         n.queue_free()
-        
-    for p in players:
-        var lbl = Label.new()
-        lbl.text += "[b]" + p.name + "[/b] can hear you\n"
+    
+    if not players:
+        var lbl = presencelabel.instance() # default label ("No-one nearby")
         $VBoxContainer/ListPlayersInRange.add_child(lbl)
+    else:
+        for p in players:
+            var lbl = presencelabel.instance()
+            lbl.bbcode_text = "[i][b]" + p.username + "[/b] is nearby[/i]"
+            $VBoxContainer/ListPlayersInRange.add_child(lbl)
 
 func add_msg(text, author=null):
 

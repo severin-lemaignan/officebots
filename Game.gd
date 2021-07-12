@@ -711,8 +711,7 @@ func update_players_proximity():
     
     var players = $Players.get_children()
     
-    var now_in_range = {}
-    var now_not_in_range = {}
+    var proximity = {}
     
     var min_dist = GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE
     
@@ -738,36 +737,39 @@ func update_players_proximity():
             
             if dist < min_dist and prev_dist > min_dist:
                 # p1 and p2 are now in range
-                if not now_in_range.has(p1):
-                    now_in_range[p1] = [p2]
+                if not proximity.has(p1):
+                    proximity[p1] = {"in_range":[p2.name], "not_in_range":[]}
                 else:
-                    now_in_range[p1].append(p2)
+                    proximity[p1]["in_range"].append(p2.name)
                 
-                if not now_in_range.has(p2):
-                    now_in_range[p2] = [p1]
+                if not proximity.has(p2):
+                    proximity[p2] = {"in_range":[p1.name], "not_in_range":[]}
                 else:
-                    now_in_range[p2].append(p1)
+                    proximity[p2]["in_range"].append(p1.name)
                 
                 print(p1.username + " and " + p2.username + " in range")
-                $CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " in range")
+                $CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
             
             elif dist > min_dist and prev_dist < min_dist:
                 # p1 and p2 are not in range anymore
-                if not now_not_in_range.has(p1):
-                    now_not_in_range[p1] = [p2]
+                if not proximity.has(p1):
+                    proximity[p1] = {"in_range":[], "not_in_range":[p2.name]}
                 else:
-                    now_not_in_range[p1].append(p2)
+                    proximity[p1]["not_in_range"].append(p2.name)
                 
-                if not now_not_in_range.has(p2):
-                    now_not_in_range[p2] = [p1]
+                if not proximity.has(p2):
+                    proximity[p2] = {"in_range":[], "not_in_range":[p1.name]}
                 else:
-                    now_not_in_range[p2].append(p1)
+                    proximity[p2]["not_in_range"].append(p1.name)
                 
                 print(p1.username + " and " + p2.username + " not in range anymore")
                 $CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
             
             players_distances[p1][p2] = dist
             players_distances[p2][p1] = dist
+    
+    for p in proximity:
+        p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
     
 ######     Mission 
 remote func update_score(new_points):
