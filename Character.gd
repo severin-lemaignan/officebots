@@ -8,7 +8,6 @@ onready var anim_player = $AnimationPlayer
 # are oriented to face this player
 var local_player
 var expression = 0 #to export the expression 
-var is_speaking=false 
 var mission 
 var target_for_mission
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
@@ -175,10 +174,11 @@ remote func execute_move_and_slide(linear_velocity):
 remote func execute_puppet_says(msg):
     assert(get_tree().is_network_server())
     
-    is_speaking=true
-    $Timer_is_speaking.start()
-    
     rpc("puppet_says", msg)
+    
+    # execute it as well on the server, for debugging purpose + to track when the players are
+    # speaking in the logs
+    say(msg)
     
 
 remote func execute_puppet_set_expression(msg):
@@ -322,7 +322,7 @@ func on_rotation_finished():
     target_quaternion = null
     quaternion_slerp_progress = 0
     
-func say(text, wait_time=2):
+func say(text, wait_time=4):
     speech_bubble.say(text, speech_bubble.ButtonType.NONE, wait_time)
 
 func distance_to(object):
