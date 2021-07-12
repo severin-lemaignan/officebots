@@ -97,3 +97,7 @@ texture_normal = ExtResource( 3 )
 texture_pressed = ExtResource( 3 )
 texture_hover = ExtResource( 3 )
 expand = true
+
+[node name="is_typing_timer" type="Timer" parent="VBoxContainer/HBoxContainer"]
+wait_time = 2.0
+one_shot = true

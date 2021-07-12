@@ -21,13 +21,26 @@ func flip_left():
 func flip_right():
     $speech_bubble.flip_h = true
 
-    
-func on_time_out():
-    $Tween.interpolate_property(self, "modulate:a", 1.0, 0.0, 1)
+func hide():
+    if is_speaking:
+        return
+        
+    $Tween.remove_all()
+    $Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.1)
     $Tween.start()
 
+
+func typing():
+    $speech_bubble/Label.text = ""
+    $speech_bubble/AnimatedDots.visible = true
     
-func say(text, button_type = ButtonType.NONE, wait_time = 2):
+    $Tween.remove_all()
+    $Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.1)
+    $Tween.start()
+    
+func say(text, button_type = ButtonType.NONE):
+    
+    $speech_bubble/AnimatedDots.visible = false
     
     match button_type:
         ButtonType.NONE:
@@ -48,8 +61,10 @@ func say(text, button_type = ButtonType.NONE, wait_time = 2):
     
     is_speaking = true
     
+    var wait_time = 2 + text.length() / 8
+    
     $Tween.remove_all()
-    $Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.5)
+    $Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.1)
     $Tween.start()
 
     if button_type == ButtonType.NONE:

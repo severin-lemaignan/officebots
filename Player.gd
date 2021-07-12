@@ -69,10 +69,29 @@ puppet func puppet_update_players_in_range(in_range, not_in_range):
     
     # connected to Chat UI in Game.gd
     emit_signal("player_list_updated", players_in_range)
+
+func is_in_range(player):
+    return player in players_in_range
     
-# connect to the UI 'on_chat_msg' signal in Game.gd
+# connect to the Chat UI 'on_chat_msg' signal in Game.gd
 func say(msg):
     rpc_id(1, "execute_puppet_says", msg)
+
+# connect to the Chat UI 'on_chat_msg' signal in Game.gd
+func typing():
+    rpc_id(1, "execute_puppet_typing")
+
+puppet func puppet_typing():
+    # do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
+    pass
+
+# connect to the Chat UI 'on_chat_msg' signal in Game.gd
+func not_typing_anymore():
+    rpc_id(1, "execute_puppet_not_typing_anymore")
+
+puppet func puppet_not_typing_anymore():
+    # do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
+    pass
 
 # connect to the UI 'on_set_expr' signal in Game.gd
 func set_expression(expr):

@@ -407,6 +407,8 @@ func remove_player(id):
     player_info[id]["object"].queue_free()
     
 func add_player(id):
+    # THIS RUNS BOTH ON THE SERVER AND ON THE CLIENTS
+    
     print("Creating character instance for peer #" + str(id))
     var player = preload("res://Character.tscn").instance()
     
@@ -436,6 +438,7 @@ func add_player(id):
         
     else:
         player.call_deferred("enable_collisions", false)
+        player.call_deferred("connect", "player_msg", $CanvasLayer/Chat, "add_msg")
     
     
     player.set_deferred("local_player", local_player)
@@ -515,6 +518,8 @@ remote func pre_configure_game():
     get_node("/root/Game/Players").add_child(local_player)
     
     var _err = $CanvasLayer/Chat.connect("on_chat_msg", local_player, "say")
+    _err = $CanvasLayer/Chat.connect("typing", local_player, "typing")
+    _err = $CanvasLayer/Chat.connect("not_typing_anymore", local_player, "not_typing_anymore")
     _err = local_player.connect("player_list_updated", $CanvasLayer/Chat, "set_list_players_in_range")
     _err = $CanvasLayer/UI.connect("on_expression", local_player, "set_expression")
     
