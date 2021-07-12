@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="Lobby_Start" type="ColorRect"]
+margin_right = 1028.0
+margin_bottom = 606.0
+color = Color( 0.392157, 0.352941, 0.352941, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

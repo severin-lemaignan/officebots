@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://MissionTarget.gd" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1.81854, 1, 1.56773 )
+
+[node name="MissionTarget" type="Area"]
+script = ExtResource( 1 )
+
+[node name="Zone" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.22523, 0, 10.0831 )
+shape = SubResource( 1 )

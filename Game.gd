@@ -275,7 +275,7 @@ func _process(_delta):
             get_tree().network_peer.poll()
         if GameState.mode == GameState.SERVER: 
             update_time()
-            print(mission_ongoing)
+            
         
         if GameState.robots_enabled():
             # only the server polls for the robot websocket server (or the standalone client)
@@ -709,32 +709,60 @@ func mission_free(id):
     
 remote func new_mission(id):
     
-    var nb_missions = 4#get_node("Missions").get_child_count()
-    var id_mission=random_index(nb_missions)
+    var nb_missions = 2#get_node("Missions").get_child_count()
+    var index_mission = random_index (nb_missions)
     var index_target
-    var path_mission = "res://M%s.tscn"%(id_mission+1)
+    var path_mission
+    if $Players.get_child_count()==1: 
+        index_mission=1
+    if index_mission ==0 : 
+        path_mission= "res://Missions/BringSomeoneSomewhere.tscn"
+    if index_mission ==1 : 
+        path_mission = "res://Missions/GoSomewhere.tscn"
     
     var mission = load(path_mission).instance()
+ 
+    var id_mission = mission.id_mission
     
-    while ($Players.get_child_count()==1 and mission.mission_with_target==true) or (mission_free(id_mission)==false):
-        id_mission=random_index(nb_missions)
-        path_mission = "res://M%s.tscn"%(id_mission+1)
-        mission = load(path_mission).instance()
+    mission.player=get_node("Players/%s"%id)
+#    while ($Players.get_child_count()==1 and mission.mission_with_target==true) or (mission_free(id_mission)==false):
+#        id_mission=random_index(nb_missions)
+#        path_mission = "res://M%s.tscn"%(id_mission+1)
+#        mission = load(path_mission).instance()
     mission_ongoing.append(id_mission)
+    
+    
     if mission.mission_with_object == true : 
         mission.object=get_node(mission.object_path)
-    var description = mission.description
+        
+    var index_zone= random_index ($Mission_Target.get_child_count())
+    
+    var zone = get_node("Mission_Target").get_child(index_zone)
+    mission.target_zone=zone
+    var location = zone.get_name()
+    var description 
+
+
     if mission.mission_with_target==true: 
         var nb_players= $Players.get_child_count()
         index_target = random_index(nb_players)
         while int($Players.get_child(index_target).get_name())==int(id): 
             index_target = random_index(nb_players)
-        mission.target=$Players.get_child(index_target)
-        rpc_id(int(id),"show_mission","%s  "%mission.target.get_name()+description)
-    else: 
-        rpc_id(int(id),"show_mission",description)
-            
-    mission.player=get_node("Players/%s"%id)
+        mission.target_player=$Players.get_child(index_target)
+    if mission.id_mission ==0: 
+        description = mission.description + mission.target_player.get_name() + location
+    if mission.id_mission==1: 
+        description = mission.description + location        
+     
+    rpc_id(int(id),"show_mission",description)
+         
+    
+    if mission.id_mission ==0: 
+        mission.set_targets(mission.target_player,mission.target_zone)
+    if mission.id_mission==1: 
+        mission.set_targets(mission.player,mission.target_zone)
+
+    
     #mission.set_name(id)
     get_node("Missions").add_child(mission)   
     
@@ -764,31 +792,31 @@ func are_missions_done():
 
             new_mission(ID)
              
-
-    
-### link mission- Area to end a mission 
-
-func _on_M1_body_entered(body):
-    var node_mission=get_node_or_null("Missions/M1")
-    
-    
-    for m in $Missions.get_children(): 
-        print(m.get_name())
-    if node_mission!=null:
-        node_mission.mission_done()
-        print($Missions.get_child_count())
-    
-    pass # Replace with function body.
-
-
-func _on_M3_body_entered(body):
-    var node_mission=get_node_or_null("Missions/M3")
-    
-    
-    for m in $Missions.get_children(): 
-        print(m.get_name())
-    if node_mission!=null: 
-        node_mission.mission_done()
-        
-    
-    pass # Replace with function body.
+#
+#
+#### link mission- Area to end a mission 
+#
+#func _on_M1_body_entered(body):
+#    var node_mission=get_node_or_null("Missions/M1")
+#
+#
+#    for m in $Missions.get_children(): 
+#        print(m.get_name())
+#    if node_mission!=null:
+#        node_mission.mission_done()
+#        print($Missions.get_child_count())
+#
+#    pass # Replace with function body.
+#
+#
+#func _on_M3_body_entered(body):
+#    var node_mission=get_node_or_null("Missions/M3")
+#
+#
+#    for m in $Missions.get_children(): 
+#        print(m.get_name())
+#    if node_mission!=null: 
+#        node_mission.mission_done()
+#
+#
+#    pass # Replace with function body.

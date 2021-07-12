@@ -6,6 +6,7 @@
 [ext_resource path="res://UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://FakePlayer.gd" type="Script" id=5]
 [ext_resource path="res://CharacterSelection.tscn" type="PackedScene" id=6]
+[ext_resource path="res://MissionTarget.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/white.png" type="Texture" id=11]
 [ext_resource path="res://assets/vignette.png" type="Texture" id=12]
 [ext_resource path="res://vignette.shader" type="Shader" id=13]
@@ -140,15 +141,61 @@ autostart = true
 
 [node name="Mission_Target" type="Spatial" parent="."]
 
-[node name="M1" type="Area" parent="Mission_Target"]
+[node name="End of the corridor" parent="Mission_Target" instance=ExtResource( 8 )]
 
-[node name="CollisionShape" type="CollisionShape" parent="Mission_Target/M1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -1.3 )
-shape = SubResource( 2 )
+[node name="Zone" parent="Mission_Target/End of the corridor" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.3743, 0, -1.37744 )
 
-[node name="M3" type="Area" parent="Mission_Target"]
+[node name="PoolTable" parent="Mission_Target" instance=ExtResource( 8 )]
+transform = Transform( 0.0152012, 0, -0.999884, 0, 1, 0, 0.999884, 0, 0.0152012, 0, 0, -20.1173 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Mission_Target/M3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 2.3, 10, 0, -1.3 )
-shape = SubResource( 3 )
+[node name="Zone" parent="Mission_Target/PoolTable" index="0"]
+transform = Transform( 1, 0, -1.49012e-08, 0, 1, 0, 1.49012e-08, 0, 1, 18.6466, 0, -10.222 )
+
+[node name="Offices" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Offices" index="0"]
+transform = Transform( 0.99911, 0, -0.0421896, 0, 1, 0, 0.0421896, 0, 0.99911, -18.4269, 0, -4.55832 )
+
+[node name="Director Office" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Director Office" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.3046, 0, 1.70854 )
+
+[node name="Lift" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Lift" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.834348, 0, -6.6003 )
+
+[node name="Relaxation Room" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Relaxation Room" index="0"]
+transform = Transform( 0.0184993, 0, -0.999829, 0, 1, 0, 0.999829, 0, 0.0184993, 13.6028, 0, -1.09717 )
+
+[node name="Conference Room " parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Conference Room " index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.4429, 0, -0.903887 )
+
+[node name="Missions" type="Node" parent="."]
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
+[connection signal="body_entered" from="Mission_Target/End of the corridor" to="Mission_Target/End of the corridor" method="_on_MissionTarget2_body_entered"]
+[connection signal="body_entered" from="Mission_Target/Offices" to="Mission_Target/Offices" method="_on_MissionTarget2_body_entered"]
+[connection signal="body_entered" from="Mission_Target/Director Office" to="Mission_Target/Director Office" method="_on_MissionTarget2_body_entered"]
+[connection signal="body_entered" from="Mission_Target/Lift" to="Mission_Target/Lift" method="_on_MissionTarget2_body_entered"]
+[connection signal="body_entered" from="Mission_Target/Relaxation Room" to="Mission_Target/Relaxation Room" method="_on_MissionTarget2_body_entered"]
+[connection signal="body_entered" from="Mission_Target/Conference Room " to="Mission_Target/Conference Room " method="_on_MissionTarget2_body_entered"]
+
+[editable path="Mission_Target/End of the corridor"]
+
+[editable path="Mission_Target/PoolTable"]
+
+[editable path="Mission_Target/Offices"]
+
+[editable path="Mission_Target/Director Office"]
+
+[editable path="Mission_Target/Lift"]
+
+[editable path="Mission_Target/Relaxation Room"]
+
+[editable path="Mission_Target/Conference Room "]
