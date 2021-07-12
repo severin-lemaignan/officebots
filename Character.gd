@@ -22,6 +22,9 @@ var dialogue_is_finished
 var response
 enum state {WAITING_FOR_ANSWER, ANSWER_RECIEVED}
 
+# emitted when this character says something within Player's range
+signal player_msg
+
 
 var quaternion_slerp_progress = 0
 var original_orientation
@@ -64,7 +67,7 @@ func _ready():
     # created
     set_physics_process(false)
     
-    #say("My name is " + username, 5)
+    #say("My name is " + username)
 
 
 # gaze control does not work due to animations overriding head pose    
@@ -111,11 +114,7 @@ func set_close_up_camera():
 func i_am_a_character():
     pass
     
-puppet func puppet_says(msg):
-    print("Got something to say: " + msg)
-    
-    # TODO: only do it if player in audible range
-    say(msg)
+
     
 puppet func set_puppet_transform(puppet_transform):
 
@@ -171,14 +170,41 @@ remote func execute_move_and_slide(linear_velocity):
     
 remote func execute_puppet_says(msg):
     assert(get_tree().is_network_server())
-    
     rpc("puppet_says", msg)
     
     # execute it as well on the server, for debugging purpose + to track when the players are
     # speaking in the logs
     say(msg)
-    
 
+puppet func puppet_says(msg):
+    print("Got something to say: " + msg)
+    
+    if local_player.is_in_range(self):
+        say(msg)
+        
+        # connected to the Chat interface in Game.gd
+        emit_signal("player_msg", msg, username, false)
+        
+remote func execute_puppet_typing():
+    assert(get_tree().is_network_server())
+    rpc("puppet_typing")
+    typing()
+
+puppet func puppet_typing():
+
+    if local_player.is_in_range(self):
+        typing()
+
+remote func execute_puppet_not_typing_anymore():
+    assert(get_tree().is_network_server())
+    rpc("puppet_not_typing_anymore")
+    not_typing_anymore()
+
+puppet func puppet_not_typing_anymore():
+
+    if local_player.is_in_range(self):
+        not_typing_anymore()
+        
 remote func execute_puppet_set_expression(msg):
     expression = msg
     assert(get_tree().is_network_server())
@@ -320,9 +346,15 @@ func on_rotation_finished():
     target_quaternion = null
     quaternion_slerp_progress = 0
     
-func say(text, wait_time=4):
-    speech_bubble.say(text, speech_bubble.ButtonType.NONE, wait_time)
+func say(text):
+    speech_bubble.say(text, speech_bubble.ButtonType.NONE)
 
+func typing():
+    speech_bubble.typing()
+    
+func not_typing_anymore():
+    speech_bubble.hide()
+    
 func distance_to(object):
     return get_global_transform().origin.distance_to(object.get_global_transform().origin)
 
