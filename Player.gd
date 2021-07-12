@@ -59,10 +59,13 @@ puppet func puppet_update_players_in_range(in_range, not_in_range):
     
     if in_range.empty() and not_in_range.empty():
         return
-        
-    players_in_range.append_array(in_range)
-    for p in not_in_range:
-        players_in_range.erase(p)
+    
+    for id in in_range:
+        var player = get_node("/root/Game/Players/" + id)
+        players_in_range.append(player)
+    for id in not_in_range:
+        var player = get_node("/root/Game/Players/" + id)
+        players_in_range.erase(player)
     
     # connected to Chat UI in Game.gd
     emit_signal("player_list_updated", players_in_range)
