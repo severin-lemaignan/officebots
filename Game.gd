@@ -22,7 +22,7 @@ var SERVER_PORT=6969
 
 var time_start=0 
 var time_now=0
-var total_time = 600 #total time of the game in seconds
+var total_time = 15 #total time of the game in seconds
 
 
 var is_networking_started
@@ -393,7 +393,7 @@ remote func register_player(info):
     player_info[id] = info
     
     add_player(id)
-
+    
     if get_tree().is_network_server():
         print("Player " + player_info[id]["name"] + " (peer id #" + str(id) + "): registration & initialization complete")
         
@@ -559,10 +559,16 @@ remote func done_preconfiguring(who):
     
     players_done.append(who)
     rpc_id(who,"show_lobby")
+    
+       
     # start the game immediately for whoever is connecting, passing the
     # start location of the player
+    
+    update_lobby()
+    
     if players_done.size()==MIN_PLAYERS:
-        for p in players_done: 
+        for p in players_done:
+            
             rpc_id(p, "post_configure_game", player_info[p]["start_location"])
             new_mission(p)
             rpc_id(p,"hide_lobby")
@@ -649,8 +655,22 @@ func time_played():
 
 func update_time(): 
     var time_sec = total_time - time_played()
-    if time_sec ==0: 
+    if time_sec == 0: 
         show_message(' Time out !  END OF THE GAME')
+        var max_score= 0 
+        var ranking=[]
+        var list_score=[]
+        for p in $Players.get_children(): 
+            if p.score >max_score: 
+                max_score=p.score
+        for i in range(max_score+2,-1,-1): 
+            for p in $Players.get_children(): 
+                if p.score ==i:
+                    var name = player_info[int(p.get_name())]["name"]
+                    ranking.append(str(name))
+                    list_score.append(str(i))
+        for p in $Players.get_children(): 
+            rpc_id(int(p.get_name()),"show_lobby_end",ranking,list_score)
     else : 
         var time_min =0
         while time_sec>59: 
@@ -787,6 +807,7 @@ func are_missions_done():
             var ID = m.player.get_name()
             rpc_id(int(ID), "show_message","Mission Done ! ")
             rpc_id(int(ID),"update_score",1)
+            get_node("Players/%s"%int(ID)).score+=1
             
             m.free()
             var i = mission_ongoing.find(id_mission)
@@ -801,4 +822,32 @@ remote func show_lobby():
     $CanvasLayer/UI/Lobby_Start.show_lobby()
 remote func hide_lobby(): 
     $CanvasLayer/UI/Lobby_Start.hide_lobby()
+    
+    
+func update_lobby():
+    var number_player=players_done.size()+1
+    print("dans update lobby ")
+    for i in range (number_player-1):
+        
+        var id_player=players_done[i-1]
+        
+        var name_player = player_info[id_player]["name"]
+        for p in $Players.get_children(): 
+            rpc_id(int(p.get_name()),"add_player_lobby",i+1,name_player) 
+        
+        
+remote func add_player_lobby(player,name): 
+       get_node("CanvasLayer/UI/Lobby_Start/VBoxContainer/Player%s"%player).text="Player %s  : "%player + name
+
+remote func show_lobby_end(ranking,list_score): 
+    $CanvasLayer/UI/Lobby_End.show_lobby()
+    print("in show_lobby end")
+    print(ranking)
+    print(list_score)
+    
+    var i = 1
+    for p in ranking:
+        var score = list_score[i-1]
+        get_node("CanvasLayer/UI/Lobby_End/HBoxContainer/VBoxContainer2/Player%s"%i).text= str(p)+ " " + str(score) + " points"
+        i+=1
     

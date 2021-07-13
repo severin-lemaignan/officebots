@@ -1,0 +1,187 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Lobby_End.gd" type="Script" id=1]
+[ext_resource path="res://default_theme.tres" type="Theme" id=2]
+
+[node name="Lobby_End" type="ColorRect"]
+margin_right = 1021.0
+margin_bottom = 605.0
+theme = ExtResource( 2 )
+color = Color( 0.27451, 0.188235, 0.188235, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 214.0
+margin_top = 13.0
+margin_right = 1012.0
+margin_bottom = 62.0
+theme = ExtResource( 2 )
+text = "Time Over ! End of the game ! "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 170.0
+margin_top = 85.0
+margin_right = 1000.0
+margin_bottom = 584.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 125.0
+margin_bottom = 499.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_right = 125.0
+margin_bottom = 79.0
+theme = ExtResource( 2 )
+text = "Position 
+"
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 83.0
+margin_right = 125.0
+margin_bottom = 121.0
+theme = ExtResource( 2 )
+text = "1"
+
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 125.0
+margin_right = 125.0
+margin_bottom = 163.0
+theme = ExtResource( 2 )
+text = "2"
+
+[node name="Label4" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 167.0
+margin_right = 125.0
+margin_bottom = 205.0
+theme = ExtResource( 2 )
+text = "3"
+
+[node name="Label5" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 209.0
+margin_right = 125.0
+margin_bottom = 247.0
+theme = ExtResource( 2 )
+text = "4"
+
+[node name="Label6" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 251.0
+margin_right = 125.0
+margin_bottom = 289.0
+theme = ExtResource( 2 )
+text = "5"
+
+[node name="Label7" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 293.0
+margin_right = 125.0
+margin_bottom = 331.0
+theme = ExtResource( 2 )
+text = "6"
+
+[node name="Label8" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 335.0
+margin_right = 125.0
+margin_bottom = 373.0
+theme = ExtResource( 2 )
+text = "7"
+
+[node name="Label9" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 377.0
+margin_right = 125.0
+margin_bottom = 415.0
+theme = ExtResource( 2 )
+text = "8"
+
+[node name="Label10" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 419.0
+margin_right = 125.0
+margin_bottom = 457.0
+theme = ExtResource( 2 )
+text = "9"
+
+[node name="Label11" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 461.0
+margin_right = 125.0
+margin_bottom = 499.0
+theme = ExtResource( 2 )
+text = "10"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 129.0
+margin_right = 212.0
+margin_bottom = 499.0
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_right = 83.0
+margin_bottom = 79.0
+theme = ExtResource( 2 )
+text = "Name
+"
+
+[node name="Player1" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 83.0
+margin_right = 83.0
+margin_bottom = 121.0
+theme = ExtResource( 2 )
+
+[node name="Player2" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 125.0
+margin_right = 83.0
+margin_bottom = 163.0
+theme = ExtResource( 2 )
+
+[node name="Player3" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 167.0
+margin_right = 83.0
+margin_bottom = 205.0
+theme = ExtResource( 2 )
+
+[node name="Player4" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 209.0
+margin_right = 83.0
+margin_bottom = 247.0
+theme = ExtResource( 2 )
+
+[node name="Player5" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 251.0
+margin_right = 83.0
+margin_bottom = 289.0
+theme = ExtResource( 2 )
+
+[node name="Player6" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 293.0
+margin_right = 83.0
+margin_bottom = 331.0
+theme = ExtResource( 2 )
+
+[node name="Player7" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 335.0
+margin_right = 83.0
+margin_bottom = 373.0
+theme = ExtResource( 2 )
+
+[node name="Player8" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 377.0
+margin_right = 83.0
+margin_bottom = 415.0
+theme = ExtResource( 2 )
+
+[node name="Player9" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 419.0
+margin_right = 83.0
+margin_bottom = 457.0
+theme = ExtResource( 2 )
+
+[node name="Player10" type="Label" parent="HBoxContainer/VBoxContainer2"]
+margin_top = 461.0
+margin_right = 83.0
+margin_bottom = 499.0
+theme = ExtResource( 2 )

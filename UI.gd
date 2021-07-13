@@ -96,7 +96,7 @@ remote func set_mission_description(description):
     
 remote func show_message(text): 
     $Message.text = text
-    print("in show message UI ")
+    
     $Message.show()
     $MessageTimer.start()
 

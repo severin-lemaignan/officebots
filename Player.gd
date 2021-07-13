@@ -2,7 +2,7 @@ extends KinematicBody
 
 # mouselook + motion based on godot FPS tutorial:
 # https://docs.godotengine.org/en/stable/tutorials/3d/fps_tutorial/part_one.html
-
+var score=0
 var vel = Vector3.ZERO
 var prev_vel = Vector3.ZERO
 

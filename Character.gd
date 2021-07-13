@@ -33,7 +33,7 @@ var last_location
 var total_delta = 0.0
 var anim_to_play = "Idle"
 var current_anim
-
+var score=0
 var pickedup_object_original_parent
 var pickedup_object
 
