@@ -1,9 +1,37 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://default_theme.tres" type="Theme" id=1]
+[ext_resource path="res://Lobby_Start.gd" type="Script" id=2]
 
 [node name="Lobby_Start" type="ColorRect"]
-margin_right = 1028.0
-margin_bottom = 606.0
-color = Color( 0.392157, 0.352941, 0.352941, 1 )
+margin_right = 1019.0
+margin_bottom = 601.0
+color = Color( 0.509804, 0.337255, 0.337255, 1 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 153.0
+margin_top = 232.0
+margin_right = 887.0
+margin_bottom = 587.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 734.0
+margin_bottom = 38.0
+theme = ExtResource( 1 )
+text = "Player 12345678"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 80.0
+margin_top = 43.0
+margin_right = 760.0
+margin_bottom = 125.0
+theme = ExtResource( 1 )
+text = "Welcome to Office Bots, 
+please wait for other players "

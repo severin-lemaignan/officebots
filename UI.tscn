@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://ProgressButton.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/icons/emoji-excited.svg" type="Texture" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://TransientMessage.gd" type="Script" id=21]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=22]
 [ext_resource path="res://Settings.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Lobby_Start.tscn" type="PackedScene" id=24]
 [ext_resource path="res://assets/icons/robot-sleepy-hover.svg" type="Texture" id=28]
 [ext_resource path="res://assets/icons/robot-sleepy.svg" type="Texture" id=29]
 
@@ -324,4 +325,7 @@ margin_bottom = 14.0
 theme = ExtResource( 14 )
 text = "Score: 0 
 "
+
+[node name="Lobby_Start" parent="." instance=ExtResource( 24 )]
+visible = false
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
