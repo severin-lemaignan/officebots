@@ -4,7 +4,7 @@
 [ext_resource path="res://Lobby_Start.gd" type="Script" id=2]
 
 [node name="Lobby_Start" type="ColorRect"]
-margin_right = 1019.0
+margin_right = 1031.0
 margin_bottom = 601.0
 color = Color( 0.509804, 0.337255, 0.337255, 1 )
 script = ExtResource( 2 )
@@ -35,3 +35,6 @@ margin_bottom = 125.0
 theme = ExtResource( 1 )
 text = "Welcome to Office Bots, 
 please wait for other players "
+__meta__ = {
+"_edit_use_anchors_": false
+}

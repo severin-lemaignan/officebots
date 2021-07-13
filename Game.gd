@@ -38,6 +38,7 @@ var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
+var MIN_PLAYERS = 2
 
 export(String) var username = "John Doe"
 
@@ -59,7 +60,7 @@ func _ready():
     
     $CanvasLayer/Effects/VignetteEffect.visible = enable_focus_blur
     
-    time_start= OS.get_unix_time()
+    
         
     
     randomize()
@@ -557,12 +558,15 @@ remote func done_preconfiguring(who):
     print("Player #" + str(who) + " is ready.")
     
     players_done.append(who)
-
+    rpc_id(who,"show_lobby")
     # start the game immediately for whoever is connecting, passing the
     # start location of the player
-    
-    rpc_id(who, "post_configure_game", player_info[who]["start_location"])
-    new_mission(who)
+    if players_done.size()==MIN_PLAYERS:
+        for p in players_done: 
+            rpc_id(p, "post_configure_game", player_info[p]["start_location"])
+            new_mission(p)
+            rpc_id(p,"hide_lobby")
+            time_start= OS.get_unix_time()
 var debug_points = []
 
 # draws a point at a given position in the world coordinates
@@ -792,31 +796,9 @@ func are_missions_done():
 
             new_mission(ID)
              
-#
-#
-#### link mission- Area to end a mission 
-#
-#func _on_M1_body_entered(body):
-#    var node_mission=get_node_or_null("Missions/M1")
-#
-#
-#    for m in $Missions.get_children(): 
-#        print(m.get_name())
-#    if node_mission!=null:
-#        node_mission.mission_done()
-#        print($Missions.get_child_count())
-#
-#    pass # Replace with function body.
-#
-#
-#func _on_M3_body_entered(body):
-#    var node_mission=get_node_or_null("Missions/M3")
-#
-#
-#    for m in $Missions.get_children(): 
-#        print(m.get_name())
-#    if node_mission!=null: 
-#        node_mission.mission_done()
-#
-#
-#    pass # Replace with function body.
+######### LOBBY
+remote func show_lobby(): 
+    $CanvasLayer/UI/Lobby_Start.show_lobby()
+remote func hide_lobby(): 
+    $CanvasLayer/UI/Lobby_Start.hide_lobby()
+    
