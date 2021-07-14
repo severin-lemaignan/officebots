@@ -37,7 +37,7 @@ var player_skin
 var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
-var MAX_PLAYERS = 10
+var MAX_PLAYERS = 3
 var MIN_PLAYERS = 2
 
 export(String) var username = "John Doe"
@@ -567,12 +567,12 @@ remote func done_preconfiguring(who):
     update_lobby()
     
     if players_done.size()==MIN_PLAYERS:
-        for p in players_done:
-            
-            rpc_id(p, "post_configure_game", player_info[p]["start_location"])
-            new_mission(p)
-            rpc_id(p,"hide_lobby")
-            time_start= OS.get_unix_time()
+        $Timer_Lobby.start()
+    if players_done.size()==MAX_PLAYERS:
+        $Timer_Lobby.stop()
+        end_lobby()
+        
+
 var debug_points = []
 
 # draws a point at a given position in the world coordinates
@@ -851,3 +851,14 @@ remote func show_lobby_end(ranking,list_score):
         get_node("CanvasLayer/UI/Lobby_End/HBoxContainer/VBoxContainer2/Player%s"%i).text= str(p)+ " " + str(score) + " points"
         i+=1
     
+func end_lobby(): 
+    for p in players_done:
+            
+        rpc_id(p, "post_configure_game", player_info[p]["start_location"])
+        new_mission(p)
+        rpc_id(p,"hide_lobby")
+        time_start= OS.get_unix_time()
+
+func _on_Timer_Lobby_timeout():
+    end_lobby()
+    pass # Replace with function body.

@@ -31,92 +31,92 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 499.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 79.0
 theme = ExtResource( 2 )
-text = "Position 
+text = "Ranking   
 "
 
 [node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 83.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 121.0
 theme = ExtResource( 2 )
 text = "1"
 
 [node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 125.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 163.0
 theme = ExtResource( 2 )
 text = "2"
 
 [node name="Label4" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 167.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 205.0
 theme = ExtResource( 2 )
 text = "3"
 
 [node name="Label5" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 209.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 247.0
 theme = ExtResource( 2 )
 text = "4"
 
 [node name="Label6" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 251.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 289.0
 theme = ExtResource( 2 )
 text = "5"
 
 [node name="Label7" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 293.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 331.0
 theme = ExtResource( 2 )
 text = "6"
 
 [node name="Label8" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 335.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 373.0
 theme = ExtResource( 2 )
 text = "7"
 
 [node name="Label9" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 377.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 415.0
 theme = ExtResource( 2 )
 text = "8"
 
 [node name="Label10" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 419.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 457.0
 theme = ExtResource( 2 )
 text = "9"
 
 [node name="Label11" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 461.0
-margin_right = 125.0
+margin_right = 139.0
 margin_bottom = 499.0
 theme = ExtResource( 2 )
 text = "10"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 129.0
-margin_right = 212.0
+margin_left = 143.0
+margin_right = 226.0
 margin_bottom = 499.0
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2"]

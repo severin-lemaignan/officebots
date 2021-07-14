@@ -6,7 +6,7 @@
 [node name="Lobby_Start" type="ColorRect"]
 margin_right = 1031.0
 margin_bottom = 601.0
-color = Color( 0.509804, 0.337255, 0.337255, 1 )
+color = Color( 0.243137, 0.156863, 0.156863, 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
