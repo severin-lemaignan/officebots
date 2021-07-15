@@ -398,8 +398,3 @@ func quaternions_distance(q1, q2):
 #
 
 
-
-# Once the client is speaking, the var is_speaking is true for the next 5 seconds 
-func _on_Timer_is_speaking_timeout():
-    is_speaking=false
-
