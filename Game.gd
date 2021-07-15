@@ -37,7 +37,7 @@ var player_skin
 var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
-var MAX_PLAYERS = 3
+var MAX_PLAYERS = 10
 var MIN_PLAYERS = 2
 
 export(String) var username = "John Doe"
@@ -62,10 +62,12 @@ onready var navmesh = $MainOffice.get_navmesh()
 func _ready():
     
     $CanvasLayer/Effects/VignetteEffect.visible = enable_focus_blur
-    
+    $Timer_Lobby.connect("timeout",self,"_on_Timer_Lobby_timeout")
     $Timer_Lobby.wait_time = 10
     $Timer_Lobby.one_shot = true
-        
+    
+    $timer_save.wait_time = 1
+    $timer_save.one_shot = false 
     
     randomize()
     
@@ -928,12 +930,13 @@ remote func show_lobby_end(ranking,list_score):
         i+=1
     
 func end_lobby(): 
+    time_start= OS.get_unix_time()
     for p in players_done:
             
         rpc_id(p, "post_configure_game", player_info[p]["start_location"])
         new_mission(p)
         rpc_id(p,"hide_lobby")
-        time_start= OS.get_unix_time()
+        
 
 func _on_Timer_Lobby_timeout():
     end_lobby()
