@@ -60,7 +60,8 @@ func _ready():
     
     $CanvasLayer/Effects/VignetteEffect.visible = enable_focus_blur
     
-    
+    $Timer_Lobby.wait_time = 10
+    $Timer_Lobby.one_shot = true
         
     
     randomize()
