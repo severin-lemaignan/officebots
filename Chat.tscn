@@ -1,9 +1,15 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Chat.gd" type="Script" id=1]
 [ext_resource path="res://PresenceLabel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/icons/send-circle.svg" type="Texture" id=3]
 [ext_resource path="res://default_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/icons/tired.svg" type="Texture" id=5]
+[ext_resource path="res://assets/icons/laughing.svg" type="Texture" id=6]
+[ext_resource path="res://assets/icons/happy.svg" type="Texture" id=7]
+[ext_resource path="res://assets/icons/smily.svg" type="Texture" id=8]
+[ext_resource path="res://assets/icons/unknown.svg" type="Texture" id=9]
+[ext_resource path="res://ReactionBtn.gd" type="Script" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0745098, 0.0666667, 0.0666667, 1 )
@@ -36,7 +42,7 @@ __meta__ = {
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 margin_right = 191.0
-margin_bottom = 528.0
+margin_bottom = 486.0
 grow_vertical = 0
 size_flags_vertical = 3
 follow_focus = true
@@ -47,7 +53,7 @@ __meta__ = {
 
 [node name="Msgs" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
 margin_right = 191.0
-margin_bottom = 528.0
+margin_bottom = 486.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 2
@@ -57,9 +63,9 @@ __meta__ = {
 }
 
 [node name="ListPlayersInRange" type="VBoxContainer" parent="VBoxContainer"]
-margin_top = 532.0
+margin_top = 490.0
 margin_right = 191.0
-margin_bottom = 550.0
+margin_bottom = 508.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -69,9 +75,9 @@ __meta__ = {
 margin_bottom = 18.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 554.0
+margin_top = 512.0
 margin_right = 191.0
-margin_bottom = 594.0
+margin_bottom = 552.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -101,3 +107,61 @@ expand = true
 [node name="is_typing_timer" type="Timer" parent="VBoxContainer/HBoxContainer"]
 wait_time = 2.0
 one_shot = true
+
+[node name="ReactionsContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 556.0
+margin_right = 191.0
+margin_bottom = 594.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HappyBtn" type="TextureButton" parent="VBoxContainer/ReactionsContainer"]
+margin_right = 38.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 38, 38 )
+texture_normal = ExtResource( 7 )
+expand = true
+script = ExtResource( 10 )
+reaction = ":happy:"
+
+[node name="SmilyBtn" type="TextureButton" parent="VBoxContainer/ReactionsContainer"]
+margin_left = 38.0
+margin_right = 76.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 38, 38 )
+texture_normal = ExtResource( 8 )
+expand = true
+script = ExtResource( 10 )
+reaction = ":smily:"
+
+[node name="LaughingBtn" type="TextureButton" parent="VBoxContainer/ReactionsContainer"]
+margin_left = 76.0
+margin_right = 114.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 38, 38 )
+texture_normal = ExtResource( 6 )
+expand = true
+script = ExtResource( 10 )
+reaction = ":laughing:"
+
+[node name="ConfusedBtn" type="TextureButton" parent="VBoxContainer/ReactionsContainer"]
+margin_left = 114.0
+margin_right = 152.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 38, 38 )
+texture_normal = ExtResource( 9 )
+expand = true
+script = ExtResource( 10 )
+reaction = ":confused:"
+
+[node name="BoredBtn" type="TextureButton" parent="VBoxContainer/ReactionsContainer"]
+margin_left = 152.0
+margin_right = 190.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 38, 38 )
+texture_normal = ExtResource( 5 )
+expand = true
+script = ExtResource( 10 )
+reaction = ":bored:"

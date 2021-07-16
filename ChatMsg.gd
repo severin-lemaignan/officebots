@@ -1,6 +1,13 @@
 extends MarginContainer
 class_name ChatMsg
 
+var reaction_happy = preload("res://assets/icons/happy.svg")
+var reaction_smily = preload("res://assets/icons/smily.svg")
+var reaction_laughing = preload("res://assets/icons/laughing.svg")
+var reaction_confused = preload("res://assets/icons/unknown.svg")
+var reaction_bored = preload("res://assets/icons/tired.svg")
+
+
 var margin_value = 14
 var own_msg_style = preload("ChatMsgOwn.tres")
 var others_msg_style = preload("ChatMsg.tres")
@@ -26,11 +33,36 @@ func set_own_msg(own_msg):
 
 
 func set_text(msg, author=null):
+    
     if not author:
         $Container/VBoxContainer/Author.visible = false
     else:
-        $Container/VBoxContainer/Author.bbcode_text = "[b][color=#347661]" + author + "[/color][/b]"
+        $Container/VBoxContainer/Author.bbcode_text = "[b][color=#236550]" + author + "[/color][/b]"
         $Container/VBoxContainer/Author.visible = true
-        
-    $Container/VBoxContainer/Text.text = msg
+    
+    
+    if msg == ":happy:":
+        $Container/VBoxContainer/Text.visible = false
+        $Container/VBoxContainer/ReactionContainer.visible = true
+        $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_happy
+    elif msg == ":smily:":
+        $Container/VBoxContainer/Text.visible = false
+        $Container/VBoxContainer/ReactionContainer.visible = true
+        $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_smily
+    elif msg == ":laughing:":
+        $Container/VBoxContainer/Text.visible = false
+        $Container/VBoxContainer/ReactionContainer.visible = true
+        $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_laughing
+    elif msg == ":confused:":
+        $Container/VBoxContainer/Text.visible = false
+        $Container/VBoxContainer/ReactionContainer.visible = true
+        $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_confused
+    elif msg == ":bored:":
+        $Container/VBoxContainer/Text.visible = false
+        $Container/VBoxContainer/ReactionContainer.visible = true
+        $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_bored
+    else:
+        $Container/VBoxContainer/Text.text = msg
+        $Container/VBoxContainer/Text.visible = true
+        $Container/VBoxContainer/ReactionContainer.visible = false
     

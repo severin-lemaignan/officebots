@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/emoji-excited.svg-e776c54dfa6a81b4367772f43f15b43f.stex"
+path="res://.import/laughing.svg-7600dd181efff78ba3b188ecfa39e82c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/emoji-excited.svg"
-dest_files=[ "res://.import/emoji-excited.svg-e776c54dfa6a81b4367772f43f15b43f.stex" ]
+source_file="res://assets/icons/laughing.svg"
+dest_files=[ "res://.import/laughing.svg-7600dd181efff78ba3b188ecfa39e82c.stex" ]
 
 [params]
 
