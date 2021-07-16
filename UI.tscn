@@ -1,25 +1,11 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://ProgressButton.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/icons/emoji-excited.svg" type="Texture" id=2]
-[ext_resource path="res://assets/icons/emoji-confused.svg" type="Texture" id=3]
-[ext_resource path="res://assets/icons/emoji-confused-active.svg" type="Texture" id=4]
-[ext_resource path="res://assets/icons/emoji-sad.svg" type="Texture" id=5]
 [ext_resource path="res://assets/characters/char1.png" type="Texture" id=6]
-[ext_resource path="res://assets/icons/emoji-sad-active.svg" type="Texture" id=7]
-[ext_resource path="res://assets/icons/emoji-happy.svg" type="Texture" id=8]
-[ext_resource path="res://assets/icons/emoji-angry.svg" type="Texture" id=9]
-[ext_resource path="res://assets/icons/emoji-happy-active.svg" type="Texture" id=10]
-[ext_resource path="res://assets/icons/emoji-angry-active.svg" type="Texture" id=11]
 [ext_resource path="res://assets/icons/timer-outline.svg" type="Texture" id=12]
 [ext_resource path="res://assets/icons/settings.svg" type="Texture" id=13]
 [ext_resource path="res://default_theme.tres" type="Theme" id=14]
 [ext_resource path="res://assets/icons/timer-outline-hover.svg" type="Texture" id=15]
-[ext_resource path="res://assets/icons/emoji-excited-active.svg" type="Texture" id=16]
-[ext_resource path="res://assets/icons/hand-hover.svg" type="Texture" id=17]
-[ext_resource path="res://assets/icons/hand.svg" type="Texture" id=18]
 [ext_resource path="res://UI.gd" type="Script" id=19]
-[ext_resource path="res://ExpressionGroup.gd" type="Script" id=20]
 [ext_resource path="res://TransientMessage.gd" type="Script" id=21]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=22]
 [ext_resource path="res://Settings.tscn" type="PackedScene" id=23]
@@ -49,73 +35,11 @@ __meta__ = {
 }
 
 [node name="Control" type="Control" parent="Bottom"]
-margin_right = 670.0
+margin_right = 1004.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
-}
-
-[node name="Actions" type="HBoxContainer" parent="Bottom"]
-margin_left = 674.0
-margin_right = 1004.0
-margin_bottom = 80.0
-
-[node name="ExpressionGroup" type="HBoxContainer" parent="Bottom/Actions"]
-margin_right = 266.0
-margin_bottom = 80.0
-script = ExtResource( 20 )
-
-[node name="happy" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
-margin_bottom = 80.0
-rect_min_size = Vector2( 50, 80 )
-normal = ExtResource( 8 )
-pressed = ExtResource( 10 )
-timer = false
-
-[node name="excited" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
-margin_left = 54.0
-margin_right = 104.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 50, 80 )
-normal = ExtResource( 2 )
-pressed = ExtResource( 16 )
-
-[node name="confused" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
-margin_left = 108.0
-margin_right = 158.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 50, 80 )
-normal = ExtResource( 3 )
-pressed = ExtResource( 4 )
-
-[node name="sad" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
-margin_left = 162.0
-margin_right = 212.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 50, 80 )
-normal = ExtResource( 5 )
-pressed = ExtResource( 7 )
-
-[node name="angry" parent="Bottom/Actions/ExpressionGroup" instance=ExtResource( 1 )]
-margin_left = 216.0
-margin_right = 266.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 50, 80 )
-normal = ExtResource( 9 )
-pressed = ExtResource( 11 )
-
-[node name="wave" type="TextureButton" parent="Bottom/Actions"]
-margin_left = 270.0
-margin_right = 330.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 18 )
-texture_hover = ExtResource( 17 )
-expand = true
-stretch_mode = 4
-__meta__ = {
-"_editor_description_": ""
 }
 
 [node name="Top" type="HBoxContainer" parent="."]
@@ -129,7 +53,7 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Top"]
-margin_right = 214.0
+margin_right = 149.0
 margin_bottom = 80.0
 
 [node name="Portrait" type="TextureRect" parent="Top/HBoxContainer2"]
@@ -143,56 +67,57 @@ stretch_mode = 6
 
 [node name="NameBox" type="VBoxContainer" parent="Top/HBoxContainer2"]
 margin_left = 104.0
-margin_right = 214.0
+margin_right = 149.0
 margin_bottom = 80.0
 
 [node name="Name" type="Label" parent="Top/HBoxContainer2/NameBox"]
-margin_right = 110.0
-margin_bottom = 38.0
+margin_right = 45.0
+margin_bottom = 17.0
 theme = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Séverin"
 
 [node name="Control" type="Control" parent="Top"]
-margin_left = 218.0
-margin_right = 399.0
+margin_left = 153.0
+margin_right = 621.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Top"]
-margin_left = 403.0
-margin_right = 613.0
+margin_left = 625.0
+margin_right = 714.0
 margin_bottom = 80.0
 grow_horizontal = 0
 alignment = 1
 
 [node name="Label" type="Label" parent="Top/VBoxContainer"]
-margin_right = 210.0
+margin_top = 21.0
+margin_right = 89.0
 margin_bottom = 38.0
 theme = ExtResource( 14 )
 text = "Your Mission : "
 
 [node name="Missiondescription" type="Label" parent="Top/VBoxContainer"]
 margin_top = 42.0
-margin_right = 210.0
-margin_bottom = 80.0
+margin_right = 89.0
+margin_bottom = 59.0
 theme = ExtResource( 14 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Top"]
-margin_left = 617.0
+margin_left = 718.0
 margin_right = 1004.0
 margin_bottom = 80.0
 
 [node name="Score" type="Label" parent="Top/HBoxContainer"]
-margin_top = 21.0
-margin_right = 171.0
-margin_bottom = 59.0
+margin_top = 31.0
+margin_right = 70.0
+margin_bottom = 48.0
 theme = ExtResource( 14 )
 text = "Score :  0     "
 
 [node name="robot" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 175.0
-margin_right = 235.0
+margin_left = 74.0
+margin_right = 134.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 29 )
@@ -204,15 +129,15 @@ __meta__ = {
 }
 
 [node name="spacer" type="Control" parent="Top/HBoxContainer"]
-margin_left = 239.0
-margin_right = 259.0
+margin_left = 138.0
+margin_right = 158.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 20, 0 )
 size_flags_horizontal = 3
 
 [node name="away" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 263.0
-margin_right = 323.0
+margin_left = 162.0
+margin_right = 222.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 12 )
@@ -224,8 +149,8 @@ __meta__ = {
 }
 
 [node name="settings" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 327.0
-margin_right = 387.0
+margin_left = 226.0
+margin_right = 286.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 13 )

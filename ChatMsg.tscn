@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ChatMsg.gd" type="Script" id=1]
 [ext_resource path="res://ChatMsgOwn.tres" type="StyleBox" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://default_boldfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://default_italicfont.tres" type="DynamicFont" id=5]
 [ext_resource path="res://default_font.tres" type="DynamicFont" id=6]
+[ext_resource path="res://assets/icons/happy.svg" type="Texture" id=7]
 
 [node name="ChatMsg" type="MarginContainer"]
 anchor_right = 1.0
@@ -22,12 +23,12 @@ __meta__ = {
 margin_left = 14.0
 margin_top = 14.0
 margin_right = 1010.0
-margin_bottom = 53.0
+margin_bottom = 107.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Container"]
 margin_right = 996.0
-margin_bottom = 39.0
+margin_bottom = 93.0
 
 [node name="Author" type="RichTextLabel" parent="Container/VBoxContainer"]
 margin_right = 996.0
@@ -41,10 +42,25 @@ text = "User A"
 fit_content_height = true
 scroll_active = false
 
-[node name="Text" type="Label" parent="Container/VBoxContainer"]
+[node name="ReactionContainer" type="CenterContainer" parent="Container/VBoxContainer"]
 margin_top = 22.0
 margin_right = 996.0
-margin_bottom = 39.0
+margin_bottom = 72.0
+
+[node name="Reaction" type="TextureRect" parent="Container/VBoxContainer/ReactionContainer"]
+margin_left = 473.0
+margin_right = 523.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="Text" type="Label" parent="Container/VBoxContainer"]
+margin_top = 76.0
+margin_right = 996.0
+margin_bottom = 93.0
 custom_fonts/font = ExtResource( 6 )
 text = "This is a message. Cool cool cool"
 autowrap = true

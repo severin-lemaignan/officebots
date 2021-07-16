@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/emoji-confused-active.svg-29f5895a8d6585d2a8a342c5ef9a9584.stex"
+path="res://.import/smily.svg-f08c9e2c5ae4e14f736ef7123be52238.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/emoji-confused-active.svg"
-dest_files=[ "res://.import/emoji-confused-active.svg-29f5895a8d6585d2a8a342c5ef9a9584.stex" ]
+source_file="res://assets/icons/smily.svg"
+dest_files=[ "res://.import/smily.svg-f08c9e2c5ae4e14f736ef7123be52238.stex" ]
 
 [params]
 
