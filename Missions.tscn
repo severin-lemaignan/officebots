@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Missions/BringSomethingSomewhere.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Missions/BeCloseToSomeone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Missions/GoSomewhere.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Missions/BeSomewhereWithNOtherPlayers.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Missions/BringSomeoneSomewhere.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Missions/FindSomething.tscn" type="PackedScene" id=6]
 
 [node name="Missions" type="Node"]
 
@@ -17,3 +18,5 @@
 [node name="BeCloseToSomeone" parent="." instance=ExtResource( 2 )]
 
 [node name="BeSomewhereWithNOtherPlayers" parent="." instance=ExtResource( 4 )]
+
+[node name="FindSomething" parent="." instance=ExtResource( 6 )]

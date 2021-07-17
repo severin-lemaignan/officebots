@@ -808,10 +808,11 @@ func mission_free(id):
         if i==id: 
             return false
     return true 
+    return true 
     
 remote func new_mission(id):
     
-    var nb_missions = 5#get_node("Missions").get_child_count()
+    var nb_missions = 6#get_node("Missions").get_child_count()
     var index_mission = random_index (nb_missions)
     var index_target
     var path_mission
@@ -827,6 +828,8 @@ remote func new_mission(id):
         path_mission = "res://Missions/BeCloseToSomeone.tscn"  
     if index_mission == 4 : 
         path_mission = "res://Missions/BeSomewhereWithNOtherPlayers.tscn"
+    if index_mission == 5 : 
+        path_mission = "res://Missions/FindSomething.tscn"
     
     var mission = load(path_mission).instance()
  
@@ -863,13 +866,16 @@ remote func new_mission(id):
             index_target = random_index(nb_players)
         target_player=$Players.get_child(index_target)
     if mission.id_mission ==0: 
-        description += target_player.get_name() + location
+        var name_target = player_info[int(target_player.get_name())]["name"]
+        description = name_target  + description + location
     if mission.id_mission==1: 
         description +=  location     
     if mission.id_mission==2: 
         description +=  object.get_name() + " to " + location    
     if mission.id_mission==4: 
-        description +=   " the " + location       
+        description +=   " the " + location   
+    if mission.id_mission==5: 
+        description+=object.get_name()    
      
     rpc_id(int(id),"show_mission",description)
          
@@ -884,7 +890,8 @@ remote func new_mission(id):
         mission.set_targets(GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE)
     if mission.id_mission == 4 : 
         mission.set_targets(GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE,target_zone,player)
-
+    if mission.id_mission==5: 
+        mission.set_targets(object)
     
     #mission.set_name(id)
     get_node("Missions").add_child(mission)   
@@ -911,9 +918,10 @@ func are_missions_done():
             m.mission_done = false
             var id_mission=m.id_mission
             var ID = m.player.get_name()
+            var points = int(m.points)
             rpc_id(int(ID), "show_message","Mission Done ! ")
-            rpc_id(int(ID),"update_score",1)
-            get_node("Players/%s"%int(ID)).score+=1
+            rpc_id(int(ID),"update_score",points )
+            get_node("Players/%s"%int(ID)).score+=points 
             if m.target_zone!=null : 
                 m.target_zone.target_player = null
                 m.target_zone.target_object = null  
@@ -925,7 +933,7 @@ func are_missions_done():
 
             new_mission(ID)
              
-######### LOBBY
+######### LOBBY###############
 remote func show_lobby(): 
     $CanvasLayer/UI/Lobby_Start.show_lobby()
 remote func hide_lobby(): 
@@ -949,9 +957,7 @@ remote func add_player_lobby(player,name):
 
 remote func show_lobby_end(ranking,list_score): 
     $CanvasLayer/UI/Lobby_End.show_lobby()
-    print("in show_lobby end")
-    print(ranking)
-    print(list_score)
+
     
     var i = 1
     for p in ranking:

@@ -10,7 +10,7 @@ var description = "Be in a group with %s players "%number_targets
 var distance 
 var target_player 
 var target_zone 
-
+var points = 1
 
 func _ready():
     
@@ -23,9 +23,7 @@ func set_targets(distance_gamestate):
 
 
 func is_mission_done(players_distances, players ): 
-    print(distance)
-    print(players_distances)
-    # doit trouver un moyen de faire players_distances[p1][p2]
+
     var player_distances = players_distances[player]
     var count= 0
     for p in players: 
