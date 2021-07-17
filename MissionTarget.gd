@@ -15,7 +15,6 @@ func _ready():
 
 func on_body_entered(body): 
    
-    print(" in body entered ")
     if target_player and body == target_player : 
         emit_signal("target_detected",target_player)
     elif target_object and body == target_object: 

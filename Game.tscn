@@ -18,8 +18,9 @@ shader_param/vignette = ExtResource( 12 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-run_as = 2
+run_as = 1
 has_robots = 1
+enable_focus_blur = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -774,7 +774,7 @@ func update_players_proximity():
             
             players_distances[p1][p2] = dist
             players_distances[p2][p1] = dist
-    
+   
     for p in proximity:
         p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
     
@@ -811,7 +811,7 @@ func mission_free(id):
     
 remote func new_mission(id):
     
-    var nb_missions = 3#get_node("Missions").get_child_count()
+    var nb_missions = 5#get_node("Missions").get_child_count()
     var index_mission = random_index (nb_missions)
     var index_target
     var path_mission
@@ -822,7 +822,11 @@ remote func new_mission(id):
     if index_mission ==1 : 
         path_mission = "res://Missions/GoSomewhere.tscn"
     if index_mission ==2 : 
-        path_mission = "res://Missions/BringSomethingSomewhere.tscn"   
+        path_mission = "res://Missions/BringSomethingSomewhere.tscn"  
+    if index_mission == 3 : 
+        path_mission = "res://Missions/BeCloseToSomeone.tscn"  
+    if index_mission == 4 : 
+        path_mission = "res://Missions/BeSomewhereWithNOtherPlayers.tscn"
     
     var mission = load(path_mission).instance()
  
@@ -849,7 +853,7 @@ remote func new_mission(id):
     target_zone = get_node("Mission_Target").get_child(index_zone)
     #mission.target_zone=zone
     var location = target_zone.get_name()
-    var description 
+    var description = mission.description
 
 
     if mission.mission_with_target==true: 
@@ -859,11 +863,13 @@ remote func new_mission(id):
             index_target = random_index(nb_players)
         target_player=$Players.get_child(index_target)
     if mission.id_mission ==0: 
-        description = mission.description + target_player.get_name() + location
+        description += target_player.get_name() + location
     if mission.id_mission==1: 
-        description = mission.description + location     
+        description +=  location     
     if mission.id_mission==2: 
-        description = mission.description + object.get_name() + " to " + location       
+        description +=  object.get_name() + " to " + location    
+    if mission.id_mission==4: 
+        description +=   " the " + location       
      
     rpc_id(int(id),"show_mission",description)
          
@@ -874,6 +880,10 @@ remote func new_mission(id):
         mission.set_targets(player,target_zone)
     if mission.id_mission==2: 
         mission.set_targets(object,target_zone)
+    if mission.id_mission == 3 : 
+        mission.set_targets(GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE)
+    if mission.id_mission == 4 : 
+        mission.set_targets(GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE,target_zone,player)
 
     
     #mission.set_name(id)
@@ -889,7 +899,14 @@ func are_missions_done():
     if $Missions.get_child_count()==0: 
         return  
     for m in $Missions.get_children():
-        m.is_mission_done()
+        if m.id_mission==2: 
+            m.is_mission_done()
+        if m.id_mission==3: 
+            var players = $Players.get_children()
+            m.is_mission_done(players_distances, players)
+        if m.id_mission==4: 
+            var players = $Players.get_children()
+            m.is_mission_done(players_distances, players )
         if m.mission_done == true :
             m.mission_done = false
             var id_mission=m.id_mission
@@ -897,8 +914,9 @@ func are_missions_done():
             rpc_id(int(ID), "show_message","Mission Done ! ")
             rpc_id(int(ID),"update_score",1)
             get_node("Players/%s"%int(ID)).score+=1
-            m.target_zone.target_player = null
-            m.target_zone.target_object = null  
+            if m.target_zone!=null : 
+                m.target_zone.target_player = null
+                m.target_zone.target_object = null  
             m.free()
             var i = mission_ongoing.find(id_mission)
             mission_ongoing.remove(i)
