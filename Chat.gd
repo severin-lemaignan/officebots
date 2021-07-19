@@ -21,6 +21,7 @@ func _ready():
     $VBoxContainer/HBoxContainer/is_typing_timer.wait_time = 2 # after this time without typing, the player is 'not typing anymore'
     $VBoxContainer/HBoxContainer/is_typing_timer.connect("timeout", self, "on_is_typing_expired")
     
+
     for btn in $VBoxContainer/ReactionsContainer.get_children():
         btn.connect("reaction", self, "on_chat_msg_entered")
         
@@ -33,6 +34,27 @@ func _ready():
             msg = add_msg("Hello " + str(i))
         msg.set_own_msg(i%2==1)
         yield(get_tree().create_timer(.5), "timeout")
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 func on_chat_msg_entered(_msg=null):

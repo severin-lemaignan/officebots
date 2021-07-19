@@ -1,7 +1,8 @@
 extends Area
 
 var target_player = null 
-var location = "Tabletennis room "
+var target_object = null 
+
 signal target_detected
 # Declare member variables here. Examples:
 # var a = 2
@@ -14,7 +15,8 @@ func _ready():
 
 func on_body_entered(body): 
    
-
     if target_player and body == target_player : 
+        emit_signal("target_detected",target_player)
+    elif target_object and body == target_object: 
         emit_signal("target_detected",target_player)
         

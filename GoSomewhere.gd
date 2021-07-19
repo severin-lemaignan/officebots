@@ -8,7 +8,7 @@ var mission_done= false
 var mission_with_target= false
 var mission_with_object = false
 var description = "Go to : " #"bring the lunch box on the pool table  "
-
+var points = 1
 var target_player 
 var target_zone 
 
@@ -21,14 +21,13 @@ func _ready():
 
 func set_targets(player,zone): 
     target_player = player 
-    print(player)
+   
     
     
     target_zone = zone 
     target_zone.target_player =  player 
     target_zone.connect("target_detected",self,"on_target_detected")
-    print(zone.target_player)
-    print("set_target done")
+
 func is_mission_done(): 
     
     pass

@@ -1,4 +1,10 @@
-[gd_scene load_steps=14 format=2]
+
+
+
+
+
+[gd_scene load_steps=28 format=2]
+
 
 [ext_resource path="res://assets/characters/char1.png" type="Texture" id=6]
 [ext_resource path="res://assets/icons/timer-outline.svg" type="Texture" id=12]
