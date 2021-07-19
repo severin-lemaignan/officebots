@@ -812,7 +812,7 @@ func mission_free(id):
     
 remote func new_mission(id):
     
-    var nb_missions = 6#get_node("Missions").get_child_count()
+    var nb_missions = 8#get_node("Missions").get_child_count()
     var index_mission = random_index (nb_missions)
     var index_target
     var path_mission
@@ -830,7 +830,10 @@ remote func new_mission(id):
         path_mission = "res://Missions/BeSomewhereWithNOtherPlayers.tscn"
     if index_mission == 5 : 
         path_mission = "res://Missions/FindSomething.tscn"
-    
+    if index_mission == 6 : 
+        path_mission = "res://Missions/SpeakWithSomeone.tscn"
+    if index_mission == 7 : 
+        path_mission = "res://Missions/SomeoneExcited.tscn"
     var mission = load(path_mission).instance()
  
     var id_mission = mission.id_mission
@@ -875,7 +878,10 @@ remote func new_mission(id):
     if mission.id_mission==4: 
         description +=   " the " + location   
     if mission.id_mission==5: 
-        description+=object.get_name()    
+        description+=object.get_name() 
+    if mission.id_mission==6 or mission.id_mission==7: 
+        var name_target = player_info[int(target_player.get_name())]["name"]
+        description = name_target + description    
      
     rpc_id(int(id),"show_mission",description)
          
@@ -892,6 +898,8 @@ remote func new_mission(id):
         mission.set_targets(GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE,target_zone,player)
     if mission.id_mission==5: 
         mission.set_targets(object)
+    if mission.id_mission==6 or mission.id_mission==7 : 
+        mission.set_targets(target_player)
     
     #mission.set_name(id)
     get_node("Missions").add_child(mission)   
@@ -906,7 +914,7 @@ func are_missions_done():
     if $Missions.get_child_count()==0: 
         return  
     for m in $Missions.get_children():
-        if m.id_mission==2: 
+        if m.id_mission==2 or m.id_mission==6 or m.id_mission==7: 
             m.is_mission_done()
         if m.id_mission==3: 
             var players = $Players.get_children()

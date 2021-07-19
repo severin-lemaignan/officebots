@@ -178,6 +178,26 @@ transform = Transform( 0.0184993, 0, -0.999829, 0, 1, 0, 0.999829, 0, 0.0184993,
 [node name="Zone" parent="Mission_Target/Conference Room " index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.4429, 0, -0.903887 )
 
+[node name="Entrance" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Entrance" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3927, 0, -13.2146 )
+
+[node name="Kitchen" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Kitchen" index="0"]
+transform = Transform( 1.7, 0, 0, 0, 1, 0, 0, 0, 2.3, -8.76977, 0, 3.62654 )
+
+[node name="Stairs" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Stairs" index="0"]
+transform = Transform( 1.3, 0, 0, 0, 1, 0, 0, 0, 1.3, -0.27779, 0, -10.6853 )
+
+[node name="Reception_desk" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Reception_desk" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, 7.44847, 0, -8.74383 )
+
 [node name="Missions" type="Node" parent="."]
 
 [node name="Timer_Lobby" type="Timer" parent="."]
@@ -196,3 +216,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.4429, 0, -0.903887 )
 [editable path="Mission_Target/Relaxation Room"]
 
 [editable path="Mission_Target/Conference Room "]
+
+[editable path="Mission_Target/Entrance"]
+
+[editable path="Mission_Target/Kitchen"]
+
+[editable path="Mission_Target/Stairs"]
+
+[editable path="Mission_Target/Reception_desk"]
