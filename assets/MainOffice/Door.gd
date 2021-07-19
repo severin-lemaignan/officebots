@@ -26,22 +26,30 @@ func _ready():
     
     var _err = $HandleHighlight.connect("highlight_clicked", self, "on_handle_clicked")
 
-func on_handle_clicked():
+remotesync func set_state(new_state):
     $Tween.remove_all()
-    match state:
-        DOOR_STATE.closed:
+    match new_state:
+        DOOR_STATE.half_open:
             $Tween.interpolate_property(self, "rotation_degrees:y", null, half_open_angle, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
             state = DOOR_STATE.half_open
-        DOOR_STATE.half_open:
+        DOOR_STATE.open:
             $Tween.interpolate_property(self, "rotation_degrees:y", null, open_angle, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
             state = DOOR_STATE.open
-        DOOR_STATE.open:
+        DOOR_STATE.closed:
             $Tween.interpolate_property(self, "rotation_degrees:y", null, closed_angle, 2.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
             state = DOOR_STATE.closed
     
     $Tween.start()
 
-
+func on_handle_clicked():
+    match state:
+        DOOR_STATE.closed:
+            rpc("set_state", DOOR_STATE.half_open)
+        DOOR_STATE.half_open:
+            rpc("set_state", DOOR_STATE.open)
+        DOOR_STATE.open:
+            rpc("set_state", DOOR_STATE.closed)
+            
 func _process(_delta):
 
     if !local_player:
