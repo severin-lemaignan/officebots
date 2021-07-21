@@ -18,7 +18,7 @@ shader_param/vignette = ExtResource( 12 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-run_as = 1
+run_as = 2
 has_robots = 1
 enable_focus_blur = false
 
@@ -198,6 +198,46 @@ transform = Transform( 1.3, 0, 0, 0, 1, 0, 0, 0, 1.3, -0.27779, 0, -10.6853 )
 [node name="Zone" parent="Mission_Target/Reception_desk" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, 7.44847, 0, -8.74383 )
 
+[node name="TableTennis Room" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/TableTennis Room" index="0"]
+transform = Transform( 1.7, 0, 0, 0, 1, 0, 0, 0, 1.5, -1.68103, 0, 9.78008 )
+
+[node name="Male Toilets" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Male Toilets" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, -8.73584, 0, -8.20709 )
+
+[node name="Female Toilets" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Female Toilets" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, -14.2356, 0, -7.9104 )
+
+[node name="Server Room" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Server Room" index="0"]
+transform = Transform( 1.2, 0, 0, 0, 1, 0, 0, 0, 2, -3.14515, 0, -5.50839 )
+
+[node name="Manager Office" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Manager Office" index="0"]
+transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, 5.63002, 0, 5.31556 )
+
+[node name="HR Dep" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/HR Dep" index="0"]
+transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, 13.0524, 0, 5.17115 )
+
+[node name="Storage Room " parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Storage Room " index="0"]
+transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 0.7, -10.8809, 0, -11.3142 )
+
+[node name="Storage_Kitchen" parent="Mission_Target" instance=ExtResource( 8 )]
+
+[node name="Zone" parent="Mission_Target/Storage_Kitchen" index="0"]
+transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, -9.09048, 0, 9.97629 )
+
 [node name="Missions" type="Node" parent="."]
 
 [node name="Timer_Lobby" type="Timer" parent="."]
@@ -224,3 +264,19 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, 7.44847, 0, -8.74383 )
 [editable path="Mission_Target/Stairs"]
 
 [editable path="Mission_Target/Reception_desk"]
+
+[editable path="Mission_Target/TableTennis Room"]
+
+[editable path="Mission_Target/Male Toilets"]
+
+[editable path="Mission_Target/Female Toilets"]
+
+[editable path="Mission_Target/Server Room"]
+
+[editable path="Mission_Target/Manager Office"]
+
+[editable path="Mission_Target/HR Dep"]
+
+[editable path="Mission_Target/Storage Room "]
+
+[editable path="Mission_Target/Storage_Kitchen"]

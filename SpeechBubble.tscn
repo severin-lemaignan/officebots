@@ -110,7 +110,7 @@ uppercase = true
 position = Vector2( 100.067, 72.3171 )
 scale = Vector2( 1.22336, 1.22336 )
 frames = SubResource( 7 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Tween" type="Tween" parent="."]

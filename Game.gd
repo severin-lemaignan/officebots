@@ -651,9 +651,10 @@ func pre_save():
         var ID = p.get_name()
         
         var time = OS.get_unix_time()
-        var mood = all_expr[p.expression]
-        
-        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + "%s"%mood + "," + "%s"%p.is_speaking()
+        var mood2 = p.name_expression #p.name_expression
+        var mood=p.name_expression
+        print("emotion for player "+ ID + ": " + mood2 )
+        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + mood + "," + "%s"%p.is_speaking()
         save_data(ID,data)
         
         

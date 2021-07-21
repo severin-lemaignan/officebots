@@ -5,7 +5,7 @@ onready var button = $speech_bubble/Label/Button
 enum ButtonType {NONE, OK, NEXT}
 
 signal done_speaking
-
+var emotion = "no emotion "
 var is_speaking = false
 
 func _ready():
@@ -53,6 +53,17 @@ func say(text, button_type = ButtonType.NONE):
             button.text = "Next"
 
     $speech_bubble/Label.text = text
+    if text == ":happy:": 
+        emotion = "happy"
+    if text == ":smily:": 
+        emotion = "smily"
+    if text == ":laughing:": 
+        emotion = "laughing"
+    if text == ":confused:": 
+        emotion = "confused"
+    if text == ":bored:": 
+        emotion = "bored"
+    
     
     if text.length() < 20:
         $speech_bubble/Label.get("custom_fonts/font").set_size(36)
@@ -79,6 +90,7 @@ func say(text, button_type = ButtonType.NONE):
     $Tween.start()
     
     is_speaking = false
+    emotion = "no emotion "
     emit_signal("done_speaking")
 
 

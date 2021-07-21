@@ -3,7 +3,8 @@ class_name InteractiveObject
 
 var local_player
 
-export var pickable = false
+export var pickable = true
+
 
 enum OBJECT_STATE {
     picked,

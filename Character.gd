@@ -7,7 +7,9 @@ onready var anim_player = $AnimationPlayer
 # used to ensure the speech bubbles of the other players
 # are oriented to face this player
 var local_player
-var expression = 0 #to export the expression 
+var expression  #to export the expression 
+var name_expression = "test"
+
 var mission 
 var target_for_mission
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
@@ -230,8 +232,7 @@ func _physics_process(delta):
     
 func _process(delta):
     
-    
-    
+    set_emoji()
     # we buffer a bit as the peer main loop might run faster
     # that the pace at which puppet controller sends position
     # updates. By waiting ~0.1s, we make sure the character would have moved,
@@ -398,5 +399,6 @@ func quaternions_distance(q1, q2):
 #
 #
 #
-
+func set_emoji(): 
+    name_expression = speech_bubble.emotion
 

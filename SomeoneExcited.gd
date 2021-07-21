@@ -5,7 +5,7 @@ var id_mission=7
 var mission_done= false 
 var mission_with_target= true
 var mission_with_object = false
-var description = " has to use the emoji Excited" 
+var description = " has to use the emoji happy" 
 var points = 1
 var target_player 
 var target_zone 
@@ -27,7 +27,7 @@ func set_targets(target):
 
 func is_mission_done():
     
-    if target_player.expression == 2 : 
+    if target_player.name_expression == "happy" : 
         mission_done=true 
         
       

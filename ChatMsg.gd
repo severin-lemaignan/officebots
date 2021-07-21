@@ -6,7 +6,7 @@ var reaction_smily = preload("res://assets/icons/smily.svg")
 var reaction_laughing = preload("res://assets/icons/laughing.svg")
 var reaction_confused = preload("res://assets/icons/unknown.svg")
 var reaction_bored = preload("res://assets/icons/tired.svg")
-
+var emotion = "no emotion "
 
 var margin_value = 14
 var own_msg_style = preload("ChatMsgOwn.tres")
@@ -44,23 +44,27 @@ func set_text(msg, author=null):
     if msg == ":happy:":
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true
-        $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_happy
+        emotion= "happy"
     elif msg == ":smily:":
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true
         $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_smily
+        emotion= "smily"
     elif msg == ":laughing:":
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true
         $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_laughing
+        emotion= "laighing"
     elif msg == ":confused:":
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true
         $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_confused
+        emotion= "confused"
     elif msg == ":bored:":
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true
         $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_bored
+        emotion= "bored"
     else:
         $Container/VBoxContainer/Text.text = msg
         $Container/VBoxContainer/Text.visible = true
