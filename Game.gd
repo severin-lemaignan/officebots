@@ -387,6 +387,7 @@ func _player_connected(id):
     
 func _player_disconnected(id):
     print("Player " + str(id) + " disconnected")
+    remove_player_mission(id)
     remove_player(id)
     player_info.erase(id) # Erase player from info.
 
@@ -653,7 +654,7 @@ func pre_save():
         var time = OS.get_unix_time()
         var mood2 = p.name_expression #p.name_expression
         var mood=p.name_expression
-        print("emotion for player "+ ID + ": " + mood2 )
+        
         var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + mood + "," + "%s"%p.is_speaking()
         save_data(ID,data)
         
@@ -882,8 +883,8 @@ remote func new_mission(id):
         description+=object.get_name() 
     if mission.id_mission==6 or mission.id_mission==7: 
         var name_target = player_info[int(target_player.get_name())]["name"]
-        description = name_target + description    
-     
+        description = name_target + description
+    description+= "- %s points "%mission.points
     rpc_id(int(id),"show_mission",description)
          
     
@@ -909,8 +910,29 @@ remote func new_mission(id):
    
     
     
+    
+func remove_player_mission(id): 
+    if $Missions.get_child_count()==0: 
+        return  
+    for m in $Missions.get_children():
+        if m.mission_with_target==true : 
+            if get_node_or_null("%s"%m.target_player) ==null : 
+                var id_player_mission = m.player.get_name()
+                new_mission(id_player_mission) 
+                
+    print("removed disconnected player from missions")  
+    
+    
+    
+    
+    
 
-#this function will check if players have done their missions      
+#this function will check if players have done their missions 
+
+
+
+
+     
 func are_missions_done():
     if $Missions.get_child_count()==0: 
         return  
@@ -951,7 +973,7 @@ remote func hide_lobby():
     
 func update_lobby():
     var number_player=players_done.size()+1
-    print("dans update lobby ")
+    
     for i in range (number_player-1):
         
         var id_player=players_done[i-1]

@@ -26,7 +26,9 @@ func set_targets(target):
 
 
 func is_mission_done():
-    
+    if target_player==null: 
+        print("no more target player")
+        return 
     if target_player.is_speaking() == true  : 
         mission_done=true 
         

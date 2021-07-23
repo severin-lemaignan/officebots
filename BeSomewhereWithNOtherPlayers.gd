@@ -28,7 +28,8 @@ func set_targets(distance_gamestate,zone, player):
 
 func is_mission_done(players_distances, players ): 
 
-    # doit trouver un moyen de faire players_distances[p1][p2]
+    if player==null: 
+        return 
     var player_distances = players_distances[player]
     var count= 0
     for p in players: 
