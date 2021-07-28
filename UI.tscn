@@ -17,6 +17,8 @@
 [node name="UI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.18921
+margin_right = 1.18921
 mouse_filter = 2
 script = ExtResource( 19 )
 __meta__ = {
@@ -79,33 +81,33 @@ text = "Séverin"
 
 [node name="Control" type="Control" parent="Top"]
 margin_left = 153.0
-margin_right = 621.0
+margin_right = 153.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Top"]
-margin_left = 625.0
-margin_right = 714.0
+margin_left = 157.0
+margin_right = 27739.0
 margin_bottom = 80.0
 grow_horizontal = 0
 alignment = 1
 
 [node name="Label" type="Label" parent="Top/VBoxContainer"]
 margin_top = 21.0
-margin_right = 89.0
+margin_right = 27582.0
 margin_bottom = 38.0
 theme = ExtResource( 14 )
-text = "Your Mission : "
+text = "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
 
 [node name="Missiondescription" type="Label" parent="Top/VBoxContainer"]
 margin_top = 42.0
-margin_right = 89.0
+margin_right = 27582.0
 margin_bottom = 59.0
 theme = ExtResource( 14 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Top"]
-margin_left = 718.0
-margin_right = 1004.0
+margin_left = 27743.0
+margin_right = 28029.0
 margin_bottom = 80.0
 
 [node name="Score" type="Label" parent="Top/HBoxContainer"]
@@ -225,11 +227,114 @@ anchor_left = 0.032
 anchor_top = 0.258
 anchor_right = 0.118
 anchor_bottom = 0.344
-margin_right = 40.0
-margin_bottom = 14.0
+margin_left = -18.768
+margin_top = 0.200012
+margin_right = 40.168
+margin_bottom = 14.6
 theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Score: 0 
 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mission1" type="Label" parent="."]
+margin_left = 10.0
+margin_top = 203.0
+margin_right = 335.0
+margin_bottom = 261.0
+theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "mission 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mission2" type="Label" parent="."]
+margin_left = 7.0
+margin_top = 301.0
+margin_right = 361.0
+margin_bottom = 380.0
+theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mission 2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mission3" type="Label" parent="."]
+margin_left = 4.0
+margin_top = 403.0
+margin_right = 318.0
+margin_bottom = 502.0
+theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mission 3 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 0.810791
+margin_top = 184.0
+margin_right = 185.811
+margin_bottom = 280.0
+theme = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mission 1: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="."]
+margin_left = 9.0
+margin_top = 279.0
+margin_right = 159.0
+margin_bottom = 305.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mission 2 : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 5.0
+margin_top = 385.0
+margin_right = 197.0
+margin_bottom = 416.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mission 3: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_M1" type="Button" parent="."]
+margin_left = 70.0
+margin_top = 181.0
+margin_right = 255.0
+margin_bottom = 201.0
+text = "Change Mission ( -3 points)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_M2" type="Button" parent="."]
+margin_left = 89.0
+margin_top = 274.0
+margin_right = 227.0
+margin_bottom = 294.0
+text = "Change Mission ( -3 points)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_M3" type="Button" parent="."]
+margin_left = 83.0
+margin_top = 379.0
+margin_right = 225.0
+margin_bottom = 399.0
+text = "Change Mission ( -3 points)"
 
 [node name="Lobby_Start" parent="." instance=ExtResource( 24 )]
 visible = false

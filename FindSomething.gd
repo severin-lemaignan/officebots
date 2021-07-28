@@ -1,5 +1,5 @@
 extends Node
-
+var mission_number
 var player 
 var id_mission=5
 var mission_done= false 
@@ -29,12 +29,16 @@ func set_targets(object):
 func is_mission_done():
     var object_name
     if target_object != null : 
-        object_name= target_object.get_name()
+        if get_node_or_null("player")==null: 
+            return 
+        else : 
+            
+            object_name= target_object.get_name()
         
-        var path_nd_ob = "/root/Game/Players/"+ player.get_name() + "/PickupAnchor/" + object_name
+            var path_nd_ob = "/root/Game/Players/"+ player.get_name() + "/PickupAnchor/" + object_name
 
-        if get_node_or_null(path_nd_ob) != null : 
-            mission_done = true
+            if get_node_or_null(path_nd_ob) != null : 
+                mission_done = true
             
                 
     pass

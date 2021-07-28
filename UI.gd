@@ -11,7 +11,7 @@ var robot_connecting_hover = preload("res://assets/icons/robot-connecting-hover.
 var score = 0
 
 signal on_expression
-
+signal change_mission
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -82,9 +82,14 @@ remote func set_score(new_points):
     score+= new_points    
     $Top/HBoxContainer/Score.text="Score =  %s"%score
     $Score2.text="Score =  %s"%score
-remote func set_mission_description(description): 
-    
-    $Top/VBoxContainer/Missiondescription.text=  description
+remote func set_mission_description(description,number_mission): 
+
+    if number_mission==1:
+        $Mission1.text = description 
+    if number_mission==2: 
+        $Mission2.text = description 
+    if number_mission==3:    
+        $Mission3.text = description 
     
 remote func show_message(text): 
     $Message.text = text
@@ -97,3 +102,4 @@ remote func show_message(text):
 func _on_MessageTimer_timeout():
     $Message.hide()
     pass 
+

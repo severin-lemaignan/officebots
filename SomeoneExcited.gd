@@ -1,5 +1,5 @@
 extends Node
-
+var mission_number
 var player 
 var id_mission=7
 var mission_done= false 
@@ -26,7 +26,8 @@ func set_targets(target):
 
 
 func is_mission_done():
-    
+    if get_node_or_null("target_player")==null: 
+        return 
     if target_player.name_expression == "happy" : 
         mission_done=true 
         

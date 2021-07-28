@@ -655,7 +655,7 @@ func pre_save():
         var mood2 = p.name_expression #p.name_expression
         var mood=p.name_expression
         
-        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + mood + "," + "%s"%p.is_speaking()
+        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," +"%.1f"%p.rotation_degrees[0]+"%.1f"%p.rotation_degrees[1]+ "%.1f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking()
         save_data(ID,data)
         
         
@@ -785,9 +785,9 @@ remote func update_score(new_points):
     $CanvasLayer/UI.set_score(new_points)
     
 #this function will show the description of the mission on the client's screen 
-remote func show_mission(description): 
+remote func show_mission(description,mission_number): 
     
-    $CanvasLayer/UI.set_mission_description(description)
+    $CanvasLayer/UI.set_mission_description(description,mission_number)
     
 remote func show_message(text): 
     $CanvasLayer/UI.show_message(text)
@@ -812,7 +812,7 @@ func mission_free(id):
     return true 
     return true 
     
-remote func new_mission(id):
+remote func new_mission(id, mission_number):
     
     var nb_missions = 8#get_node("Missions").get_child_count()
     var index_mission = random_index (nb_missions)
@@ -839,7 +839,7 @@ remote func new_mission(id):
     var mission = load(path_mission).instance()
  
     var id_mission = mission.id_mission
-    
+    mission.mission_number=mission_number
     var player=get_node("Players/%s"%id)
     mission.player = player
 #    while ($Players.get_child_count()==1 and mission.mission_with_target==true) or (mission_free(id_mission)==false):
@@ -861,7 +861,7 @@ remote func new_mission(id):
     target_zone = get_node("Mission_Target").get_child(index_zone)
     #mission.target_zone=zone
     var location = target_zone.get_name()
-    var description = mission.description
+    var description =  mission.description
 
 
     if mission.mission_with_target==true: 
@@ -884,8 +884,8 @@ remote func new_mission(id):
     if mission.id_mission==6 or mission.id_mission==7: 
         var name_target = player_info[int(target_player.get_name())]["name"]
         description = name_target + description
-    description+= "- %s points "%mission.points
-    rpc_id(int(id),"show_mission",description)
+    description+= "| + %s points "%mission.points
+    rpc_id(int(id),"show_mission",description,mission_number)
          
     
     if mission.id_mission ==0: 
@@ -917,8 +917,13 @@ func remove_player_mission(id):
     for m in $Missions.get_children():
         if m.mission_with_target==true : 
             if get_node_or_null("%s"%m.target_player) ==null : 
-                var id_player_mission = m.player.get_name()
-                new_mission(id_player_mission) 
+                var mission_number= m.mission_number
+                var id_player_mission 
+                if get_node_or_null("%s"%m.player) ==null: 
+                    return 
+                else: 
+                    id_player_mission = m.player.get_name()
+                    new_mission(id_player_mission,mission_number) 
                 
     print("removed disconnected player from missions")  
     
@@ -934,6 +939,7 @@ func remove_player_mission(id):
 
      
 func are_missions_done():
+    
     if $Missions.get_child_count()==0: 
         return  
     for m in $Missions.get_children():
@@ -948,6 +954,7 @@ func are_missions_done():
         if m.mission_done == true :
             m.mission_done = false
             var id_mission=m.id_mission
+            var mission_number = m.mission_number
             var ID = m.player.get_name()
             var points = int(m.points)
             rpc_id(int(ID), "show_message","Mission Done ! ")
@@ -960,9 +967,9 @@ func are_missions_done():
             var i = mission_ongoing.find(id_mission)
             mission_ongoing.remove(i)
             #mission_ongoing.remove(mission_ongoing.index(id_mission))
-        
+            
 
-            new_mission(ID)
+            new_mission(ID,mission_number)
              
 ######### LOBBY###############
 remote func show_lobby(): 
@@ -1001,10 +1008,38 @@ func end_lobby():
     for p in players_done:
             
         rpc_id(p, "post_configure_game", player_info[p]["start_location"])
-        new_mission(p)
+        new_mission(p,1)
+        new_mission(p,2)
+        new_mission(p,3)
         rpc_id(p,"hide_lobby")
         
 
 func _on_Timer_Lobby_timeout():
     end_lobby()
     pass # Replace with function body.
+
+func on_change_mission(id):
+    rpc_id(1,"change_mission_from_server",id) 
+
+remote func change_mission_from_server(id): 
+    var id_sender = get_tree().get_rpc_sender_id()
+    new_mission(id_sender,id)
+
+
+
+
+func _on_Button_M1_button_down():
+    show_message("new mission ")
+    print("button_pressed")
+    rpc_id(1,"change_mission_from_server",1) 
+
+func _on_Button_M2_button_down():
+    show_message("new mission ")
+    print("button_pressed")
+    rpc_id(1,"change_mission_from_server",2) 
+
+
+func _on_Button_M3_button_down():
+    show_message("new mission ")
+    print("button_pressed")
+    rpc_id(1,"change_mission_from_server",3) 

@@ -1,5 +1,5 @@
 extends Node
-
+var mission_number
 var player 
 var id_mission=6
 var mission_done= false 

@@ -1,5 +1,5 @@
 extends Node
-
+var mission_number
 var player 
 var id_mission=3
 var mission_done= false 
@@ -23,7 +23,8 @@ func set_targets(distance_gamestate):
 
 
 func is_mission_done(players_distances, players ): 
-
+    if get_node_or_null("player")==null: 
+        return 
     var player_distances = players_distances[player]
     var count= 0
     for p in players: 

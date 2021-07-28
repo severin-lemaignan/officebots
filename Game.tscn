@@ -18,7 +18,7 @@ shader_param/vignette = ExtResource( 12 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-run_as = 1
+run_as = 2
 has_robots = 1
 enable_focus_blur = false
 
@@ -47,6 +47,9 @@ __meta__ = {
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource( 4 )]
 margin_right = -178.0
+
+[node name="Control" parent="CanvasLayer/UI/Bottom" index="0"]
+margin_right = 824.0
 
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource( 6 )]
 
@@ -241,7 +244,12 @@ transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, -9.09048, 0, 9.97629 )
 [node name="Missions" type="Node" parent="."]
 
 [node name="Timer_Lobby" type="Timer" parent="."]
+[connection signal="button_down" from="CanvasLayer/UI/Button_M1" to="." method="_on_Button_M1_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/Button_M2" to="." method="_on_Button_M2_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/Button_M3" to="." method="_on_Button_M3_button_down"]
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
+
+[editable path="CanvasLayer/UI"]
 
 [editable path="Mission_Target/End of the corridor"]
 
