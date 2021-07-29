@@ -22,7 +22,7 @@ var SERVER_PORT=6969
 
 var time_start=0 
 var time_now=0
-var total_time = 600 #total time of the game in seconds
+var total_time = 60 #total time of the game in seconds
 
 
 var is_networking_started
@@ -30,6 +30,7 @@ var is_networking_started
 var local_player
 var player_name
 var player_skin
+var prolific_id 
 
 # dictionary of ImageTexture created by users of the Python API when
 # uploading images to the server.
@@ -38,7 +39,7 @@ var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
-var MIN_PLAYERS = 2
+var MIN_PLAYERS = 1
 
 export(String) var username = "John Doe"
 
@@ -217,6 +218,37 @@ func _ready():
         print("STARTING AS CLIENT")
         
         set_physics_process(false)
+        
+        $CanvasLayer/CharacterSelection.hide()
+        $CanvasLayer/UI.hide()
+        $QuestionsExplanations.show()
+        $QuestionsExplanations.preHocQuestionnaire()
+
+        var questionaire = yield($QuestionsExplanations,"questionaire_complete")
+
+        prolific_id = questionaire
+
+        $QuestionsExplanations.consent()
+        var consent = yield($QuestionsExplanations,"consent_given")
+
+        $QuestionsExplanations.big5()
+        var big5_results = yield($QuestionsExplanations,"big5_complete")
+        #save_big5(big5_results)
+
+        yield(get_tree().create_timer(0.5), "timeout")
+        $QuestionsExplanations.showIntro()
+
+        yield($QuestionsExplanations,"intro_complete")   
+           
+    
+    
+    
+    
+        $CanvasLayer/CharacterSelection.show()
+        $CanvasLayer/UI.show()      
+        
+
+        
     
         # if we do not already have the player name, wait for the character creation to be complete
         if not player_name:
@@ -1030,16 +1062,16 @@ remote func change_mission_from_server(id):
 
 func _on_Button_M1_button_down():
     show_message("new mission ")
-    print("button_pressed")
+    update_score(-3)
     rpc_id(1,"change_mission_from_server",1) 
 
 func _on_Button_M2_button_down():
     show_message("new mission ")
-    print("button_pressed")
+    update_score(-3)
     rpc_id(1,"change_mission_from_server",2) 
 
 
 func _on_Button_M3_button_down():
     show_message("new mission ")
-    print("button_pressed")
+    update_score(-3)
     rpc_id(1,"change_mission_from_server",3) 

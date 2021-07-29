@@ -24,7 +24,7 @@ onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
 
 var MOUSE_SENSITIVITY = 0.1
-
+var prolific_id
 
 func _ready():
 

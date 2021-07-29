@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://GameModeSelection.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game.gd" type="Script" id=2]
@@ -6,7 +6,10 @@
 [ext_resource path="res://UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://FakePlayer.gd" type="Script" id=5]
 [ext_resource path="res://CharacterSelection.tscn" type="PackedScene" id=6]
+[ext_resource path="res://LikertItem.tscn" type="PackedScene" id=7]
 [ext_resource path="res://MissionTarget.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Missions/BeCloseToSomeone.tscn" type="PackedScene" id=9]
+[ext_resource path="res://QuestionsExplanations.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/white.png" type="Texture" id=11]
 [ext_resource path="res://assets/vignette.png" type="Texture" id=12]
 [ext_resource path="res://vignette.shader" type="Shader" id=13]
@@ -244,6 +247,14 @@ transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, -9.09048, 0, 9.97629 )
 [node name="Missions" type="Node" parent="."]
 
 [node name="Timer_Lobby" type="Timer" parent="."]
+
+[node name="BeCloseToSomeone" parent="." instance=ExtResource( 9 )]
+
+[node name="LikertItem" parent="." instance=ExtResource( 7 )]
+visible = false
+
+[node name="QuestionsExplanations" parent="." instance=ExtResource( 10 )]
+visible = false
 [connection signal="button_down" from="CanvasLayer/UI/Button_M1" to="." method="_on_Button_M1_button_down"]
 [connection signal="button_down" from="CanvasLayer/UI/Button_M2" to="." method="_on_Button_M2_button_down"]
 [connection signal="button_down" from="CanvasLayer/UI/Button_M3" to="." method="_on_Button_M3_button_down"]

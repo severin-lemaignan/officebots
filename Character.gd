@@ -9,7 +9,7 @@ onready var anim_player = $AnimationPlayer
 var local_player
 var expression  #to export the expression 
 var name_expression = "test"
-
+var prolific_id
 var mission 
 var target_for_mission
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble

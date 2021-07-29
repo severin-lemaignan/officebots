@@ -1,0 +1,556 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://defaultfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://QuestionsExplanations.gd" type="Script" id=2]
+[ext_resource path="res://FredokaOne-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/ui/PNG/buttonRound_blue.png" type="Texture" id=4]
+[ext_resource path="res://assets/ui/PNG/buttonRound_grey.png" type="Texture" id=5]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 24
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 30
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 18
+outline_color = Color( 0.137255, 0.117647, 0.117647, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 31
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 31
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 35
+font_data = ExtResource( 3 )
+
+[sub_resource type="ButtonGroup" id=10]
+
+[node name="QuestionsExplanations" type="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 1 )
+color = Color( 0.305882, 0.258824, 0.258824, 0.815686 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Textzone" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -491.0
+margin_top = 39.0
+margin_right = 276.0
+margin_bottom = 380.0
+custom_fonts/font = ExtResource( 1 )
+text = "Hello Detective. As you know, you're here to solve a murder. You will need to talk to the fellow townspeople to find out what they know. When the timer at the bottom right of the screen runs out, you will be asked to give the name of the person you think is the criminal, so make sure you pay attention!
+"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextzoneBtn" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -217.5
+margin_top = -66.0
+margin_right = 218.5
+margin_bottom = -20.0
+custom_fonts/font = ExtResource( 1 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="PreQuestionaire" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WelcomeLabel" type="Label" parent="PreQuestionaire"]
+margin_left = 138.0
+margin_top = 95.0
+margin_right = 930.0
+margin_bottom = 182.0
+custom_fonts/font = ExtResource( 1 )
+text = "Welcome!
+A few things before getting started..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProlificIdLabel" type="Label" parent="PreQuestionaire"]
+margin_left = 134.967
+margin_top = 228.622
+margin_right = 326.967
+margin_bottom = 268.622
+custom_fonts/font = SubResource( 2 )
+text = "Your Prolific ID:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProlificId" type="LineEdit" parent="PreQuestionaire"]
+margin_left = 337.035
+margin_top = 221.784
+margin_right = 648.035
+margin_bottom = 268.784
+custom_fonts/font = SubResource( 3 )
+max_length = 24
+placeholder_text = "24 alphanumeric characters"
+placeholder_alpha = 0.774
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ValidationLabel" type="Label" parent="PreQuestionaire"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -408.0
+margin_top = -153.0
+margin_right = 408.0
+margin_bottom = -78.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.882353, 0.54902, 0.54902, 1 )
+text = "Your Prolific ID is not valid!"
+align = 1
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NextLabel" type="Label" parent="PreQuestionaire"]
+visible = false
+margin_left = 40.2191
+margin_top = 212.556
+margin_right = 987.214
+margin_bottom = 275.556
+custom_fonts/font = SubResource( 4 )
+text = "On the next page we're going to ask you some questions about yourself.
+Don't worry, your answers will all be anonymised!"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConsentLabel" type="Label" parent="PreQuestionaire"]
+visible = false
+margin_left = 246.775
+margin_top = 22.0993
+margin_right = 741.775
+margin_bottom = 60.0993
+custom_fonts/font = SubResource( 5 )
+text = "We need your consent to proceed."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConsentTextLabel" type="RichTextLabel" parent="PreQuestionaire"]
+visible = false
+margin_left = 128.0
+margin_top = 81.0
+margin_right = 936.0
+margin_bottom = 421.0
+custom_fonts/normal_font = SubResource( 6 )
+text = "You are invited to take part in research taking place at the University of Bristol and at the University of the West of England, Bristol. Before you decide whether to take part, it is important for you to understand why the study is being done and what it will involve. Please read the following information carefully and if you have any queries or would like more information please contact the researchers using the contact information provided. 
+
+The data collected during the study includes some basic demographic information and a quick personality test. We will also be recording some analytics during your gameplay.  We will not be recording any auditory or visual data from the game. Only in-game activity will be recorded.  Your study data will be anonymised. If you wish to withdraw your data from the study after completion, please contact the lead researcher using the details below, referencing your prolific identification number and it will be removed. 
+
+This research has been approved by the Faculty of Environment and Technology research ethics committee at the University of the West of England in Bristol. If you have any concerns or would like further information about the study, please contact Pierre CASTRES SAINT MARTIN at mo20183@bristol.ac.uk or Séverin LEMAIGNAN at severin.lemaignan@uwe.ac.uk."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="YesConsentButton" type="Button" parent="PreQuestionaire"]
+visible = false
+margin_left = 255.886
+margin_top = 467.832
+margin_right = 403.886
+margin_bottom = 512.832
+custom_fonts/font = SubResource( 7 )
+text = "I consent"
+
+[node name="NoConsentButton" type="Button" parent="PreQuestionaire"]
+visible = false
+margin_left = 571.221
+margin_top = 467.833
+margin_right = 825.221
+margin_bottom = 512.833
+custom_fonts/font = SubResource( 8 )
+text = "I do not consent"
+
+[node name="NoConsentLabel" type="Label" parent="PreQuestionaire"]
+visible = false
+margin_left = 221.09
+margin_top = 197.396
+margin_right = 817.09
+margin_bottom = 335.396
+custom_fonts/font = SubResource( 9 )
+text = "Thank you for your time. 
+
+You may now close this window."
+align = 1
+autowrap = true
+
+[node name="FinalScreen" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = -2.0
+margin_right = 12.0
+margin_bottom = -2.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WelcomeLabel" type="Label" parent="FinalScreen"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -363.5
+margin_top = 3.63351
+margin_right = 363.5
+margin_bottom = 172.634
+custom_fonts/font = ExtResource( 1 )
+text = "Time out!
+
+Alright, detective
+who do you think  is the murderer?"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ByeLabel" type="Label" parent="FinalScreen"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -363.5
+margin_top = 194.634
+margin_right = 363.5
+margin_bottom = 363.634
+custom_fonts/font = ExtResource( 1 )
+text = "You can now close this window.
+
+Thank you for your participation!"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Selection" type="Label" parent="FinalScreen"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -363.5
+margin_top = 49.6335
+margin_right = 363.5
+margin_bottom = 218.634
+custom_fonts/font = ExtResource( 1 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ThankYou" type="RichTextLabel" parent="FinalScreen"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -459.5
+margin_top = 225.0
+margin_right = 459.5
+margin_bottom = 512.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]
+Thank you for your participation!
+
+[url=redirect]Click here to return to Prolific and validate your participation.[/url]
+[/center]"
+text = "
+Thank you for your participation!
+
+Click here to return to Prolific and validate your participation.
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NPCs" type="Control" parent="FinalScreen"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="option1" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 23.1963
+margin_top = 367.891
+margin_right = 133.196
+margin_bottom = 451.891
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Sarah"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option1"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option2" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 234.423
+margin_top = 369.617
+margin_right = 344.423
+margin_bottom = 453.617
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Lucy"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option2"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option3" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 452.775
+margin_top = 364.097
+margin_right = 562.775
+margin_bottom = 448.097
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Bella"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option3"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option4" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 681.917
+margin_top = 367.347
+margin_right = 791.917
+margin_bottom = 451.347
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Jay"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option4"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option5" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 910.551
+margin_top = 357.673
+margin_right = 1020.55
+margin_bottom = 441.673
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Tom"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option5"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option6" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 130.746
+margin_top = 445.838
+margin_right = 240.746
+margin_bottom = 529.838
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Kelly"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option6"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option7" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 341.573
+margin_top = 442.833
+margin_right = 451.573
+margin_bottom = 526.833
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Chris"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option7"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option8" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 565.181
+margin_top = 434.731
+margin_right = 675.181
+margin_bottom = 518.732
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Mike"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option8"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="option9" type="CheckBox" parent="FinalScreen/NPCs"]
+margin_left = 800.407
+margin_top = 432.639
+margin_right = 910.407
+margin_bottom = 516.639
+custom_icons/radio_checked = ExtResource( 4 )
+custom_icons/radio_unchecked = ExtResource( 5 )
+custom_fonts/font = SubResource( 3 )
+group = SubResource( 10 )
+text = "Jess"
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="FinalScreen/NPCs/option9"]
+margin_left = -18.4974
+margin_top = -178.406
+margin_right = 109.503
+margin_bottom = -4.40552
+expand = true
+stretch_mode = 6
+
+[node name="Big5" type="Control" parent="."]
+visible = false
+margin_left = 104.841
+margin_top = 91.5946
+margin_right = 668.841
+margin_bottom = 456.595
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WelcomeLabel" type="Label" parent="Big5"]
+margin_left = -56.6966
+margin_top = -65.5159
+margin_right = 670.303
+margin_bottom = -25.5159
+custom_fonts/font = ExtResource( 1 )
+text = "I see myself as someone who..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Items" type="VBoxContainer" parent="Big5"]
+margin_top = 15.0
+margin_bottom = 15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="PreQuestionaire/YesConsentButton" to="." method="_on_YesConsentButton_pressed"]
+[connection signal="pressed" from="PreQuestionaire/NoConsentButton" to="." method="_on_NoConsentButton_pressed"]

@@ -1,0 +1,143 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://FredokaOne-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://LikertItem.gd" type="Script" id=2]
+[ext_resource path="res://assets/ui/PNG/buttonRound_blue.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/PNG/buttonRound_grey.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+font_data = ExtResource( 1 )
+
+[sub_resource type="ButtonGroup" id=3]
+
+[sub_resource type="Theme" id=4]
+CheckBox/icons/ = null
+
+[sub_resource type="DynamicFont" id=5]
+font_data = ExtResource( 1 )
+
+[node name="LikertItem" type="Control"]
+anchor_right = 0.674
+anchor_bottom = 0.12
+margin_left = 1.0
+margin_right = -0.176025
+rect_min_size = Vector2( 0, 80 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 2.16318
+margin_top = -1.88792
+margin_right = 152.163
+margin_bottom = 38.1121
+custom_fonts/font = SubResource( 1 )
+text = "Question"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="0" type="CheckBox" parent="."]
+margin_left = 179.643
+margin_top = 28.6408
+margin_right = 223.643
+margin_bottom = 74.6408
+custom_icons/radio_checked = ExtResource( 3 )
+custom_icons/radio_unchecked = ExtResource( 4 )
+custom_fonts/font = SubResource( 2 )
+group = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1" type="CheckBox" parent="."]
+margin_left = 255.335
+margin_top = 28.6208
+margin_right = 298.335
+margin_bottom = 74.6208
+custom_icons/radio_checked = ExtResource( 3 )
+custom_icons/radio_unchecked = ExtResource( 4 )
+custom_fonts/font = SubResource( 2 )
+group = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2" type="CheckBox" parent="."]
+margin_left = 337.009
+margin_top = 28.0
+margin_right = 380.009
+margin_bottom = 74.0
+custom_icons/radio_checked = ExtResource( 3 )
+custom_icons/radio_unchecked = ExtResource( 4 )
+custom_fonts/font = SubResource( 2 )
+group = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3" type="CheckBox" parent="."]
+margin_left = 418.454
+margin_top = 28.0
+margin_right = 461.454
+margin_bottom = 74.0
+custom_icons/radio_checked = ExtResource( 3 )
+custom_icons/radio_unchecked = ExtResource( 4 )
+custom_fonts/font = SubResource( 2 )
+group = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="4" type="CheckBox" parent="."]
+margin_left = 493.454
+margin_top = 28.0
+margin_right = 536.454
+margin_bottom = 74.0
+theme = SubResource( 4 )
+custom_icons/radio_checked = ExtResource( 3 )
+custom_icons/radio_unchecked = ExtResource( 4 )
+custom_fonts/font = SubResource( 2 )
+group = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScaleLabel0" type="Label" parent="."]
+margin_left = 3.75904
+margin_top = 39.1436
+margin_right = 162.759
+margin_bottom = 79.1436
+custom_fonts/font = SubResource( 5 )
+text = "Completely disagree"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScaleLabel4" type="Label" parent="."]
+margin_left = 542.858
+margin_top = 41.0951
+margin_right = 701.858
+margin_bottom = 81.0951
+custom_fonts/font = SubResource( 5 )
+text = "Completely agree"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GreyLine" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_left = 193.454
+margin_top = 50.0371
+margin_right = 518.454
+margin_bottom = 53.0371
+color = Color( 1, 1, 1, 0.443137 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
