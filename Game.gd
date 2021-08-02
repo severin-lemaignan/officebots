@@ -219,33 +219,7 @@ func _ready():
         
         set_physics_process(false)
         
-        $CanvasLayer/CharacterSelection.hide()
-        $CanvasLayer/UI.hide()
-        $QuestionsExplanations.show()
-        $QuestionsExplanations.preHocQuestionnaire()
-
-        var questionaire = yield($QuestionsExplanations,"questionaire_complete")
-
-        prolific_id = questionaire
-
-        $QuestionsExplanations.consent()
-        var consent = yield($QuestionsExplanations,"consent_given")
-
-        $QuestionsExplanations.big5()
-        var big5_results = yield($QuestionsExplanations,"big5_complete")
-        #save_big5(big5_results)
-
-        yield(get_tree().create_timer(0.5), "timeout")
-        $QuestionsExplanations.showIntro()
-
-        yield($QuestionsExplanations,"intro_complete")   
-           
-    
-    
-    
-    
-        $CanvasLayer/CharacterSelection.show()
-        $CanvasLayer/UI.show()      
+       
         
 
         
@@ -412,6 +386,8 @@ func _player_connected(id):
         print("Sending my player to the server")
     else:
         print("New player " + str(id) + " joined")
+        #rpc_id(1,"create_file",str(id))
+    if get_tree().is_network_server():
         create_file(str(id))
         
     if not get_tree().is_network_server():
@@ -603,21 +579,25 @@ remote func done_preconfiguring(who):
         
     print("Player #" + str(who) + " is ready.")
     
-    players_done.append(who)
-    rpc_id(who,"show_lobby")
     
-       
+    
+    rpc_id(who,"questionnaire",who)
+    
+
+        
+
+remote func lobby(who): 
+    rpc_id(who,"show_lobby")   
     # start the game immediately for whoever is connecting, passing the
     # start location of the player
-    
+    players_done.append(who)
     update_lobby()
     
     if players_done.size()==MIN_PLAYERS:
         $Timer_Lobby.start()
     if players_done.size()==MAX_PLAYERS:
         $Timer_Lobby.stop()
-        end_lobby()
-        
+        end_lobby()        
 
 var debug_points = []
 
@@ -646,7 +626,7 @@ var all_expr=["happy", "angry", "excited", "sad"]
 
 
 #create a file and add the first line: the user id 
-func create_file(name): 
+remote func create_file(name): 
     
     
     var path_modified = path + "/%s"%name + ".csv"
@@ -655,7 +635,7 @@ func create_file(name):
     if not file.is_open():
         print("Error opening file: " + path_modified)
         return
-    else: 
+    else:    
         print("file created for the user with id %s"%name )
     
     #file.store_line(dateRFC1123)
@@ -675,8 +655,8 @@ func save_data(name, data): #save the data in the csv file nammed name.csv
     file.store_line(data)
     
     file.close()
-
-
+    
+    
 # for each player, this function will create and save a string on a csv file with the position, orientation and expression of the player
  
 func pre_save(): 
@@ -694,6 +674,68 @@ func pre_save():
         #print(player_info)
     #for who in player_info: 
         #print(who) # print the id of the player 
+
+##questionnaire and  saving data of the questionnaire : 
+
+
+remote func questionnaire(who): 
+    get_tree().set_pause(false)
+    
+    print("in questionnaire")
+    $CanvasLayer/CharacterSelection.hide()
+    $CanvasLayer/UI.hide()
+    $QuestionsExplanations.show()
+    $QuestionsExplanations.preHocQuestionnaire()
+
+    var questionaire = yield($QuestionsExplanations,"questionaire_complete")
+
+    prolific_id = questionaire
+
+    $QuestionsExplanations.consent()
+    var consent = yield($QuestionsExplanations,"consent_given")
+
+    $QuestionsExplanations.big5()
+    var big5_results = yield($QuestionsExplanations,"big5_complete")
+    #save_big5(big5_results)
+
+    yield(get_tree().create_timer(0.5), "timeout")
+    $QuestionsExplanations.showIntro()
+
+    yield($QuestionsExplanations,"intro_complete")  
+    var results_str=""
+    for i in big5_results: 
+        results_str+="%s"%i
+           
+    rpc_id(1,'save_q5',who, prolific_id, results_str) #,str(prolific_id),results_str)
+    print("save q5")
+    
+    
+    $CanvasLayer/CharacterSelection.show()
+    $CanvasLayer/UI.show()      
+    
+    get_tree().set_pause(true)
+    rpc_id(1, 'lobby', who)
+    
+
+remote func save_q5(who,prolific_id,results): 
+    print("in save q5 depuis le server ")
+    var path_modified = path + "/%s"%who + ".txt"
+    
+    file.open(path_modified ,file.WRITE)
+    if not file.is_open():
+        print("Error opening file: " + path_modified + "file q5")
+        return
+    else: 
+        print("file created for the user with id " + "%s"%prolific_id + " file q5")
+    
+    #file.store_line(dateRFC1123)
+    #file.store_line("user : %s"%name)
+    file.store_line("%s"%prolific_id)
+    file.store_line(results)
+    
+    
+    file.close()
+
         
 func time_played(): 
     time_now= OS.get_unix_time()

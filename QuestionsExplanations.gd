@@ -1,12 +1,16 @@
 extends ColorRect
 
 var INTRO = [
-["""Hello Detective.
+["""Hello Colleagues.
 
 As you know,
-you're here to solve a murder.
-You will need to talk to the fellow townspeople 
-to find out what they know.
+an investor is coming to the office in few minutes
+and will decide if he wants to invest in our company! 
+It is a great day for the whole team.
+But as you will see, the office is a mess. 
+I will give each of you some missions to clean the place.  
+You will need to talk to your colleagues to be sure you know them well.
+Every mission will give you some points. 
 
 When the timer runs out,
 the player with the more points will win !""", "Next"],
@@ -24,7 +28,7 @@ If you get stuck during the game,
  you can change your mission 
 but it will cost you 3 points on your total.  
 
-Good luck, Detective!""", "Let's start!"]]
+Good luck !""", "Let's start!"]]
 
 #Topolewska-Siedzik, Ewa & Skimina, Ewa & Strus, Włodzimierz & Cieciuch, Jan & Rowiński, Tomasz. (2014). The short IPIP-BFM-20 questionnaire for measuring the big five. Roczniki Psychologiczne // Annals of Psychology. 17. 385-402. 
 
@@ -74,7 +78,7 @@ signal player_guess
 signal consent_pressed
 
 var prolific_id
-
+var result_big5
 # Called when the node enters the scene tree for the first time.
 func _ready():
     
@@ -210,7 +214,7 @@ func consent():
     $PreQuestionaire/ConsentLabel.hide()
     $PreQuestionaire/NextLabel.show()
     $TextzoneBtn.show()
-    print("here")
+    
     
     yield(textzone_btn, "button_up")
 
@@ -270,6 +274,7 @@ func big5():
     for c in $Big5/Items.get_children():
         results.push_back(c.get_answer())
     print(results)
+    result_big5=results
     
     $TextzoneBtn.text = "Well done! Let's get started!"
     $TextzoneBtn.show()

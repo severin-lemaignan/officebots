@@ -68,7 +68,7 @@ shadow_enabled = true
 directional_shadow_mode = 1
 
 [node name="MainOffice" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.06984, 0.177475, 2.40717 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.09865, 0.122459, 2.46107 )
 
 [node name="FakePlayer" type="Spatial" parent="."]
 script = ExtResource( 5 )
@@ -212,12 +212,12 @@ transform = Transform( 1.7, 0, 0, 0, 1, 0, 0, 0, 1.5, -1.68103, 0, 9.78008 )
 [node name="Male Toilets" parent="Mission_Target" instance=ExtResource( 8 )]
 
 [node name="Zone" parent="Mission_Target/Male Toilets" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, -8.73584, 0, -8.20709 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 3, -8.21833, 0, -7.40246 )
 
 [node name="Female Toilets" parent="Mission_Target" instance=ExtResource( 8 )]
 
 [node name="Zone" parent="Mission_Target/Female Toilets" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, -14.2356, 0, -7.9104 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 3, -13.3383, 0, -7.66415 )
 
 [node name="Server Room" parent="Mission_Target" instance=ExtResource( 8 )]
 
@@ -233,11 +233,6 @@ transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, 5.63002, 0, 5.31556 )
 
 [node name="Zone" parent="Mission_Target/HR Dep" index="0"]
 transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 1.5, 13.0524, 0, 5.17115 )
-
-[node name="Storage Room " parent="Mission_Target" instance=ExtResource( 8 )]
-
-[node name="Zone" parent="Mission_Target/Storage Room " index="0"]
-transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 0.7, -10.8809, 0, -11.3142 )
 
 [node name="Storage_Kitchen" parent="Mission_Target" instance=ExtResource( 8 )]
 
@@ -295,7 +290,5 @@ visible = false
 [editable path="Mission_Target/Manager Office"]
 
 [editable path="Mission_Target/HR Dep"]
-
-[editable path="Mission_Target/Storage Room "]
 
 [editable path="Mission_Target/Storage_Kitchen"]

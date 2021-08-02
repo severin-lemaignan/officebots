@@ -88,14 +88,41 @@ margin_right = 734.0
 margin_bottom = 93.0
 theme = ExtResource( 1 )
 text = "Welcome to Office Bots, 
-please wait for other players "
+please wait for other players (min 6)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Description " type="Label" parent="."]
-margin_left = 409.0
+margin_left = 410.189
 margin_top = 71.0
-margin_right = 962.0
+margin_right = 963.189
 margin_bottom = 569.0
-text = "ADD SCENARIO "
+text = "Hello Colleagues.
+
+As you know,
+an investor is coming to the office in few minutes
+and will decide if he wants to invest in our company! 
+It is a great day for the whole team.
+But as you will see, the office is a mess. 
+I will give each of you some missions to clean the place.  
+You will need to talk to your colleagues to be sure you know them well.
+Every mission will give you some points. 
+
+When the timer runs out,
+the player with the more points will win !
+
+
+You can navigate the arena using the arrow keys.
+
+When you approach a character, 
+you may have a discussion with them through the chat.
+You can use the emojies to show 
+your emotions and expressions
+
+
+If you get stuck during the game,
+ you can change your mission 
+but it will cost you 3 points on your total.  
+
+Good luck !"
