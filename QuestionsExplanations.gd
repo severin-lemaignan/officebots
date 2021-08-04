@@ -11,22 +11,31 @@ But as you will see, the office is a mess.
 I will give each of you some missions to clean the place.  
 You will need to talk to your colleagues to be sure you know them well.
 Every mission will give you some points. 
-
+""", "Next"],
+["""
 When the timer runs out,
-the player with the more points will win !""", "Next"],
+the player with more points will win!
+All missions do not worth the same amount of points.
+""", "Next"],
 
 ["""
 You can navigate the arena using the arrow keys.
 
 When you approach a character, 
 you may have a discussion with them through the chat.
-You can use the emojies to show 
+You can use the emojis to show 
 your emotions and expressions""", "Next"],
+["""
+You can interact with some objects: either bump into it or pick the object 
+by clicking on the highlighted yellow circle on the object 
+Some missions are using the objects: be careful to select the good object 
+and not a similar one. 
+""", "Next"],
 
 ["""
 If you get stuck during the game,
  you can change your mission 
-but it will cost you 3 points on your total.  
+but it will cost you 3 points in your total.  
 
 Good luck !""", "Let's start!"]]
 

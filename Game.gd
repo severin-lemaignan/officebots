@@ -22,7 +22,7 @@ var SERVER_PORT=6969
 
 var time_start=0 
 var time_now=0
-var total_time = 60 #total time of the game in seconds
+var total_time = 300 #total time of the game in seconds
 
 
 var is_networking_started
@@ -39,7 +39,7 @@ var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
-var MIN_PLAYERS = 1
+var MIN_PLAYERS = 2
 
 export(String) var username = "John Doe"
 
@@ -925,10 +925,11 @@ remote func new_mission(id, mission_number):
     var target_zone 
     var target_player
     
-    if mission.mission_with_object == true : 
-        var index_object= random_index ($MainOffice/PickableObjects.get_child_count())
+    if mission.mission_with_object == true :
+        
+        var index_object= random_index ($MainOffice/PickableObjects.get_child_count()-1)
 #        object=get_node("MainOffice/DynamicObstacles").get_child(3)
-        object = get_node("MainOffice/PickableObjects").get_child($MainOffice/PickableObjects.get_child_count()-1)
+        object = get_node("MainOffice/PickableObjects").get_child(index_object+1)
         
     var index_zone= random_index ($Mission_Target.get_child_count())
     
@@ -958,7 +959,7 @@ remote func new_mission(id, mission_number):
     if mission.id_mission==6 or mission.id_mission==7: 
         var name_target = player_info[int(target_player.get_name())]["name"]
         description = name_target + description
-    description+= "| + %s points "%mission.points
+    description+= "  | + %s points "%mission.points
     rpc_id(int(id),"show_mission",description,mission_number)
          
     

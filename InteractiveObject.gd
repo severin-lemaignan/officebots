@@ -15,7 +15,7 @@ export(float, 0, 2, 0.1) var pickup_area_size = 1.0
 
 var state = OBJECT_STATE.resting
 
-var MAX_DIST_HIGHLIGHT = 3.0
+var MAX_DIST_HIGHLIGHT = 6.0
 
 var prev_transform
 

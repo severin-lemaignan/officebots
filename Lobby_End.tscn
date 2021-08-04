@@ -194,10 +194,15 @@ margin_bottom = 293.0
 theme = ExtResource( 2 )
 
 [node name="Label2" type="Label" parent="."]
-margin_left = 57.0
-margin_top = 375.0
-margin_right = 965.0
-margin_bottom = 500.0
+margin_left = 22.7798
+margin_top = 401.718
+margin_right = 932.78
+margin_bottom = 570.718
 custom_fonts/font = ExtResource( 3 )
-text = "Thank you for your participation ! 
-The game is over! you can close this window. "
+text = "Thank you for your participation ! The game is over! 
+You can click on  this link to be redirected to Prolific : 
+https://app.prolific.co/submissions/complete?cc=70523F16
+And close this window. "
+__meta__ = {
+"_edit_use_anchors_": false
+}
