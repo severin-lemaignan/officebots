@@ -10,7 +10,7 @@ var description = "Be in a group with %s players "%number_targets
 var distance 
 var target_player 
 var target_zone 
-var points = 1
+var points = 3
 
 func _ready():
     

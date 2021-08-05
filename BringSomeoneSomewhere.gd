@@ -6,7 +6,7 @@ var mission_done= false
 var mission_with_target= true
 var mission_with_object = false
 var description = " have to go to the " #"bring a player on the pool table  "
-var points = 1
+var points = 7
 var target_player 
 var target_zone 
 

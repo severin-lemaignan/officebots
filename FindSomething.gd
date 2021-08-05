@@ -6,7 +6,7 @@ var mission_done= false
 var mission_with_target= false
 var mission_with_object = true
 var description = "Find and pick up  " 
-var points = 1
+var points = 3
 var target_player 
 var target_zone 
 var target_object 
