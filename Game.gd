@@ -6,7 +6,7 @@ extends Spatial
 # set the initial game mode. Can be overridden by 
 # command-line arguments --server, --client, --standalone
 enum modes {UNSET, CLIENT, SERVER, STANDALONE}
-export(modes) var run_as = modes.UNSET
+export(modes) var run_as = modes.SERVER
 
 # by default, the game supports adding robots; robots can be disabled if eg
 # it is only played online with human users.
@@ -16,9 +16,9 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 export(bool) var enable_focus_blur = true
 ###############################################################################
 
-var SERVER_URL="127.0.0.1"
+var SERVER_URL= "https://research.skadge.org "#"127.0.0.1"
 
-var SERVER_PORT=6969
+var SERVER_PORT=1548#6969
 
 var time_start=0 
 var time_now=0
@@ -621,7 +621,7 @@ func debug_point(pos):
     
 ######### save data ###########
 var file = File.new()
-var path ="res://logs"
+var path ="./logs"
 var all_expr=["happy", "angry", "excited", "sad"]
 
 
@@ -640,7 +640,7 @@ remote func create_file(name):
     
     #file.store_line(dateRFC1123)
     #file.store_line("user : %s"%name )
-    file.store_line( " time,x,z,rotation, expression, is_speaking")
+    file.store_line( " time,x,z,rotation, expression, is_speaking, mission 1, mission 2, mission 3")
     
     file.close()
     
@@ -667,7 +667,7 @@ func pre_save():
         var mood2 = p.name_expression #p.name_expression
         var mood=p.name_expression
         
-        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," +"%.1f"%p.rotation_degrees[0]+"%.1f"%p.rotation_degrees[1]+ "%.1f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking()
+        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," +"%.1f"%p.rotation_degrees[0]+"%.1f"%p.rotation_degrees[1]+ "%.1f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking() + "," + "%s"%p.mission_1 + "," + "%s"%p.mission_2 + "," + "%s"%p.mission_3
         save_data(ID,data)
         
         
@@ -961,7 +961,12 @@ remote func new_mission(id, mission_number):
         description = name_target + description
     description+= "  | + %s points "%mission.points
     rpc_id(int(id),"show_mission",description,mission_number)
-         
+    if mission_number==1: 
+        player.mission_1=mission.id_mission  
+    if mission_number==2: 
+        player.mission_2=mission.id_mission
+    if mission_number==3: 
+        player.mission_3=mission.id_mission   
     
     if mission.id_mission ==0: 
         mission.set_targets(target_player,target_zone)

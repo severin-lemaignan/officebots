@@ -11,6 +11,9 @@ var expression  #to export the expression
 var name_expression = "test"
 var prolific_id
 var mission 
+var mission_1 
+var mission_2
+var mission_3
 var target_for_mission
 onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
 onready var speech_bubble_handle = $SpeechBubbleHandle
