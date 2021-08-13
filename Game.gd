@@ -16,9 +16,9 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 export(bool) var enable_focus_blur = true
 ###############################################################################
 
-var SERVER_URL= "https://research.skadge.org "#"127.0.0.1"
+var SERVER_URL= "https://research.skadge.org "#"127.0.0.1"#
 
-var SERVER_PORT=1548#6969
+var SERVER_PORT=6969#1548#
 
 var time_start=0 
 var time_now=0
@@ -39,7 +39,7 @@ var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
-var MIN_PLAYERS = 2
+var MIN_PLAYERS = 1
 
 export(String) var username = "John Doe"
 
@@ -640,7 +640,8 @@ remote func create_file(name):
     
     #file.store_line(dateRFC1123)
     #file.store_line("user : %s"%name )
-    file.store_line( " time,x,z,rotation, expression, is_speaking, mission 1, mission 2, mission 3")
+    
+    file.store_line( "ID, time, pos_x,pos_y,pos_z,r_x,r_y,r_z, expression, is_speaking, mission 1, mission 2, mission 3, score ")
     
     file.close()
     
@@ -667,7 +668,7 @@ func pre_save():
         var mood2 = p.name_expression #p.name_expression
         var mood=p.name_expression
         
-        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," +"%.1f"%p.rotation_degrees[0]+"%.1f"%p.rotation_degrees[1]+ "%.1f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking() + "," + "%s"%p.mission_1 + "," + "%s"%p.mission_2 + "," + "%s"%p.mission_3
+        var data = "%s"%ID + "," + "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[1]+"," + "%.2f"%p.global_transform.origin[2] +"," +"%.2f"%p.rotation_degrees[0]+"," + "%.2f"%p.rotation_degrees[1]+ "," + "%.2f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking() + "," + "%s"%p.mission_1 + "," + "%s"%p.mission_2 + "," + "%s"%p.mission_3 + "," + "%s"%p.score
         save_data(ID,data)
         
         
@@ -853,7 +854,7 @@ func update_players_proximity():
    
     for p in proximity:
         p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
-    
+        
 ######     Mission 
 remote func update_score(new_points):
     $CanvasLayer/UI.set_score(new_points)
