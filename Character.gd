@@ -8,7 +8,7 @@ onready var anim_player = $AnimationPlayer
 # are oriented to face this player
 var local_player
 var expression  #to export the expression 
-var name_expression = "test"
+var name_expression
 var prolific_id
 var mission 
 var mission_1 

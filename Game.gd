@@ -595,6 +595,8 @@ remote func lobby(who):
     
     if players_done.size()==MIN_PLAYERS:
         $Timer_Lobby.start()
+    if players_done.size()>MIN_PLAYERS and $Timer_Lobby.time_left==0:
+        acces_game_after_start(who)
     if players_done.size()==MAX_PLAYERS:
         $Timer_Lobby.stop()
         end_lobby()
@@ -896,6 +898,10 @@ remote func new_mission(id, mission_number):
     var index_mission = random_index (nb_missions)
     var index_target
     var path_mission
+    if $Players.get_child_count()!=1: 
+        while get_node("Players/%s"%id).mission_1==index_mission or get_node("Players/%s"%id).mission_2==index_mission  or get_node("Players/%s"%id).mission_3==index_mission :
+            index_mission = random_index(nb_missions) 
+        
     if $Players.get_child_count()==1: 
         index_mission=1
     if index_mission ==0 : 
@@ -1086,7 +1092,13 @@ remote func show_lobby_end(ranking,list_score):
         var score = list_score[i-1]
         get_node("CanvasLayer/UI/Lobby_End/HBoxContainer/VBoxContainer2/Player%s"%i).text= str(p)+ " " + str(score) + " points"
         i+=1
-    
+func acces_game_after_start(p): 
+    rpc_id(p, "post_configure_game", player_info[p]["start_location"])
+    new_mission(p,1)
+    new_mission(p,2)
+    new_mission(p,3)
+    rpc_id(p,"hide_lobby")
+        
 func end_lobby(): 
     time_start= OS.get_unix_time()
     $timer_save.start()
