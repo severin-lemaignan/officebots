@@ -8,7 +8,7 @@ signal typing
 signal not_typing_anymore
 
 var is_typing = false
-var emotion = "test pour ds character "
+
 var chatmsg = preload("res://ChatMsg.tscn")
 var presencelabel = preload("res://PresenceLabel.tscn")
 

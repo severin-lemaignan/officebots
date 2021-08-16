@@ -28,6 +28,7 @@ func set_targets(target):
 func is_mission_done():
     if get_node_or_null("target_player")==null: 
         return 
+    print(target_player.name_expression)
     if target_player.name_expression == "happy" : 
         mission_done=true 
         

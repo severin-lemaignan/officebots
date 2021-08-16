@@ -16,13 +16,13 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 export(bool) var enable_focus_blur = true
 ###############################################################################
 
-var SERVER_URL= "https://research.skadge.org "#"127.0.0.1"
+var SERVER_URL= "127.0.0.1"#"research.skadge.org"
 
-var SERVER_PORT=1548#6969
+var SERVER_PORT=6969#1548#
 
 var time_start=0 
 var time_now=0
-var total_time = 300 #total time of the game in seconds
+var total_time = 150 #total time of the game in seconds
 
 
 var is_networking_started
@@ -39,7 +39,7 @@ var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
-var MIN_PLAYERS = 2
+var MIN_PLAYERS = 1
 
 export(String) var username = "John Doe"
 
@@ -66,9 +66,9 @@ func _ready():
     $Timer_Lobby.connect("timeout",self,"_on_Timer_Lobby_timeout")
     $Timer_Lobby.wait_time = 10
     $Timer_Lobby.one_shot = true
-    
     $timer_save.wait_time = 1
     $timer_save.one_shot = false 
+
     
     randomize()
     
@@ -597,7 +597,8 @@ remote func lobby(who):
         $Timer_Lobby.start()
     if players_done.size()==MAX_PLAYERS:
         $Timer_Lobby.stop()
-        end_lobby()        
+        end_lobby()
+       
 
 var debug_points = []
 
@@ -640,7 +641,8 @@ remote func create_file(name):
     
     #file.store_line(dateRFC1123)
     #file.store_line("user : %s"%name )
-    file.store_line( " time,x,z,rotation, expression, is_speaking, mission 1, mission 2, mission 3")
+    
+    file.store_line( "ID, time, pos_x,pos_y,pos_z,r_x,r_y,r_z, expression, is_speaking, mission 1, mission 2, mission 3, score ")
     
     file.close()
     
@@ -664,10 +666,10 @@ func pre_save():
         var ID = p.get_name()
         
         var time = OS.get_unix_time()
-        var mood2 = p.name_expression #p.name_expression
+        
         var mood=p.name_expression
         
-        var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," +"%.1f"%p.rotation_degrees[0]+"%.1f"%p.rotation_degrees[1]+ "%.1f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking() + "," + "%s"%p.mission_1 + "," + "%s"%p.mission_2 + "," + "%s"%p.mission_3
+        var data = "%s"%ID + "," + "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[1]+"," + "%.2f"%p.global_transform.origin[2] +"," +"%.2f"%p.rotation_degrees[0]+"," + "%.2f"%p.rotation_degrees[1]+ "," + "%.2f"%p.rotation_degrees[2] + "," + mood + "," + "%s"%p.is_speaking() + "," + "%s"%p.mission_1 + "," + "%s"%p.mission_2 + "," + "%s"%p.mission_3 + "," + "%s"%p.score
         save_data(ID,data)
         
         
@@ -718,7 +720,7 @@ remote func questionnaire(who):
     
 
 remote func save_q5(who,prolific_id,results): 
-    print("in save q5 depuis le server ")
+    
     var path_modified = path + "/%s"%who + ".txt"
     
     file.open(path_modified ,file.WRITE)
@@ -745,6 +747,7 @@ func time_played():
 func update_time(): 
     var time_sec = total_time - time_played()
     if time_sec == 0: 
+        
         show_message(' Time out !  END OF THE GAME')
         var max_score= 0 
         var ranking=[]
@@ -752,12 +755,13 @@ func update_time():
         for p in $Players.get_children(): 
             if p.score >max_score: 
                 max_score=p.score
-        for i in range(max_score+2,-1,-1): 
+        for i in range(max_score+2,-100,-1): 
             for p in $Players.get_children(): 
                 if p.score ==i:
                     var name = player_info[int(p.get_name())]["name"]
                     ranking.append(str(name))
                     list_score.append(str(i))
+        $timer_save.stop()
         for p in $Players.get_children(): 
             rpc_id(int(p.get_name()),"show_lobby_end",ranking,list_score)
     else : 
@@ -853,7 +857,7 @@ func update_players_proximity():
    
     for p in proximity:
         p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
-    
+        
 ######     Mission 
 remote func update_score(new_points):
     $CanvasLayer/UI.set_score(new_points)
@@ -1085,6 +1089,7 @@ remote func show_lobby_end(ranking,list_score):
     
 func end_lobby(): 
     time_start= OS.get_unix_time()
+    $timer_save.start()
     for p in players_done:
             
         rpc_id(p, "post_configure_game", player_info[p]["start_location"])
@@ -1100,10 +1105,12 @@ func _on_Timer_Lobby_timeout():
 
 func on_change_mission(id):
     rpc_id(1,"change_mission_from_server",id) 
+    
 
 remote func change_mission_from_server(id): 
     var id_sender = get_tree().get_rpc_sender_id()
     new_mission(id_sender,id)
+    get_node("Players/%s"%id_sender).score -=3
 
 
 

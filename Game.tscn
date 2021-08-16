@@ -21,7 +21,6 @@ shader_param/vignette = ExtResource( 12 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-run_as = 1
 has_robots = 1
 enable_focus_blur = false
 
@@ -143,8 +142,6 @@ transform = Transform( 0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 4
 [node name="Robots" type="Spatial" parent="."]
 
 [node name="timer_save" type="Timer" parent="."]
-wait_time = 3.0
-autostart = true
 
 [node name="Mission_Target" type="Spatial" parent="."]
 
