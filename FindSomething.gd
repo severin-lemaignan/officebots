@@ -9,7 +9,7 @@ var description = "Find and pick up  "
 var points = 3
 var target_player 
 var target_zone 
-var target_object 
+var target_object_name
 
 
 func _ready():
@@ -21,22 +21,23 @@ func _process(delta):
     pass 
 
 func set_targets(object): 
-    target_object  = object 
+    target_object_name  = object.get_name() 
      
     
     
 
 func is_mission_done():
     var object_name
-    if target_object != null : 
-        if get_node_or_null("player")==null: 
+    if target_object_name != null : 
+        if player==null: 
+            print("no more player ")
             return 
         else : 
             
-            object_name= target_object.get_name()
+            
         
-            var path_nd_ob = "/root/Game/Players/"+ player.get_name() + "/PickupAnchor/" + object_name
-
+            var path_nd_ob = "/root/Game/Players/"+ player.get_name() + "/PickupAnchor/" + target_object_name
+            
             if get_node_or_null(path_nd_ob) != null : 
                 mission_done = true
             

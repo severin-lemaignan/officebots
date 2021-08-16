@@ -903,7 +903,7 @@ remote func new_mission(id, mission_number):
             index_mission = random_index(nb_missions) 
         
     if $Players.get_child_count()==1: 
-        index_mission=1
+        index_mission=5
     if index_mission ==0 : 
         path_mission= "res://Missions/BringSomeoneSomewhere.tscn"
     if index_mission ==1 : 
@@ -938,8 +938,11 @@ remote func new_mission(id, mission_number):
     if mission.mission_with_object == true :
         
         var index_object= random_index ($MainOffice/PickableObjects.get_child_count()-1)
-#        object=get_node("MainOffice/DynamicObstacles").get_child(3)
         object = get_node("MainOffice/PickableObjects").get_child(index_object+1)
+        while object.pickable==false: 
+            index_object= random_index ($MainOffice/PickableObjects.get_child_count()-1)
+            object = get_node("MainOffice/PickableObjects").get_child(index_object+1)
+        
         
     var index_zone= random_index ($Mission_Target.get_child_count())
     
