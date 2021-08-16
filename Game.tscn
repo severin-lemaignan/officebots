@@ -247,45 +247,28 @@ visible = false
 
 [node name="QuestionsExplanations" parent="." instance=ExtResource( 10 )]
 visible = false
+
 [connection signal="button_down" from="CanvasLayer/UI/Button_M1" to="." method="_on_Button_M1_button_down"]
 [connection signal="button_down" from="CanvasLayer/UI/Button_M2" to="." method="_on_Button_M2_button_down"]
 [connection signal="button_down" from="CanvasLayer/UI/Button_M3" to="." method="_on_Button_M3_button_down"]
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
 
 [editable path="CanvasLayer/UI"]
-
 [editable path="Mission_Target/End of the corridor"]
-
 [editable path="Mission_Target/PoolTable"]
-
 [editable path="Mission_Target/Offices"]
-
 [editable path="Mission_Target/Director Office"]
-
 [editable path="Mission_Target/Lift"]
-
 [editable path="Mission_Target/Relaxation Room"]
-
 [editable path="Mission_Target/Conference Room "]
-
 [editable path="Mission_Target/Entrance"]
-
 [editable path="Mission_Target/Kitchen"]
-
 [editable path="Mission_Target/Stairs"]
-
 [editable path="Mission_Target/Reception_desk"]
-
 [editable path="Mission_Target/TableTennis Room"]
-
 [editable path="Mission_Target/Male Toilets"]
-
 [editable path="Mission_Target/Female Toilets"]
-
 [editable path="Mission_Target/Server Room"]
-
 [editable path="Mission_Target/Manager Office"]
-
 [editable path="Mission_Target/HR Dep"]
-
 [editable path="Mission_Target/Storage_Kitchen"]
