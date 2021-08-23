@@ -28,7 +28,7 @@ func set_targets(object,zone):
 
 func is_mission_done():
     var object_name
-    if get_node_or_null("%s"%player) == null : 
+    if player == null : 
         return  
     
     if target_object != null : 

@@ -54,7 +54,7 @@ func set_text(msg, author=null):
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true
         $Container/VBoxContainer/ReactionContainer/Reaction.texture = reaction_laughing
-        emotion= "laighing"
+        emotion= "laughing"
     elif msg == ":confused:":
         $Container/VBoxContainer/Text.visible = false
         $Container/VBoxContainer/ReactionContainer.visible = true

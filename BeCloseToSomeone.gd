@@ -23,7 +23,7 @@ func set_targets(distance_gamestate):
 
 
 func is_mission_done(players_distances, players ): 
-    if get_node_or_null("player")==null: 
+    if player==null: 
         return 
     var player_distances = players_distances[player]
     var count= 0

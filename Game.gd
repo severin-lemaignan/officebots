@@ -16,13 +16,13 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 export(bool) var enable_focus_blur = true
 ###############################################################################
 
-var SERVER_URL= "127.0.0.1"#"research.skadge.org"
+var SERVER_URL= "research.skadge.org"#"127.0.0.1"#
 
-var SERVER_PORT=6969#1548#
+var SERVER_PORT=6969
 
 var time_start=0 
 var time_now=0
-var total_time = 150 #total time of the game in seconds
+var total_time = 15 #total time of the game in seconds
 
 
 var is_networking_started
@@ -51,7 +51,7 @@ var players_distances = {}
 
 var robots = {}
 var local_robot = null
-
+var emotions = ["happy", "smily" , "laughing", "confused", "bored"]
 # whether or not laserscans are displayed. Changed via the settings in the UI
 # (cf callback 'toggle_robots_lasers')
 var show_laserscans = false
@@ -972,6 +972,11 @@ remote func new_mission(id, mission_number):
     if mission.id_mission==6 or mission.id_mission==7: 
         var name_target = player_info[int(target_player.get_name())]["name"]
         description = name_target + description
+    if mission.id_mission==7: 
+        var index_em= random_index(4)
+        mission.target_emotion = emotions[index_em]
+        var name_target = player_info[int(target_player.get_name())]["name"]
+        description = name_target + description + mission.target_emotion
     description+= "  | + %s points "%mission.points
     rpc_id(int(id),"show_mission",description,mission_number)
     if mission_number==1: 
