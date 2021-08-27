@@ -22,7 +22,7 @@ var SERVER_PORT=6969
 
 var time_start=0 
 var time_now=0
-var total_time = 15 #total time of the game in seconds
+var total_time = 300 #total time of the game in seconds
 
 
 var is_networking_started
@@ -39,7 +39,7 @@ var screen_textures = {}
 
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
-var MIN_PLAYERS = 1
+var MIN_PLAYERS = 2
 
 export(String) var username = "John Doe"
 

@@ -12,7 +12,7 @@ var target_player
 var target_zone 
 var number_players_around = false
 var in_zone=false
-var points = 10
+var points = 10 
 func _ready():
     
     pass # Replace with function body.

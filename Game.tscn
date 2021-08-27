@@ -51,7 +51,7 @@ __meta__ = {
 margin_right = -178.0
 
 [node name="Control" parent="CanvasLayer/UI/Bottom" index="0"]
-margin_right = 824.0
+margin_right = 823.0
 
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource( 6 )]
 

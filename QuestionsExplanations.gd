@@ -6,7 +6,7 @@ var INTRO = [
 As you know,
 an investor is coming to the office in few minutes
 and will decide if he wants to invest in our company! 
-It is a great day for the whole team.
+It is a great day for the team and for the company.
 But as you will see, the office is a mess. 
 I will give each of you some missions to clean the place.  
 You will need to talk to your colleagues to be sure you know them well.
