@@ -16,9 +16,9 @@ export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 export(bool) var enable_focus_blur = true
 ###############################################################################
 
-var SERVER_URL="127.0.0.1"
+var SERVER_URL= "wss://research-ws.skadge.org" #"127.0.0.1"#
 
-var SERVER_PORT=6969
+var SERVER_PORT=6969 # only used for the server -- the client will always connect to the default wss port (80 or 443)
 
 var time_start=0 
 var time_now=0
@@ -104,7 +104,7 @@ func _ready():
         else:
             GameState.mode = GameState.CLIENT
             SERVER_URL=url
-            print("Setting the game server to " + SERVER_URL + ":" + str(SERVER_PORT))
+            print("Setting the game server to " + SERVER_URL)
     
     # at that point, we should know our game mode
     assert(GameState.mode != GameState.UNSET)
@@ -229,7 +229,7 @@ func _ready():
         peer = WebSocketClient.new()
         
         # the last 'true' parameter enables the Godot high-level multiplayer API
-        peer.connect_to_url(SERVER_URL + ":" + str(SERVER_PORT), PoolStringArray(), true)
+        peer.connect_to_url(SERVER_URL, PoolStringArray(), true)
         get_tree().network_peer = peer
         
         is_networking_started = true
