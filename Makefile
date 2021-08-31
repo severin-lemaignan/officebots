@@ -5,7 +5,7 @@ TOOLS=tools
 DIST=dist
 WEBDIST=${DIST}/html5
 
-GODOT_VERSION=3.3.2
+GODOT_VERSION=3.3.3
 
 GODOT=${HOME}/applis/godot/Godot_v${GODOT_VERSION}-stable_x11.64
 GODOT_HEADLESS_BASE=Godot_v${GODOT_VERSION}-stable_linux_headless.64
