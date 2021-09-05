@@ -5,7 +5,7 @@ var id_mission=3
 var mission_done= false 
 var mission_with_target= false
 var mission_with_object = false
-var number_targets=1
+var number_targets=3
 var description = "Be in a group with %s players "%number_targets 
 var distance 
 var target_player 

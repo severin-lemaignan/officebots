@@ -4,18 +4,25 @@ var INTRO = [
 ["""Hello Colleagues.
 
 As you know,
-an investor is coming to the office in few minutes
+an investor is coming to the office in a few minutes
 and will decide if he wants to invest in our company! 
 It is a great day for the team and for the company.
 But as you will see, the office is a mess. 
-I will give each of you some missions to clean the place.  
+
+""", "Next"],
+["""You will have to collect and bring to the kitchen table all objects that could be interesting to show him. 
+Moreover, I will give each of you some missions to clean the place.  
 You will need to talk to your colleagues to be sure you know them well.
 Every mission will give you some points. 
 """, "Next"],
+
+
+
+
 ["""
 When the timer runs out,
-the player with more points will win!
-All missions do not worth the same amount of points.
+the player with most points will win!
+All missions are not worth the same amount of points.
 """, "Next"],
 
 ["""
@@ -28,7 +35,7 @@ your emotions and expressions""", "Next"],
 ["""
 You can interact with some objects: either bump into it or pick the object 
 by clicking on the highlighted yellow circle on the object 
-Some missions are using the objects: be careful to select the good object 
+Some missions are using the objects: be careful to select the correct object 
 and not a similar one. 
 """, "Next"],
 

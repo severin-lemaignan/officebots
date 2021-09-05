@@ -22,7 +22,7 @@ var SERVER_PORT=6969 # only used for the server -- the client will always connec
 
 var time_start=0 
 var time_now=0
-var total_time = 300 #total time of the game in seconds
+var total_time = 600 #total time of the game in seconds
 
 
 var is_networking_started
@@ -969,7 +969,7 @@ remote func new_mission(id, mission_number):
         description +=   " the " + location   
     if mission.id_mission==5: 
         description+=object.get_name() 
-    if mission.id_mission==6 or mission.id_mission==7: 
+    if mission.id_mission==6 : 
         var name_target = player_info[int(target_player.get_name())]["name"]
         description = name_target + description
     if mission.id_mission==7: 
