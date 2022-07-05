@@ -278,7 +278,6 @@ func _process(_delta):
             # server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
             get_tree().network_peer.poll()
         if GameState.mode == GameState.SERVER: 
-            update_time()
             update_players_proximity()
         
         if GameState.robots_enabled():
