@@ -126,6 +126,20 @@ func _physics_process(delta):
 	
 	laser_ranges = $LaserScanner.laser_scan()
 	
+	## ATTEMPTS TO CAPTURE THE ROBOT CAMERA
+	## (currently returns an empty image, most likely because the frame is not yet drawn)
+	## (would be good to try outside of pyhiscs process)
+	#var tex = ImageTexture.new()
+	#$robot/Viewport.set_clear_mode(Viewport.CLEAR_MODE_ONLY_NEXT_FRAME)
+	## Wait until the frame has finished before getting the texture.
+	#yield(VisualServer, "frame_post_draw")
+	#var img = $robot/Viewport.get_texture().get_data()
+	
+	#img.save_png("/tmp/tex.png")
+	#tex.create_from_image(img)
+	
+	#$robot/Screen.mesh.surface_get_material(1).albedo_texture = tex
+		
 func set_v_w(v, w):
 	linear_velocity = v
 	angular_velocity = w
