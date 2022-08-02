@@ -12,6 +12,8 @@ var game_instance
 var pub_timer = Timer.new()
 var pub_interval = 0.1 #s
 
+var multipart_msg_id = 0
+
 func _init(game):
 	
 	self.game_instance = game
@@ -52,7 +54,7 @@ func publish_robot_state():
 	if connected and game_instance.local_robot:
 
 		var state = get_state()
-		robot_server.get_peer(1).put_packet(JSON.print([0, state]).to_utf8())
+		send_ok(0, state)
 
 
 func get_state():
@@ -290,6 +292,20 @@ func process_incoming_data(data):
 				send_error(id, "Error " + str(err) + " while loading the image")
 			return
 				
+		"export-camera":
+	
+			var err = OK
+			
+			var img = robot.get_camera_texture()
+			var jpg_bytes = img.save_jpg_to_buffer(0.7)
+			
+			if err == OK:
+				send_ok(id, jpg_bytes, true)
+			else:
+				send_error(id, "Error " + str(err) + " while streaming the robot's camera")
+			return
+				
+			
 		"get-humans":
 			if params.size() != 0:
 				send_error(id, "get-humans does not take any parameter")
@@ -308,10 +324,35 @@ func process_incoming_data(data):
 
 func send_error(id, msg):
 	print("API ERROR: " + str(msg))
-	robot_server.get_peer(1).put_packet(JSON.print([id,["EE",  msg]]).to_utf8())
 
-func send_ok(id, msg = null):
-	robot_server.get_peer(1).put_packet(JSON.print([id, ["OK", msg]]).to_utf8())
+	robot_server.get_peer(1).put_packet(JSON.print([id,["EE",   "\"%s\"" % msg]]).to_utf8())
+
 	
+func send_ok(id, msg = null, binary_data=false):
+	var MAX_PACKET_SIZE = 4000
+	
+	var bytes = JSON.print([id, ["OK", "\"%s\"" % JSON.print(msg)]]).to_utf8()
+	
+	# small msg? we send it in one go
+	if bytes.size() < MAX_PACKET_SIZE:
+		
+		robot_server.get_peer(1).put_packet(bytes)
+		return
+	
+	# currently, we only support data chunking for binary data
+	assert(binary_data == true)
+	
+	
+	# otherwise, chunk it
+	
+	var nb_packets = int(ceil(msg.size() / MAX_PACKET_SIZE)) + 1
+	
+	robot_server.get_peer(1).put_packet(JSON.print([id, ["MULTIPART", [multipart_msg_id, nb_packets]]]).to_utf8())
+	
+	var idx = 0
+	while idx < msg.size():
+		var packet = ("MULTIPART%05d" % multipart_msg_id).to_utf8() + msg.subarray(idx, min(idx + MAX_PACKET_SIZE, msg.size())-1)
+		robot_server.get_peer(1).put_packet(packet)
+		idx += MAX_PACKET_SIZE
 	
 ########################################################

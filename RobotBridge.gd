@@ -101,6 +101,12 @@ puppet func set_screen_texture_remote(jpg_buffer):
 	
 	return err
 	
+func get_camera_texture():
+
+	var img = $robot/Viewport.get_texture().get_data()
+	return img
+	
+	
 # should only run on the server!
 func _physics_process(delta):
 	

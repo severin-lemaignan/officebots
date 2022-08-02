@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://RobotBridge.gd" type="Script" id=1]
 [ext_resource path="res://assets/robot.glb" type="PackedScene" id=2]
@@ -6,8 +6,6 @@
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.490163, 1.14669, 0.554112 )
-
-[sub_resource type="SphereMesh" id=2]
 
 [node name="Robot" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -21,16 +19,17 @@ transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 0, 0, 0 )
 
 [node name="Viewport" type="Viewport" parent="robot"]
 size = Vector2( 320, 240 )
+hdr = false
 render_target_v_flip = true
+render_target_update_mode = 3
 
 [node name="Camera" type="Camera" parent="robot/Viewport"]
-transform = Transform( -1, 0, -4.45051e-07, 0, 1, 0, 4.45051e-07, 0, -1, 1.82446e-10, 1.20923, -0.00417387 )
-current = true
+transform = Transform( -1, -8.74228e-08, 0, -8.74228e-08, 1, -8.74228e-08, 0, -8.74228e-08, -1, 0, 1.15441, 0.0312636 )
 fov = 50.0
 
-[node name="MeshInstance" type="MeshInstance" parent="robot/Viewport/Camera"]
-transform = Transform( 0.204006, 0, -6.58778e-09, 0, 0.262056, 0, -6.5878e-09, 0, 0.218808, -0.23603, 0, -1.34109 )
-mesh = SubResource( 2 )
+[node name="RemoteTransform" type="RemoteTransform" parent="robot"]
+transform = Transform( 2.8213e-07, 8.74228e-08, 1, -8.74228e-08, 1, -8.74228e-08, -1, -8.74228e-08, 2.8213e-07, -0.0312636, 1.15441, -8.8204e-09 )
+remote_path = NodePath("../Viewport/Camera")
 
 [node name="LaserScanner" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
