@@ -92,11 +92,23 @@ func is_in_range(agent):
 	
 # connect to the Chat UI 'on_chat_msg' signal in Game.gd
 func say(msg):
-	rpc_id(1, "execute_puppet_says", msg)
+	
+	if GameState.mode != GameState.STANDALONE:
+		rpc_id(1, "execute_puppet_says", msg)
+	
+	# TODO: if *another* character is speaking next to a robot,
+	# the robot in my game instance won't be notified!
+	# -> robots can not hear remote players
+	for agent in players_in_range:
+		if agent.has_method("heard"):
+			agent.heard(msg, username)
+		
 
 # connect to the Chat UI 'on_chat_msg' signal in Game.gd
 func typing():
-	rpc_id(1, "execute_puppet_typing")
+	
+	if GameState.mode != GameState.STANDALONE:
+		rpc_id(1, "execute_puppet_typing")
 
 puppet func puppet_typing():
 	# do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
@@ -104,7 +116,9 @@ puppet func puppet_typing():
 
 # connect to the Chat UI 'on_chat_msg' signal in Game.gd
 func not_typing_anymore():
-	rpc_id(1, "execute_puppet_not_typing_anymore")
+	
+	if GameState.mode != GameState.STANDALONE:
+		rpc_id(1, "execute_puppet_not_typing_anymore")
 
 puppet func puppet_not_typing_anymore():
 	# do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
@@ -113,7 +127,8 @@ puppet func puppet_not_typing_anymore():
 # connect to the UI 'on_set_expr' signal in Game.gd
 func set_expression(expr):
 	
-	rpc_id(1, "execute_puppet_set_expression", expr)
+	if GameState.mode != GameState.STANDALONE:
+		rpc_id(1, "execute_puppet_set_expression", expr)
 
 func pickup_object(object):
 	
@@ -122,8 +137,8 @@ func pickup_object(object):
 	if pickedup_object:
 		return
 
-	
-	rpc("pickup_object", str(object.get_path()))
+	if GameState.mode != GameState.STANDALONE:
+		rpc("pickup_object", str(object.get_path()))
 	
 	pickedup_object = object
 	
@@ -139,7 +154,9 @@ func pickup_object(object):
 func release_object():
 	
 	if pickedup_object:
-		rpc("release_object")
+		
+		if GameState.mode != GameState.STANDALONE:
+			rpc("release_object")
 		
 		$Rotation_helper/Camera/PickupAnchor.remove_child(pickedup_object)
 		pickedup_object_original_parent.add_child(pickedup_object)

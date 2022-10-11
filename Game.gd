@@ -277,7 +277,8 @@ func _process(_delta):
 		if GameState.mode == GameState.SERVER or GameState.mode == GameState.CLIENT:
 			# server & clients need to poll, according to https://docs.godotengine.org/en/stable/classes/class_websocketclient.html#description
 			get_tree().network_peer.poll()
-		if GameState.mode == GameState.SERVER: 
+			
+		if GameState.mode == GameState.SERVER or GameState.mode == GameState.STANDALONE:
 			update_players_proximity()
 		
 		if GameState.robots_enabled():
@@ -433,7 +434,7 @@ func add_player(id):
 		
 	else:
 		player.call_deferred("enable_collisions", false)
-		player.call_deferred("connect", "player_msg", $CanvasLayer/Chat, "add_msg")
+		player.call_deferred("connect", "player_msg", $CanvasLayer/UI/Chat, "add_msg")
 	
 	
 	player.set_deferred("local_player", local_player)
@@ -701,7 +702,7 @@ func update_players_proximity():
 					proximity[p2]["in_range"].append([p1.name,"player"])
 				
 				print(p1.username + " and " + p2.username + " in range")
-				$CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
+				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
 			
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
@@ -716,7 +717,7 @@ func update_players_proximity():
 					proximity[p2]["not_in_range"].append([p1.name, "player"])
 				
 				print(p1.username + " and " + p2.username + " not in range anymore")
-				$CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
+				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
 			
 			players_distances[p1][p2] = dist
 			players_distances[p2][p1] = dist
@@ -745,7 +746,7 @@ func update_players_proximity():
 					proximity[p1]["in_range"].append([r.name,"robot"])
 				
 				print(p1.username + " and " + r.robot_name + " in range")
-				$CanvasLayer/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
+				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
 			
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
@@ -755,11 +756,14 @@ func update_players_proximity():
 					proximity[p1]["not_in_range"].append([r.name,"robot"])
 				
 				print(p1.username + " and " + r.robot_name + " not in range anymore")
-				$CanvasLayer/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
+				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
 			
 			players_distances[p1][r] = dist
 			
 			
 	for p in proximity:
-		p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
+		if GameState.mode == GameState.SERVER:
+			p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
+		if GameState.mode == GameState.STANDALONE:
+			local_player.puppet_update_players_in_range(proximity[p]["in_range"],proximity[p]["not_in_range"])
 	

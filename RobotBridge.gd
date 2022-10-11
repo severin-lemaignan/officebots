@@ -6,7 +6,7 @@ const SERVER_URL="localhost"
 const SERVER_PORT=6970
 
 var robot_name
-var usernamename #alias for robot_name
+var username #alias for robot_name
 
 # set by Game.gd upon instantion (cf Game.add_robot)
 var game_instance
@@ -15,6 +15,8 @@ var navigation
 var path = []
 var path_node = 0
 var speed = 1
+
+var last_msg = []
 
 var linear_velocity = 0
 var angular_velocity = 0
@@ -143,6 +145,19 @@ func set_navigation_target(target):
 		return [false, "No path found"]
 		
 	return [true,""]
+
+func heard(msg, user):
+	last_msg = [msg, user]
+
+func pop_last_msg():
+	if not last_msg:
+		return []
+		
+	var msg = last_msg[0]
+	var user = last_msg[1]
+	last_msg = []
+	
+	return [msg, user]
 
 func stop():
 	
