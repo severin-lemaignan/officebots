@@ -24,15 +24,15 @@ func _ready():
 	for btn in $VBoxContainer/ReactionsContainer.get_children():
 		btn.connect("reaction", self, "on_chat_msg_entered")
 		
-	for i in range(10):
-		var msg
-		if i % 3 == 1:
-			msg = add_msg("Msg " + str(i), "User " + str(i))
-			
-		else:
-			msg = add_msg("Hello " + str(i))
-		msg.set_own_msg(i%2==1)
-		yield(get_tree().create_timer(.5), "timeout")
+	#for i in range(10):
+	#	var msg
+	#	if i % 3 == 1:
+	#		msg = add_msg("Msg " + str(i), "User " + str(i))
+	#		
+	#	else:
+	#		msg = add_msg("Hello " + str(i))
+	#	msg.set_own_msg(i%2==1)
+	#	yield(get_tree().create_timer(.5), "timeout")
 
 
 func on_chat_msg_entered(_msg=null):

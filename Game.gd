@@ -513,10 +513,10 @@ remote func pre_configure_game():
 	
 	get_node("/root/Game/Players").add_child(local_player)
 	
-	var _err = $CanvasLayer/Chat.connect("on_chat_msg", local_player, "say")
-	_err = $CanvasLayer/Chat.connect("typing", local_player, "typing")
-	_err = $CanvasLayer/Chat.connect("not_typing_anymore", local_player, "not_typing_anymore")
-	_err = local_player.connect("player_list_updated", $CanvasLayer/Chat, "set_list_players_in_range")
+	var _err = $CanvasLayer/UI/Chat.connect("on_chat_msg", local_player, "say")
+	_err = $CanvasLayer/UI/Chat.connect("typing", local_player, "typing")
+	_err = $CanvasLayer/UI/Chat.connect("not_typing_anymore", local_player, "not_typing_anymore")
+	_err = local_player.connect("player_list_updated", $CanvasLayer/UI/Chat, "set_list_players_in_range")
 	_err = $CanvasLayer/UI.connect("on_expression", local_player, "set_expression")
 	
 	$MainOffice.set_local_player(local_player)

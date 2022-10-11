@@ -9,6 +9,9 @@ var robot_offline_hover = preload("res://assets/icons/robot-sleepy-hover.svg")
 var robot_connecting = preload("res://assets/icons/robot-connecting.svg")
 var robot_connecting_hover = preload("res://assets/icons/robot-connecting-hover.svg")
 
+var chat_active = preload("res://assets/icons/chat_active.svg")
+var chat_inactive = preload("res://assets/icons/chat.svg")
+
 
 signal on_expression
 
@@ -17,6 +20,7 @@ signal on_expression
 func _ready():
 	
 	var _err = $Top/HBoxContainer/settings.connect("pressed", self, "on_settings") 
+	_err = $Top/HBoxContainer/chat.connect("pressed", self, "on_chat") 
 	
 	if GameState.robots_enabled():
 		_err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")    
@@ -41,6 +45,14 @@ func set_name_skin(name, skin):
 func on_settings():
 	$Settings.show()
 
+func on_chat():
+	if not $Chat.is_visible_in_tree():
+		$Top/HBoxContainer/chat.texture_normal = chat_active
+		$Chat.show()
+	else:
+		$Top/HBoxContainer/chat.texture_normal = chat_inactive
+		$Chat.hide()
+	
 func toggle_robots_support(active):
 	if active:
 		$Top/HBoxContainer/robot.show()

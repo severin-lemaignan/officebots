@@ -1,5 +1,7 @@
 [gd_scene load_steps=14 format=2]
 
+[ext_resource path="res://assets/icons/chat.svg" type="Texture" id=1]
+[ext_resource path="res://Chat.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/characters/char1.png" type="Texture" id=6]
 [ext_resource path="res://assets/icons/timer-outline.svg" type="Texture" id=12]
 [ext_resource path="res://assets/icons/settings.svg" type="Texture" id=13]
@@ -17,9 +19,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Bottom" type="HBoxContainer" parent="."]
 anchor_top = 0.85
@@ -77,18 +76,17 @@ text = "Séverin"
 
 [node name="Control" type="Control" parent="Top"]
 margin_left = 153.0
-margin_right = 621.0
+margin_right = 788.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Top"]
-margin_left = 718.0
+margin_left = 792.0
 margin_right = 1004.0
 margin_bottom = 80.0
 
 [node name="robot" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 74.0
-margin_right = 134.0
+margin_right = 60.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 29 )
@@ -100,15 +98,16 @@ __meta__ = {
 }
 
 [node name="spacer" type="Control" parent="Top/HBoxContainer"]
-margin_left = 138.0
-margin_right = 158.0
+margin_left = 64.0
+margin_right = 84.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 20, 0 )
 size_flags_horizontal = 3
 
 [node name="away" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 162.0
-margin_right = 222.0
+visible = false
+margin_left = 88.0
+margin_right = 148.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 12 )
@@ -119,9 +118,22 @@ __meta__ = {
 "_editor_description_": ""
 }
 
+[node name="chat" type="TextureButton" parent="Top/HBoxContainer"]
+margin_left = 88.0
+margin_right = 148.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 1 )
+texture_hover = ExtResource( 1 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
 [node name="settings" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 226.0
-margin_right = 286.0
+margin_left = 152.0
+margin_right = 212.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
 texture_normal = ExtResource( 13 )
@@ -153,6 +165,11 @@ __meta__ = {
 
 [node name="Settings" parent="." instance=ExtResource( 23 )]
 visible = false
+
+[node name="Chat" parent="." instance=ExtResource( 2 )]
+visible = false
+anchor_left = 0.78418
+anchor_top = 0.128333
 
 [node name="CharacterViewport" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
