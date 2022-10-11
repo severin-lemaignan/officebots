@@ -461,6 +461,7 @@ puppet func add_robot_remote(name):
 	
 	robot.set_name(name)
 	robot.set_deferred("robot_name", name)
+	robot.set_deferred("username", name) # alias for robot_name
 	robot.set_deferred("game_instance", self)
 	robot.get_node("LaserScanner").visible = show_laserscans
 	
@@ -660,11 +661,13 @@ func update_players_proximity():
 	# only executed on server
 	
 	var players = $Players.get_children()
+	var robots = $Robots.get_children()
 	
 	var proximity = {}
 	
 	var min_dist = GameState.DISTANCE_AUDIBLE * GameState.DISTANCE_AUDIBLE
 	
+	## PLAYER <-> PLAYER
 	for idx in range(players.size()):
 		var p1 = players[idx]
 		if not players_distances.has(p1):
@@ -688,14 +691,14 @@ func update_players_proximity():
 			if dist < min_dist and prev_dist > min_dist:
 				# p1 and p2 are now in range
 				if not proximity.has(p1):
-					proximity[p1] = {"in_range":[p2.name], "not_in_range":[]}
+					proximity[p1] = {"in_range":[[p2.name, "player"]], "not_in_range":[]}
 				else:
-					proximity[p1]["in_range"].append(p2.name)
+					proximity[p1]["in_range"].append([p2.name, "player"])
 				
 				if not proximity.has(p2):
-					proximity[p2] = {"in_range":[p1.name], "not_in_range":[]}
+					proximity[p2] = {"in_range":[[p1.name,"player"]], "not_in_range":[]}
 				else:
-					proximity[p2]["in_range"].append(p1.name)
+					proximity[p2]["in_range"].append([p1.name,"player"])
 				
 				print(p1.username + " and " + p2.username + " in range")
 				$CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
@@ -703,14 +706,14 @@ func update_players_proximity():
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
 				if not proximity.has(p1):
-					proximity[p1] = {"in_range":[], "not_in_range":[p2.name]}
+					proximity[p1] = {"in_range":[], "not_in_range":[[p2.name, "player"]]}
 				else:
-					proximity[p1]["not_in_range"].append(p2.name)
+					proximity[p1]["not_in_range"].append([p2.name, "player"])
 				
 				if not proximity.has(p2):
-					proximity[p2] = {"in_range":[], "not_in_range":[p1.name]}
+					proximity[p2] = {"in_range":[], "not_in_range":[[p1.name, "player"]]}
 				else:
-					proximity[p2]["not_in_range"].append(p1.name)
+					proximity[p2]["not_in_range"].append([p1.name, "player"])
 				
 				print(p1.username + " and " + p2.username + " not in range anymore")
 				$CanvasLayer/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
@@ -718,6 +721,45 @@ func update_players_proximity():
 			players_distances[p1][p2] = dist
 			players_distances[p2][p1] = dist
 	
+	## PLAYER <-> ROBOT
+	for idx in range(players.size()):
+		var p1 = players[idx]
+		if not players_distances.has(p1):
+			players_distances[p1] = {}
+			
+		for idx2 in range(robots.size()):
+			var r = robots[idx2]
+			
+			var dist = p1.translation.distance_squared_to(r.translation)
+			
+			if not players_distances[p1].has(r):
+				players_distances[p1][r] = dist
+			
+			var prev_dist = players_distances[p1][r]
+			
+			if dist < min_dist and prev_dist > min_dist:
+				# p1 and r are now in range
+				if not proximity.has(p1):
+					proximity[p1] = {"in_range":[[r.name,"robot"]], "not_in_range":[]}
+				else:
+					proximity[p1]["in_range"].append([r.name,"robot"])
+				
+				print(p1.username + " and " + r.robot_name + " in range")
+				$CanvasLayer/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
+			
+			elif dist > min_dist and prev_dist < min_dist:
+				# p1 and p2 are not in range anymore
+				if not proximity.has(p1):
+					proximity[p1] = {"in_range":[], "not_in_range":[[r.name, "robot"]]}
+				else:
+					proximity[p1]["not_in_range"].append([r.name,"robot"])
+				
+				print(p1.username + " and " + r.robot_name + " not in range anymore")
+				$CanvasLayer/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
+			
+			players_distances[p1][r] = dist
+			
+			
 	for p in proximity:
 		p.rpc("puppet_update_players_in_range", proximity[p]["in_range"],proximity[p]["not_in_range"])
 	

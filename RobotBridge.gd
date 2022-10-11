@@ -6,6 +6,7 @@ const SERVER_URL="localhost"
 const SERVER_PORT=6970
 
 var robot_name
+var usernamename #alias for robot_name
 
 # set by Game.gd upon instantion (cf Game.add_robot)
 var game_instance

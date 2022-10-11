@@ -65,18 +65,30 @@ puppet func puppet_update_players_in_range(in_range, not_in_range):
 	if in_range.empty() and not_in_range.empty():
 		return
 	
-	for id in in_range:
-		var player = get_node("/root/Game/Players/" + id)
-		players_in_range.append(player)
-	for id in not_in_range:
-		var player = get_node("/root/Game/Players/" + id)
-		players_in_range.erase(player)
+	for agent in in_range:
+		var id = agent[0]
+		var type = agent[1]
+		if type == "player":
+			var player = get_node("/root/Game/Players/" + id)
+			players_in_range.append(player)
+		else:
+			var robot = get_node("/root/Game/Robots/" + id)
+			players_in_range.append(robot)
+	for agent in not_in_range:
+		var id = agent[0]
+		var type = agent[1]
+		if type == "player":
+			var player = get_node("/root/Game/Players/" + id)
+			players_in_range.erase(player)
+		else:
+			var robot = get_node("/root/Game/Robots/" + id)
+			players_in_range.erase(robot)
 	
 	# connected to Chat UI in Game.gd
 	emit_signal("player_list_updated", players_in_range)
 
-func is_in_range(player):
-	return player in players_in_range
+func is_in_range(agent):
+	return agent in players_in_range
 	
 # connect to the Chat UI 'on_chat_msg' signal in Game.gd
 func say(msg):
