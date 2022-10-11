@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/characters/char1.png" type="Texture" id=2]
@@ -8,6 +8,11 @@
 [ext_resource path="res://assets/characters/skins/casualFemaleB_neutral.png" type="Texture" id=6]
 [ext_resource path="res://default_theme.tres" type="Theme" id=7]
 [ext_resource path="res://assets/characters/skins/farmerA_neutral.png" type="Texture" id=8]
+[ext_resource path="res://FredokaOne-Regular.ttf" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 53
+font_data = ExtResource( 9 )
 
 [node name="CharacterSelection" type="Control"]
 anchor_right = 1.0
@@ -97,44 +102,62 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 254.0
-margin_top = 150.0
+margin_top = 100.0
 margin_right = 770.0
-margin_bottom = 450.0
+margin_bottom = 499.0
+
+[node name="title" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 516.0
+margin_bottom = 65.0
+theme = ExtResource( 7 )
+custom_fonts/font = SubResource( 1 )
+text = "OfficeBots"
+align = 1
+
+[node name="Control2" type="Control" parent="CenterContainer/VBoxContainer"]
+margin_top = 69.0
+margin_right = 516.0
+margin_bottom = 89.0
+rect_min_size = Vector2( 0, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 93.0
 margin_right = 516.0
-margin_bottom = 17.0
+margin_bottom = 113.0
 theme = ExtResource( 7 )
-text = "What is your name?"
+text = "What is your avatar's name?"
 align = 1
 
 [node name="Name" type="LineEdit" parent="CenterContainer/VBoxContainer"]
-margin_top = 21.0
+margin_top = 117.0
 margin_right = 516.0
-margin_bottom = 51.0
+margin_bottom = 147.0
 theme = ExtResource( 7 )
 
 [node name="Control" type="Control" parent="CenterContainer/VBoxContainer"]
-margin_top = 55.0
+margin_top = 151.0
 margin_right = 516.0
-margin_bottom = 75.0
+margin_bottom = 171.0
 rect_min_size = Vector2( 0, 20 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label2" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 79.0
+margin_top = 175.0
 margin_right = 516.0
-margin_bottom = 96.0
+margin_bottom = 195.0
 theme = ExtResource( 7 )
-text = "Choose your character:"
+text = "Choose your appearance:"
 align = 1
 
 [node name="PortraitsContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 100.0
+margin_top = 199.0
 margin_right = 516.0
-margin_bottom = 300.0
+margin_bottom = 399.0
 
 [node name="Char1" type="TextureButton" parent="CenterContainer/VBoxContainer/PortraitsContainer"]
 margin_right = 100.0
