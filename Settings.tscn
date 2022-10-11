@@ -21,9 +21,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.203922, 0.180392, 0.129412, 0.784314 )
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_right = 1.0
@@ -34,22 +31,22 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 344.0
-margin_top = 118.0
+margin_top = 128.0
 margin_right = 679.0
-margin_bottom = 482.0
+margin_bottom = 471.0
 custom_constants/separation = 20
 
 [node name="Settings" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_right = 335.0
-margin_bottom = 38.0
+margin_bottom = 17.0
 theme = ExtResource( 1 )
 text = "Settings"
 align = 1
 
 [node name="Control3" type="Control" parent="CenterContainer/VBoxContainer"]
-margin_top = 58.0
+margin_top = 37.0
 margin_right = 335.0
-margin_bottom = 108.0
+margin_bottom = 87.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 __meta__ = {
@@ -57,19 +54,19 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 128.0
+margin_top = 107.0
 margin_right = 335.0
-margin_bottom = 178.0
+margin_bottom = 157.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_top = 6.0
-margin_right = 185.0
-margin_bottom = 44.0
+margin_top = 16.0
+margin_right = 75.0
+margin_bottom = 33.0
 theme = ExtResource( 1 )
 text = "Laser visible"
 
 [node name="Control" type="Control" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 189.0
+margin_left = 79.0
 margin_right = 281.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
@@ -86,16 +83,16 @@ texture_pressed = ExtResource( 11 )
 expand = true
 
 [node name="Control2" type="Control" parent="CenterContainer/VBoxContainer"]
-margin_top = 198.0
+margin_top = 177.0
 margin_right = 335.0
-margin_bottom = 248.0
+margin_bottom = 227.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 268.0
+margin_top = 247.0
 margin_right = 335.0
-margin_bottom = 364.0
+margin_bottom = 343.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -158,10 +155,10 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ModalMessage/CenterContainer"]
-margin_left = 275.0
-margin_top = 235.0
-margin_right = 749.0
-margin_bottom = 365.0
+margin_left = 414.0
+margin_top = 245.0
+margin_right = 609.0
+margin_bottom = 354.0
 custom_constants/separation = 20
 
 [node name="Label" type="Label" parent="ModalMessage/CenterContainer/VBoxContainer"]

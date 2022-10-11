@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://GameModeSelection.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game.gd" type="Script" id=2]
@@ -48,7 +48,30 @@ __meta__ = {
 margin_right = -178.0
 
 [node name="Control" parent="CanvasLayer/UI/Bottom" index="0"]
-margin_right = 824.0
+margin_right = 826.0
+
+[node name="Control" parent="CanvasLayer/UI/Top" index="1"]
+margin_right = 610.0
+
+[node name="HBoxContainer" parent="CanvasLayer/UI/Top" index="2"]
+margin_left = 614.0
+margin_right = 826.0
+
+[node name="robot" parent="CanvasLayer/UI/Top/HBoxContainer" index="0"]
+margin_left = 0.0
+margin_right = 60.0
+
+[node name="spacer" parent="CanvasLayer/UI/Top/HBoxContainer" index="1"]
+margin_left = 64.0
+margin_right = 84.0
+
+[node name="away" parent="CanvasLayer/UI/Top/HBoxContainer" index="2"]
+margin_left = 88.0
+margin_right = 148.0
+
+[node name="settings" parent="CanvasLayer/UI/Top/HBoxContainer" index="3"]
+margin_left = 152.0
+margin_right = 212.0
 
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource( 6 )]
 
@@ -141,6 +164,7 @@ transform = Transform( 0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 4
 [node name="timer_save" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
+
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
 
 [editable path="CanvasLayer/UI"]
