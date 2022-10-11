@@ -23,6 +23,11 @@ var pickedup_object
 onready var camera = $Rotation_helper/Camera
 onready var rotation_helper = $Rotation_helper
 
+# used by Robot.gd to compute visibility of players
+onready var face = $Rotation_helper/Camera
+
+var username = "myself"
+
 var MOUSE_SENSITIVITY = 0.1
 
 
@@ -130,6 +135,12 @@ func release_object():
 		pickedup_object.set_released()
 		pickedup_object = null
 
+# used to test in Game whether an object colliding with the ray cast for visibility testing
+# is indeed a character (via .has_method(i_am_a_character))
+func i_am_a_character():
+	pass
+	
+	
 # returns true if the player is facing 'point' (in global coordinates)
 func is_facing(point):
 	var local_point = point - global_transform.origin

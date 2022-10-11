@@ -504,6 +504,7 @@ remote func pre_configure_game():
 	# Load my player
 	local_player = preload("res://Player.tscn").instance()
 	local_player.set_name(str(selfPeerID))
+	local_player.username = player_name
 	
 	#local_player.set_network_master(selfPeerID)
 	
