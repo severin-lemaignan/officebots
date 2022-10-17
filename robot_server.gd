@@ -300,7 +300,18 @@ func process_incoming_data(data):
 			var res = []
 			for h in humans:
 				var pos = GameState.convert_coordinates_godot2robotics(h.global_transform.origin)
-				res.append([h.username, pos.x, pos.y, h.rotation.y])
+				var face = h.get_node("Face")
+				var face_pos = GameState.convert_coordinates_godot2robotics(face.global_transform.origin)
+				res.append([h.username, 
+							pos.x, 
+							pos.y, 
+							h.rotation.y, 
+							face_pos.x, 
+							face_pos.y, 
+							face_pos.z, 
+							PI-face.rotation.z, 
+							-PI+face.rotation.x, 
+							face.rotation.y])
 
 			send_ok(id, res)
 			return
