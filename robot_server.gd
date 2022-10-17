@@ -300,7 +300,7 @@ func process_incoming_data(data):
 			var res = []
 			for h in humans:
 				var pos = GameState.convert_coordinates_godot2robotics(h.global_transform.origin)
-				res.append([h.username, pos.x, pos.y])
+				res.append([h.username, pos.x, pos.y, h.rotation.y])
 
 			send_ok(id, res)
 			return
