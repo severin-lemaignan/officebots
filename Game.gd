@@ -14,6 +14,10 @@ enum RobotsMode {ROBOTS, NO_ROBOTS}
 export(RobotsMode) var has_robots = RobotsMode.ROBOTS
 
 export(bool) var enable_focus_blur = true
+
+export(bool) var random_player_start_positions = true
+export(bool) var random_robot_start_positions = true
+
 ###############################################################################
 
 var SERVER_URL= "wss://research-ws.skadge.org" #"127.0.0.1"#
@@ -338,18 +342,20 @@ func is_point_in_frustum(point, camera):
 
 
 func shuffle_spawn_points():
-	var order = range($SpawnPointsPlayers.get_child_count())
-
-	order.shuffle()
-	for p in range(order.size()):
-		var child = $SpawnPointsPlayers.get_child(order[p])
-		$SpawnPointsPlayers.move_child(child, p)
 	
-	order = range($SpawnPointsRobots.get_child_count())
-	order.shuffle()
-	for p in range(order.size()):
-		var child = $SpawnPointsRobots.get_child(order[p])
-		$SpawnPointsRobots.move_child(child, p)
+	if random_player_start_positions:
+		var order = range($SpawnPointsPlayers.get_child_count())
+		order.shuffle()
+		for p in range(order.size()):
+			var child = $SpawnPointsPlayers.get_child(order[p])
+			$SpawnPointsPlayers.move_child(child, p)
+	
+	if random_robot_start_positions:
+		var order = range($SpawnPointsRobots.get_child_count())
+		order.shuffle()
+		for p in range(order.size()):
+			var child = $SpawnPointsRobots.get_child(order[p])
+			$SpawnPointsRobots.move_child(child, p)
 
 ##### NETWORK SIGNALS HANDLERS #####
 # only triggered client-side
@@ -534,7 +540,7 @@ remote func pre_configure_game():
 	
 	elif GameState.mode == GameState.STANDALONE:
 		local_player.toggle_collisions(true)
-		var start_location = $SpawnPointsPlayers.get_child($Players.get_child_count()).transform
+		var start_location = $SpawnPointsPlayers.get_child($Players.get_child_count()-1).transform
 		local_player.transform = start_location
 
 # server has accepted our player, we can start the game.
