@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/robot.glb-d6482104209166ca675a14616891d390.scn"
+path="res://.import/ari.glb-a23b513363bcb2bf17d3c6a512e7509b.scn"
 
 [deps]
 
-source_file="res://assets/robot.glb"
-dest_files=[ "res://.import/robot.glb-d6482104209166ca675a14616891d390.scn" ]
+source_file="res://assets/ari.glb"
+dest_files=[ "res://.import/ari.glb-a23b513363bcb2bf17d3c6a512e7509b.scn" ]
 
 [params]
 
@@ -16,14 +16,14 @@ nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
-nodes/use_legacy_names=true
+nodes/use_legacy_names=false
 materials/location=1
-materials/storage=0
-materials/keep_on_reimport=false
+materials/storage=1
+materials/keep_on_reimport=true
 meshes/octahedral_compression=true
-meshes/compress=true
+meshes/compress=4286
 meshes/ensure_tangents=true
-meshes/storage=1
+meshes/storage=0
 meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true

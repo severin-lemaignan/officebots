@@ -5,6 +5,10 @@ class_name Robot
 const SERVER_URL="localhost"
 const SERVER_PORT=6970
 
+# to change the robot model, change the `model` variable + *adjust the scene!* (ie, import that right .glb file, adjust the position of the camera, etc)
+enum {GENERIC, ARI}
+var model = ARI
+
 var robot_name
 var username #alias for robot_name
 
@@ -47,16 +51,17 @@ func _ready():
 	
 	camera.far = CAMERA_FAR
 	
-	# prepare materials for the different robot colors
-	for c in textures:
+	if model == GENERIC:
+		# prepare materials for the different robot colors
+		for c in textures:
+			
+			meshes[c] = $robot/Robot.mesh.duplicate()
+			var mat = meshes[c].surface_get_material(0).duplicate()
+			mat.albedo_texture = textures[c]
+			meshes[c].surface_set_material(0, mat)
 		
-		meshes[c] = $robot/Robot.mesh.duplicate()
-		var mat = meshes[c].surface_get_material(0).duplicate()
-		mat.albedo_texture = textures[c]
-		meshes[c].surface_set_material(0, mat)
-	
-	set_color("white")
-	
+		set_color("white")
+		
 	#set_screen_texture("res://assets/screen_tex_hello.png")
 	
 	# disable physics by default (will be only enabled on the server)
@@ -71,6 +76,9 @@ puppet func set_puppet_transform(transform):
 	
 func set_color(color):
 	
+	if model != GENERIC:
+		return
+		
 	set_color_remote(color)
 	
 	# only in CLIENT/SERVER mode, no need in STANDALONE mode
