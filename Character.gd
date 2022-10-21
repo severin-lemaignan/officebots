@@ -307,7 +307,10 @@ func get_look_at_transform_basis(target,
 
 func set_base_skin(resource_path):
 	neutral_skin = load(resource_path)
-	$Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", neutral_skin)
+	set_skin(neutral_skin)
+	
+func set_skin(texture):
+	$Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", texture)
 
 func set_username(name):
 	username = name

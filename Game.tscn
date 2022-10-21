@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://GameModeSelection.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game.gd" type="Script" id=2]
@@ -6,19 +6,49 @@
 [ext_resource path="res://UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://FakePlayer.gd" type="Script" id=5]
 [ext_resource path="res://CharacterSelection.tscn" type="PackedScene" id=6]
+[ext_resource path="res://NPC.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/characters/skins/casualFemaleB_neutral.png" type="Texture" id=8]
+[ext_resource path="res://assets/characters/skins/casualFemaleA_neutral.png" type="Texture" id=9]
+[ext_resource path="res://assets/characters/skins/farmerA_neutral.png" type="Texture" id=10]
 [ext_resource path="res://assets/white.png" type="Texture" id=11]
 [ext_resource path="res://assets/vignette.png" type="Texture" id=12]
 [ext_resource path="res://vignette.shader" type="Shader" id=13]
+[ext_resource path="res://assets/characters/skins/businessMaleB_neutral.png" type="Texture" id=14]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 13 )
 shader_param/vignette = ExtResource( 12 )
 
+[sub_resource type="Curve3D" id=2]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -5.06129, 1.52588e-05, 4.86618, 0, 0, 0, 0, 0, 0, -3.05243, 1.52588e-05, 5.57059, 0, 0, 0, 0, 0, 0, -1.48708, 1.52588e-05, 4.44876, 0, 0, 0, 0, 0, 0, -0.808762, 0, 1.89202, 0, 0, 0, 0, 0, 0, 1.01748, 0, 1.10935, 0, 0, 0, 0, 0, 0, 2.38481, 0, 1.73292, 0, 0, 0, 0, 0, 0, 4.0097, 0, 1.05246, 0, 0, 0, 0, 0, 0, 8.88033, 0, 0.655594, 0, 0, 0, 0, 0, 0, 10.0203, 0, -1.27625, 0, 0, 0, 0, 0, 0, 13.3305, 0, -1.32354, 0, 0, 0, 0, 0, 0, 9.50014, 0, -2.12744, 0, 0, 0, 0, 0, 0, 8.82304, 0, -2.81471, 0, 0, 0, 0, 0, 0, 4.45424, 0, -2.99355, 0, 0, 0, 0, 0, 0, 3.21076, 0, -3.49881, 0, 0, 0, 0, 0, 0, 3.25345, 0, -5.03744, 0, 0, 0, 0, 0, 0, 4.01467, -1.52588e-05, -7.47105, 0, 0, 0, 0, 0, 0, 5.81164, -3.05176e-05, -10.8285, 0, 0, 0, 0, 0, 0, 3.11619, -1.52588e-05, -10.0246, 0, 0, 0, 0, 0, 0, 2.73788, 0, -5.91053, 0, 0, 0, 0, 0, 0, 2.487, -1.52588e-05, -2.61033, 0, 0, 0, 0, 0, 0, 1.5928, 0, 0.200013, 0, 0, 0, 0, 0, 0, -4.0699, 0, 0.196228, 0, 0, 0, 0, 0, 0, -3.91337, 0, 2.23118, 0, 0, 0, 0, 0, 0, -5.16565, 1.52588e-05, 2.96168, 0, 0, 0, 0, 0, 0, -5.06129, 1.52588e-05, 4.86618 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+}
+
+[sub_resource type="Curve3D" id=3]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 4.22644, 0, 0.860942, 0, 0, 0, 0, 0, 0, 4.51342, 0, 2.89589, 0, 0, 0, 0, 0, 0, 4.38297, 1.52588e-05, 6.02659, 0, 0, 0, 0, 0, 0, 3.93946, 1.52588e-05, 7.33105, 0, 0, 0, 0, 0, 0, 2.11322, 3.05176e-05, 7.77456, 0, 0, 0, 0, 0, 0, 0.443515, 3.05176e-05, 7.77456, 0, 0, 0, 0, 0, 0, 0.417426, 1.52588e-05, 5.45263, 0, 0, 0, 0, 0, 0, 0.730495, 0, 1.74797, 0, 0, 0, 0, 0, 0, -0.313069, 0, 0.547872, 0, 0, 0, 0, 0, 0, -2.31692, 0, 0.107025, 0, 0, 0, 0, 0, 0, -2.92198, 0, -0.0260887, 0, 0, 0, 0, 0, 0, -3.77191, 0, -0.00638056, 0, 0, 0, 0, 0, 0, -7.86545, 0, 0.0885406, 0, 0, 0, 0, 0, 0, -8.19665, -1.52588e-05, -2.02287, 0, 0, 0, 0, 0, 0, -8.42021, -1.52588e-05, -2.46999, 0, 0, 0, 0, 0, 0, -8.81765, -1.52588e-05, -3.26487, 0, 0, 0, 0, 0, 0, -8.23805, -3.05176e-05, -5.74889, 0, 0, 0, 0, 0, 0, -7.78265, -3.05176e-05, -6.86669, 0, 0, 0, 0, 0, 0, -8.03105, -3.05176e-05, -8.9367, 0, 0, 0, 0, 0, 0, -7.94825, -4.57764e-05, -10.2201, 0, 0, 0, 0, 0, 0, -6.74764, -4.57764e-05, -10.3857, 0, 0, 0, 0, 0, 0, -8.56925, -4.57764e-05, -10.0959, 0, 0, 0, 0, 0, 0, -8.61065, -3.05176e-05, -8.6883, 0, 0, 0, 0, 0, 0, -8.56925, -3.05176e-05, -7.28069, 0, 0, 0, 0, 0, 0, -8.77625, -3.05176e-05, -5.58329, 0, 0, 0, 0, 0, 0, -9.68705, -1.52588e-05, -4.29988, 0, 0, 0, 0, 0, 0, -11.4673, -1.52588e-05, -2.72667, 0, 0, 0, 0, 0, 0, -13.3303, -1.52588e-05, -3.34767, 0, 0, 0, 0, 0, 0, -13.4959, -1.52588e-05, -2.43687, 0, 0, 0, 0, 0, 0, -10.3081, -1.52588e-05, -2.89227, 0, 0, 0, 0, 0, 0, -9.27305, -1.52588e-05, -3.80308, 0, 0, 0, 0, 0, 0, -7.53425, 0, -0.491062, 0, 0, 0, 0, 0, 0, -2.89743, 0, 0.626743, 0, 0, 0, 0, 0, 0, -3.35283, 0, 2.65535, 0, 0, 0, 0, 0, 0, -3.96926, 6.4913e-06, 3.69447, 0, 0, 0, 0, 0, 0, -4.80184, 1.52588e-05, 5.09796, 0, 0, 0, 0, 0, 0, -5.17444, 1.52588e-05, 6.50557, 0, 0, 0, 0, 0, 0, -4.01523, 3.05176e-05, 8.49278, 0, 0, 0, 0, 0, 0, -5.75404, 3.05176e-05, 8.49278, 0, 0, 0, 0, 0, 0, -6.54064, 3.05176e-05, 7.78898, 0, 0, 0, 0, 0, 0, -6.83045, 1.52588e-05, 6.05017, 0, 0, 0, 0, 0, 0, -5.91964, 1.52588e-05, 4.18716, 0, 0, 0, 0, 0, 0, -3.1307, 0, 2.08713, 0, 0, 0, 0, 0, 0, -2.50456, 0, -0.104356, 0, 0, 0, 0, 0, 0, 1.61519, 0, 0.295542, 0, 0, 0, 0, 0, 0, 4.22644, 0, 0.860942 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+}
+
+[sub_resource type="Curve3D" id=4]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -6.97328, 0, 1.66224, 0, 0, 0, 0, 0, 0, -7.25708, 1.52588e-05, 5.95973, 0, 0, 0, 0, 0, 0, -7.36881, 3.05176e-05, 8.51584, 0, 0, 0, 0, 0, 0, -8.37681, 3.05176e-05, 10.4971, 0, 0, 0, 0, 0, 0, -11.0185, 4.57764e-05, 10.7404, 0, 0, 0, 0, 0, 0, -11.1227, 3.05176e-05, 8.5506, 0, 0, 0, 0, 0, 0, -10.1495, 3.05176e-05, 10.1495, 0, 0, 0, 0, 0, 0, -7.33405, 3.05176e-05, 9.52384, 0, 0, 0, 0, 0, 0, -6.84743, 1.52588e-05, 6.25654, 0, 0, 0, 0, 0, 0, -8.30729, 1.52588e-05, 5.90895, 0, 0, 0, 0, 0, 0, -10.2885, 3.05176e-05, 6.53461, 0, 0, 0, 0, 0, 0, -11.4703, 1.52588e-05, 6.1175, 0, 0, 0, 0, 0, 0, -10.5666, 1.52588e-05, 4.34482, 0, 0, 0, 0, 0, 0, -11.4356, 1.52588e-05, 4.24054, 0, 0, 0, 0, 0, 0, -10.6014, 1.52588e-05, 2.95448, 0, 0, 0, 0, 0, 0, -11.3313, 1.52588e-05, 4.83144, 0, 0, 0, 0, 0, 0, -11.4703, 0, 1.98124, 0, 0, 0, 0, 0, 0, -10.5318, 1.52588e-05, 2.15503, 0, 0, 0, 0, 0, 0, -10.0105, 0, 0.312827, 0, 0, 0, 0, 0, 0, -4.44909, 0, -0.590895, 0, 0, 0, 0, 0, 0, -2.2593, 0, -0.590895, 0, 0, 0, 0, 0, 0, -1.39034, 0, -0.590895, 0, 0, 0, 0, 0, 0, 0.312828, 0, 1.21655, 0, 0, 0, 0, 0, 0, -0.903723, 1.52588e-05, 3.16303, 0, 0, 0, 0, 0, 0, -1.77269, 1.52588e-05, 4.83144, 0, 0, 0, 0, 0, 0, -0.973238, 1.52588e-05, 4.34482, 0, 0, 0, 0, 0, 0, 0.521379, 0, 0.486619, 0, 0, 0, 0, 0, 0, -3.64965, 0, -0.278068, 0, 0, 0, 0, 0, 0, -6.1175, 0, 0.382343, 0, 0, 0, 0, 0, 0, -6.97328, 0, 1.66224 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+}
+
+[sub_resource type="Curve3D" id=5]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 2.12027, 0, -0.903722, 0, 0, 0, 0, 0, 0, -1.32083, 0, -0.312827, 0, 0, 0, 0, 0, 0, -3.16303, 0, -0.312827, 0, 0, 0, 0, 0, 0, -3.75392, 0, -0.312827, 0, 0, 0, 0, 0, 0, -11.1227, 0, -1.21655, 0, 0, 0, 0, 0, 0, -12.111, 0, -1.28643, 0, 0, 0, 0, 0, 0, -14.5638, 0, -1.45986, 0, 0, 0, 0, 0, 0, -10.6709, 0, 0.625653, 0, 0, 0, 0, 0, 0, -10.6709, 1.52588e-05, 3.4411, 0, 0, 0, 0, 0, 0, -10.7404, 3.05176e-05, 6.36081, 0, 0, 0, 0, 0, 0, -7.68164, 1.52588e-05, 6.01323, 0, 0, 0, 0, 0, 0, -6.36081, 1.52588e-05, 4.37958, 0, 0, 0, 0, 0, 0, -6.32605, 0, 1.4251, 0, 0, 0, 0, 0, 0, -5.2833, 0, 0.173793, 0, 0, 0, 0, 0, 0, -3.40634, 0, 0.24331, 0, 0, 0, 0, 0, 0, -3.40634, 0, 1.56413, 0, 0, 0, 0, 0, 0, -4.24054, 1.52588e-05, 2.57213, 0, 0, 0, 0, 0, 0, -3.71916, 1.52588e-05, 5.38757, 0, 0, 0, 0, 0, 0, -1.04276, 3.05176e-05, 7.75115, 0, 0, 0, 0, 0, 0, -2.08551, 3.05176e-05, 8.51584, 0, 0, 0, 0, 0, 0, -1.31387, 3.05176e-05, 8.48578, 0, 0, 0, 0, 0, 0, 0.590895, 3.05176e-05, 8.41157, 0, 0, 0, 0, 0, 0, 1.14703, 3.05176e-05, 9.35005, 0, 0, 0, 0, 0, 0, 1.04276, 3.05176e-05, 8.09874, 0, 0, 0, 0, 0, 0, -1.87696, 1.52588e-05, 6.25654, 0, 0, 0, 0, 0, 0, -1.4251, 1.52588e-05, 4.13627, 0, 0, 0, 0, 0, 0, -1.4251, 1.52588e-05, 2.78068, 0, 0, 0, 0, 0, 0, -3.02399, 0, 1.80744, 0, 0, 0, 0, 0, 0, 2.12027, 0, -0.903722 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+}
+
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
 run_as = 3
-has_robots = 1
 enable_focus_blur = false
+random_player_start_positions = false
+random_robot_start_positions = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -44,17 +74,14 @@ __meta__ = {
 }
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource( 4 )]
-margin_right = -178.0
 
-[node name="Control" parent="CanvasLayer/UI/Bottom" index="0"]
-margin_right = 826.0
-
-[node name="Control" parent="CanvasLayer/UI/Top" index="1"]
-margin_right = 610.0
-
-[node name="HBoxContainer" parent="CanvasLayer/UI/Top" index="2"]
-margin_left = 614.0
-margin_right = 826.0
+[node name="Chat" parent="CanvasLayer/UI/RightPanel" index="1"]
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 64.0
+margin_right = 390.0
+margin_bottom = 64.0
 
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource( 6 )]
 
@@ -68,7 +95,7 @@ shadow_enabled = true
 directional_shadow_mode = 1
 
 [node name="MainOffice" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.09865, 0.122459, 2.46107 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.099, 0, 2.461 )
 
 [node name="FakePlayer" type="Spatial" parent="."]
 script = ExtResource( 5 )
@@ -79,7 +106,7 @@ transform = Transform( 0.468547, 0.331971, -0.818693, 0, 0.926712, 0.375772, 0.8
 [node name="SpawnPointsPlayers" type="Spatial" parent="."]
 
 [node name="P1" type="Spatial" parent="SpawnPointsPlayers"]
-transform = Transform( 0.915817, 0, 0.401596, 0, 1, 0, -0.401596, 0, 0.915817, -7.64753, 0, 0.737466 )
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.0425868, -0.0934134, 4.547 )
 
 [node name="P2" type="Spatial" parent="SpawnPointsPlayers"]
 transform = Transform( 0.858584, 0, -0.512672, 0, 1, 0, 0.512672, 0, 0.858584, -4.17729, 0, -0.858048 )
@@ -88,7 +115,7 @@ transform = Transform( 0.858584, 0, -0.512672, 0, 1, 0, 0.512672, 0, 0.858584, -
 transform = Transform( 0.345675, 0, -0.938354, 0, 1, 0, 0.938354, 0, 0.345675, 2.2646, 0, -0.858048 )
 
 [node name="P4" type="Spatial" parent="SpawnPointsPlayers"]
-transform = Transform( -0.431299, 0, -0.902209, 0, 1, 0, 0.902209, 0, -0.431299, -1.10592, 0, 3.90855 )
+transform = Transform( -0.431299, 0, -0.902209, 0, 1, 0, 0.902209, 0, -0.431299, -5.21924, 0, -0.383608 )
 
 [node name="P5" type="Spatial" parent="SpawnPointsPlayers"]
 transform = Transform( 0.804386, 0, 0.594107, 0, 1, 0, -0.594107, 0, 0.804386, 5.09663, 0, -0.379394 )
@@ -111,10 +138,10 @@ transform = Transform( 0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 7
 [node name="SpawnPointsRobots" type="Spatial" parent="."]
 
 [node name="P1" type="Spatial" parent="SpawnPointsRobots"]
-transform = Transform( 0.915817, 0, 0.401596, 0, 1, 0, -0.401596, 0, 0.915817, -7.64753, 0, 2.52585 )
+transform = Transform( 0.858584, 0, -0.512672, 0, 1, 0, 0.512672, 0, 0.858584, -1.37417, 0, -0.355893 )
 
 [node name="P2" type="Spatial" parent="SpawnPointsRobots"]
-transform = Transform( 0.858584, 0, -0.512672, 0, 1, 0, 0.512672, 0, 0.858584, -1.37417, 0, -0.355893 )
+transform = Transform( 0.915817, 0, 0.401596, 0, 1, 0, -0.401596, 0, 0.915817, -7.64753, 0, 2.52585 )
 
 [node name="P3" type="Spatial" parent="SpawnPointsRobots"]
 transform = Transform( 0.345675, 0, -0.938354, 0, 1, 0, 0.938354, 0, 0.345675, 0.55063, 0, -0.483069 )
@@ -145,6 +172,42 @@ transform = Transform( 0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 4
 [node name="timer_save" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
+
+[node name="NPCPath" type="Spatial" parent="."]
+
+[node name="NPCPath1" type="Path" parent="NPCPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.808762, 0, -0.378852 )
+curve = SubResource( 2 )
+
+[node name="NPC1" parent="NPCPath/NPCPath1" instance=ExtResource( 7 )]
+transform = Transform( 0.330899, 0, 0.943662, 0, 1, 0, -0.943667, 0, 0.330898, -5.06129, 1.52588e-05, 4.86618 )
+skin = ExtResource( 9 )
+npc_name = "Anna"
+
+[node name="NPCPath2" type="Path" parent="NPCPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.427, 0, -1.33055 )
+curve = SubResource( 3 )
+
+[node name="NPC2" parent="NPCPath/NPCPath2" instance=ExtResource( 7 )]
+transform = Transform( 0.990202, 0, 0.139646, 0, 1, 0, -0.139646, 0, 0.990198, 4.22644, 0, 0.860942 )
+skin = ExtResource( 8 )
+npc_name = "Nicky"
+
+[node name="NPCPath3" type="Path" parent="NPCPath"]
+curve = SubResource( 4 )
+
+[node name="NPC3" parent="NPCPath/NPCPath3" instance=ExtResource( 7 )]
+transform = Transform( 0.997827, 2.33443e-07, -0.0658899, -1.42109e-14, 1, 3.5429e-06, 0.0658901, -3.53521e-06, 0.997823, -6.97328, 0, 1.66224 )
+skin = ExtResource( 10 )
+npc_name = "Nic"
+
+[node name="NPCPath4" type="Path" parent="NPCPath"]
+curve = SubResource( 5 )
+
+[node name="NPC4" parent="NPCPath/NPCPath4" instance=ExtResource( 7 )]
+transform = Transform( 0.16924, 0, -0.985571, 0, 1, 0, 0.985575, 0, 0.169239, 2.12027, 0, -0.903722 )
+skin = ExtResource( 14 )
+npc_name = "Jane"
 
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
 

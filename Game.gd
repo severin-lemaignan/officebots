@@ -262,6 +262,7 @@ func _ready():
 		
 
 func configure_physics():
+	
 	shuffle_spawn_points()
 	
 	# enable physics calculations for all the dynamics objects, *on the server only* (or in stand-alone mode)
@@ -306,7 +307,13 @@ func _physics_process(_delta):
 
 func compute_visible_humans(robot):
 
-	for p in $Players.get_children():
+	var humans = $Players.get_children()
+	
+	# add all the NPCs as well
+	for npc_path in $NPCPath.get_children():
+		humans.append(npc_path.get_child(0).get_child(0))
+
+	for p in humans:
 		if p in robot.players_in_fov:
 			var ob = is_object_visible(p.face, robot.camera)
 			if !ob or !ob.has_method("i_am_a_character"):
