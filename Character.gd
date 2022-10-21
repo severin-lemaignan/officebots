@@ -51,7 +51,7 @@ func _ready():
 	
 	local_player = $FakePlayer
 
-	last_location = translation
+	last_location = global_transform.origin
 
 	original_orientation = Quat(transform.basis.orthonormalized())
 	set_expression(GameState.Expressions.NEUTRAL)
@@ -239,7 +239,7 @@ func _process(delta):
 	if total_delta > 0.1:
 		total_delta = 0
 		
-		if translation.distance_squared_to(last_location) > 0.001:
+		if global_transform.origin.distance_squared_to(last_location) > 0.001:
 			anim_to_play = "Walk"
 		else:
 			anim_to_play = "Idle"
@@ -249,7 +249,7 @@ func _process(delta):
 		if current_anim != anim_to_play:
 			anim_player.play(anim_to_play)
 	
-		last_location = translation
+		last_location = global_transform.origin
 
 	if is_portrait_mode:
 		return
