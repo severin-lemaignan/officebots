@@ -447,7 +447,7 @@ func add_player(id):
 		
 	else:
 		player.call_deferred("enable_collisions", false)
-		player.call_deferred("connect", "player_msg", $CanvasLayer/UI/Chat, "add_msg")
+		player.call_deferred("connect", "player_msg", $CanvasLayer/UI/RightPanel/Chat, "add_msg")
 	
 	
 	player.set_deferred("local_player", local_player)
@@ -528,10 +528,10 @@ remote func pre_configure_game():
 	
 	get_node("/root/Game/Players").add_child(local_player)
 	
-	var _err = $CanvasLayer/UI/Chat.connect("on_chat_msg", local_player, "say")
-	_err = $CanvasLayer/UI/Chat.connect("typing", local_player, "typing")
-	_err = $CanvasLayer/UI/Chat.connect("not_typing_anymore", local_player, "not_typing_anymore")
-	_err = local_player.connect("player_list_updated", $CanvasLayer/UI/Chat, "set_list_players_in_range")
+	var _err = $CanvasLayer/UI/RightPanel/Chat.connect("on_chat_msg", local_player, "say")
+	_err = $CanvasLayer/UI/RightPanel/Chat.connect("typing", local_player, "typing")
+	_err = $CanvasLayer/UI/RightPanel/Chat.connect("not_typing_anymore", local_player, "not_typing_anymore")
+	_err = local_player.connect("player_list_updated", $CanvasLayer/UI/RightPanel/Chat, "set_list_players_in_range")
 	_err = $CanvasLayer/UI.connect("on_expression", local_player, "set_expression")
 	
 	$MainOffice.set_local_player(local_player)
@@ -715,7 +715,7 @@ func update_players_proximity():
 					proximity[p2]["in_range"].append([p1.name,"player"])
 				
 				print(p1.username + " and " + p2.username + " in range")
-				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
+				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
 			
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
@@ -730,7 +730,7 @@ func update_players_proximity():
 					proximity[p2]["not_in_range"].append([p1.name, "player"])
 				
 				print(p1.username + " and " + p2.username + " not in range anymore")
-				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
+				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
 			
 			players_distances[p1][p2] = dist
 			players_distances[p2][p1] = dist
@@ -759,7 +759,7 @@ func update_players_proximity():
 					proximity[p1]["in_range"].append([r.name,"robot"])
 				
 				print(p1.username + " and " + r.robot_name + " in range")
-				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
+				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
 			
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
@@ -769,7 +769,7 @@ func update_players_proximity():
 					proximity[p1]["not_in_range"].append([r.name,"robot"])
 				
 				print(p1.username + " and " + r.robot_name + " not in range anymore")
-				$CanvasLayer/UI/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
+				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
 			
 			players_distances[p1][r] = dist
 			

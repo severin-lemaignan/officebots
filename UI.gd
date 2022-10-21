@@ -19,14 +19,14 @@ signal on_expression
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	var _err = $Top/HBoxContainer/settings.connect("pressed", self, "on_settings") 
-	_err = $Top/HBoxContainer/chat.connect("pressed", self, "on_chat") 
+	var _err = $RightPanel/IconSet/settings.connect("pressed", self, "on_settings") 
+	_err = $RightPanel/IconSet/chat.connect("pressed", self, "on_chat") 
 	
 	if GameState.robots_enabled():
-		_err = $Top/HBoxContainer/robot.connect("pressed", self, "on_robot_clicked")    
+		_err = $RightPanel/IconSet/robot.connect("pressed", self, "on_robot_clicked")    
 		_err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
 	else:
-		$Top/HBoxContainer/robot.hide()
+		$RightPanel/IconSet/robot.hide()
 	
 	#_err = $Bottom/Actions/ExpressionGroup/happy.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.NEUTRAL])
 	#_err = $Bottom/Actions/ExpressionGroup/sad.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.SAD])
@@ -46,18 +46,18 @@ func on_settings():
 	$Settings.show()
 
 func on_chat():
-	if not $Chat.is_visible_in_tree():
-		$Top/HBoxContainer/chat.texture_normal = chat_active
-		$Chat.show()
+	if not $RightPanel/Chat.is_visible_in_tree():
+		$RightPanel/IconSet/chat.texture_normal = chat_active
+		$RightPanel/Chat.show()
 	else:
-		$Top/HBoxContainer/chat.texture_normal = chat_inactive
-		$Chat.hide()
+		$RightPanel/IconSet/chat.texture_normal = chat_inactive
+		$RightPanel/Chat.hide()
 	
 func toggle_robots_support(active):
 	if active:
-		$Top/HBoxContainer/robot.show()
+		$RightPanel/IconSet/robot.show()
 	else:
-		$Top/HBoxContainer/robot.hide()
+		$RightPanel/IconSet/robot.hide()
 		
 func on_robot_clicked():
 	
@@ -75,14 +75,14 @@ func on_robot_state_changed(state):
 	
 	match state:
 		GameState.RobotState.DISCONNECTED:
-			$Top/HBoxContainer/robot.texture_normal = robot_offline
-			$Top/HBoxContainer/robot.texture_hover = robot_offline_hover
+			$RightPanel/IconSet/robot.texture_normal = robot_offline
+			$RightPanel/IconSet/robot.texture_hover = robot_offline_hover
 		GameState.RobotState.CONNECTED:
-			$Top/HBoxContainer/robot.texture_normal = robot_online
-			$Top/HBoxContainer/robot.texture_hover = robot_online_hover
+			$RightPanel/IconSet/robot.texture_normal = robot_online
+			$RightPanel/IconSet/robot.texture_hover = robot_online_hover
 		GameState.RobotState.CONNECTING:
-			$Top/HBoxContainer/robot.texture_normal = robot_connecting
-			$Top/HBoxContainer/robot.texture_hover = robot_connecting_hover
+			$RightPanel/IconSet/robot.texture_normal = robot_connecting
+			$RightPanel/IconSet/robot.texture_hover = robot_connecting_hover
 
 
 func _process(_delta):

@@ -27,6 +27,88 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 19 )
 
+[node name="RightPanel" type="Control" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -250.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+mouse_filter = 2
+
+[node name="IconSet" type="HBoxContainer" parent="RightPanel"]
+anchor_right = 1.0
+margin_bottom = 60.0
+mouse_filter = 2
+
+[node name="robot" type="TextureButton" parent="RightPanel/IconSet"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 29 )
+texture_hover = ExtResource( 28 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="spacer" type="Control" parent="RightPanel/IconSet"]
+margin_left = 64.0
+margin_right = 112.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 20, 0 )
+size_flags_horizontal = 3
+
+[node name="away" type="TextureButton" parent="RightPanel/IconSet"]
+visible = false
+margin_left = 88.0
+margin_right = 148.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 12 )
+texture_hover = ExtResource( 15 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="chat" type="TextureButton" parent="RightPanel/IconSet"]
+margin_left = 116.0
+margin_right = 176.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 1 )
+texture_hover = ExtResource( 1 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="settings" type="TextureButton" parent="RightPanel/IconSet"]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 13 )
+texture_hover = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Chat" parent="RightPanel" instance=ExtResource( 2 )]
+anchor_left = 0.0
+anchor_top = 1.0
+margin_left = 0.0
+margin_top = -300.0
+margin_right = 0.0
+margin_bottom = 0.0
+
 [node name="Bottom" type="HBoxContainer" parent="."]
 anchor_top = 0.85
 anchor_right = 1.0
@@ -47,11 +129,10 @@ __meta__ = {
 }
 
 [node name="Top" type="HBoxContainer" parent="."]
-anchor_right = 1.0
+anchor_right = 0.306
 anchor_bottom = 0.15
 margin_left = 10.0
 margin_top = 10.0
-margin_right = -10.0
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -91,76 +172,6 @@ theme = ExtResource( 14 )
 custom_fonts/font = SubResource( 2 )
 text = "Séverin"
 
-[node name="Control" type="Control" parent="Top"]
-margin_left = 193.0
-margin_right = 788.0
-margin_bottom = 80.0
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Top"]
-margin_left = 792.0
-margin_right = 1004.0
-margin_bottom = 80.0
-
-[node name="robot" type="TextureButton" parent="Top/HBoxContainer"]
-margin_right = 60.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 29 )
-texture_hover = ExtResource( 28 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="spacer" type="Control" parent="Top/HBoxContainer"]
-margin_left = 64.0
-margin_right = 84.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 20, 0 )
-size_flags_horizontal = 3
-
-[node name="away" type="TextureButton" parent="Top/HBoxContainer"]
-visible = false
-margin_left = 88.0
-margin_right = 148.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 12 )
-texture_hover = ExtResource( 15 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="chat" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 88.0
-margin_right = 148.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 1 )
-texture_hover = ExtResource( 1 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="settings" type="TextureButton" parent="Top/HBoxContainer"]
-margin_left = 152.0
-margin_right = 212.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 13 )
-texture_hover = ExtResource( 13 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
 [node name="TransientMessage" type="Label" parent="."]
 modulate = Color( 1, 1, 1, 0.72549 )
 anchor_left = 0.5
@@ -179,11 +190,6 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="TransientMessage"]
-
-[node name="Chat" parent="." instance=ExtResource( 2 )]
-visible = false
-anchor_left = 0.78418
-anchor_top = 0.128333
 
 [node name="Settings" parent="." instance=ExtResource( 23 )]
 visible = false
