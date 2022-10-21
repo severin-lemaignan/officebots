@@ -48,9 +48,11 @@ func on_settings():
 func on_chat():
 	if not $RightPanel/Chat.is_visible_in_tree():
 		$RightPanel/IconSet/chat.texture_normal = chat_active
+		$RightPanel/IconSet/chat.texture_hover = chat_active
 		$RightPanel/Chat.show()
 	else:
 		$RightPanel/IconSet/chat.texture_normal = chat_inactive
+		$RightPanel/IconSet/chat.texture_hover = chat_active
 		$RightPanel/Chat.hide()
 	
 func toggle_robots_support(active):

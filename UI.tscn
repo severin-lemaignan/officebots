@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/icons/chat.svg" type="Texture" id=1]
 [ext_resource path="res://Chat.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/icons/chat_active.svg" type="Texture" id=3]
 [ext_resource path="res://assets/characters/char1.png" type="Texture" id=6]
 [ext_resource path="res://assets/icons/timer-outline.svg" type="Texture" id=12]
 [ext_resource path="res://assets/icons/settings.svg" type="Texture" id=13]
@@ -26,88 +27,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 19 )
-
-[node name="RightPanel" type="Control" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -250.0
-margin_top = 10.0
-margin_right = -10.0
-margin_bottom = -10.0
-mouse_filter = 2
-
-[node name="IconSet" type="HBoxContainer" parent="RightPanel"]
-anchor_right = 1.0
-margin_bottom = 60.0
-mouse_filter = 2
-
-[node name="robot" type="TextureButton" parent="RightPanel/IconSet"]
-margin_right = 60.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 29 )
-texture_hover = ExtResource( 28 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="spacer" type="Control" parent="RightPanel/IconSet"]
-margin_left = 64.0
-margin_right = 112.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 20, 0 )
-size_flags_horizontal = 3
-
-[node name="away" type="TextureButton" parent="RightPanel/IconSet"]
-visible = false
-margin_left = 88.0
-margin_right = 148.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 12 )
-texture_hover = ExtResource( 15 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="chat" type="TextureButton" parent="RightPanel/IconSet"]
-margin_left = 116.0
-margin_right = 176.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 1 )
-texture_hover = ExtResource( 1 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="settings" type="TextureButton" parent="RightPanel/IconSet"]
-margin_left = 180.0
-margin_right = 240.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 60, 60 )
-texture_normal = ExtResource( 13 )
-texture_hover = ExtResource( 13 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Chat" parent="RightPanel" instance=ExtResource( 2 )]
-anchor_left = 0.0
-anchor_top = 1.0
-margin_left = 0.0
-margin_top = -300.0
-margin_right = 0.0
-margin_bottom = 0.0
 
 [node name="Bottom" type="HBoxContainer" parent="."]
 anchor_top = 0.85
@@ -171,6 +90,89 @@ margin_bottom = 29.0
 theme = ExtResource( 14 )
 custom_fonts/font = SubResource( 2 )
 text = "Séverin"
+
+[node name="RightPanel" type="Control" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -250.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+mouse_filter = 2
+
+[node name="IconSet" type="HBoxContainer" parent="RightPanel"]
+anchor_right = 1.0
+margin_bottom = 60.0
+mouse_filter = 2
+
+[node name="robot" type="TextureButton" parent="RightPanel/IconSet"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 29 )
+texture_hover = ExtResource( 28 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="spacer" type="Control" parent="RightPanel/IconSet"]
+margin_left = 64.0
+margin_right = 112.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 20, 0 )
+size_flags_horizontal = 3
+
+[node name="away" type="TextureButton" parent="RightPanel/IconSet"]
+visible = false
+margin_left = 88.0
+margin_right = 148.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 12 )
+texture_hover = ExtResource( 15 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="chat" type="TextureButton" parent="RightPanel/IconSet"]
+margin_left = 116.0
+margin_right = 176.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 1 )
+texture_hover = ExtResource( 3 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="settings" type="TextureButton" parent="RightPanel/IconSet"]
+margin_left = 180.0
+margin_right = 240.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+texture_normal = ExtResource( 13 )
+texture_hover = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Chat" parent="RightPanel" instance=ExtResource( 2 )]
+visible = false
+anchor_left = 0.0
+anchor_top = 1.0
+margin_left = 0.0
+margin_top = -300.0
+margin_right = 0.0
+margin_bottom = 0.0
 
 [node name="TransientMessage" type="Label" parent="."]
 modulate = Color( 1, 1, 1, 0.72549 )

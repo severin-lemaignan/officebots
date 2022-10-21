@@ -32,18 +32,25 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -15.0
+rect_min_size = Vector2( 0, 600 )
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.560784 )
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -150.0
 alignment = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-margin_right = 191.0
+margin_right = 190.0
 margin_bottom = 486.0
 grow_vertical = 0
+rect_min_size = Vector2( 0, 400 )
 size_flags_vertical = 3
 follow_focus = true
 scroll_horizontal_enabled = false
@@ -52,7 +59,7 @@ __meta__ = {
 }
 
 [node name="Msgs" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
-margin_right = 191.0
+margin_right = 190.0
 margin_bottom = 486.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -64,7 +71,7 @@ __meta__ = {
 
 [node name="ListPlayersInRange" type="VBoxContainer" parent="VBoxContainer"]
 margin_top = 490.0
-margin_right = 191.0
+margin_right = 190.0
 margin_bottom = 508.0
 size_flags_horizontal = 3
 __meta__ = {
@@ -72,18 +79,19 @@ __meta__ = {
 }
 
 [node name="PresenceLabel" parent="VBoxContainer/ListPlayersInRange" instance=ExtResource( 2 )]
+margin_right = 190.0
 margin_bottom = 18.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 512.0
-margin_right = 191.0
+margin_right = 190.0
 margin_bottom = 552.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextInput" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
-margin_right = 147.0
+margin_right = 146.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
@@ -95,8 +103,8 @@ __meta__ = {
 }
 
 [node name="SendBtn" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
-margin_left = 151.0
-margin_right = 191.0
+margin_left = 150.0
+margin_right = 190.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
 texture_normal = ExtResource( 3 )
@@ -110,7 +118,7 @@ one_shot = true
 
 [node name="ReactionsContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 556.0
-margin_right = 191.0
+margin_right = 190.0
 margin_bottom = 594.0
 custom_constants/separation = 0
 __meta__ = {
