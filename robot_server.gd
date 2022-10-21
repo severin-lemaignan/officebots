@@ -247,6 +247,14 @@ func process_incoming_data(data):
 			robot.stop()
 			send_ok(id)
 			return
+		"say":
+			if params.size() != 1:
+				send_error(id, "say takes exactly one parameter")
+				return
+				
+			robot.say(params[0])
+			send_ok(id)
+			return
 		"get-pos":
 			if params.size() != 0:
 				send_error(id, "get-pos does not take any parameter")

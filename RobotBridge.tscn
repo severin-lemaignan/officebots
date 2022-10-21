@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://RobotBridge.gd" type="Script" id=1]
 [ext_resource path="res://assets/ari.glb" type="PackedScene" id=2]
 [ext_resource path="res://LaserScannerLines.gd" type="Script" id=3]
+[ext_resource path="res://SpeechBubble.tscn" type="PackedScene" id=4]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.737352, 1.66297, 0.617224 )
@@ -24,3 +25,16 @@ fov = 50.0
 [node name="LaserScanner" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
 script = ExtResource( 3 )
+
+[node name="SpeechBubbleHandle" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="SpeechBubbleHandle" instance=ExtResource( 4 )]
+
+[node name="SpeechBubbleAnchorAxis" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3077, 0.126205 )
+
+[node name="SpeechBubbleAnchor" type="Spatial" parent="SpeechBubbleAnchorAxis"]
+transform = Transform( 0.0882466, 0, 0, 0, 0.0882466, 0, 0, 0, 0.0972273, -0.147955, 0.274592, 0.00488836 )
+
+[node name="NameAnchor" type="Spatial" parent="SpeechBubbleAnchorAxis"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553644, 0 )

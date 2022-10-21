@@ -45,7 +45,14 @@ var players_in_fov = []
 # nothing beyond that distance is visible, whatever its size
 const CAMERA_FAR = 30
 
+var local_player
+
 onready var camera = $robot/Camera
+onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
+onready var speech_bubble_handle = $SpeechBubbleHandle
+
+# emitted when this robot says something within Player's range
+signal robot_msg
 
 func _ready():
 	
@@ -61,7 +68,7 @@ func _ready():
 			meshes[c].surface_set_material(0, mat)
 		
 		set_color("white")
-		
+	
 	#set_screen_texture("res://assets/screen_tex_hello.png")
 	
 	# disable physics by default (will be only enabled on the server)
@@ -111,13 +118,32 @@ puppet func set_screen_texture_remote(jpg_buffer):
 	$robot/Screen.mesh.surface_get_material(1).albedo_texture = tex
 	
 	return err
-	
+
+func distance_to(object):
+	return get_global_transform().origin.distance_to(object.get_global_transform().origin)
+
 # should only run on the server!
 func _physics_process(delta):
 	
 	assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
 	
-	
+	# manage speech bubble, incl updating scale and orientation based on
+	# player distance
+	if not local_player:
+		local_player = get_node("/root/Game/Players/myself")
+		
+	var dist = distance_to(local_player)
+	$SpeechBubbleAnchorAxis.rotation.y = -rotation.y + local_player.camera.get_global_transform().basis.get_euler().y
+			
+	if speech_bubble.is_speaking:
+
+		var screenPos = local_player.camera.unproject_position($SpeechBubbleAnchorAxis/SpeechBubbleAnchor.get_global_transform().origin)
+		speech_bubble_handle.position = screenPos
+
+		# Scale the speech bubble based on distance to player
+		var bubble_scale = max(0.5, min(2, 1 / dist))
+		speech_bubble_handle.scale = Vector2(bubble_scale, bubble_scale)
+		
 	if path_node < path.size():
 		var direction = (path[path_node] - global_transform.origin)
 		if direction.length() < 0.2:
@@ -136,6 +162,20 @@ func _physics_process(delta):
 		rpc_unreliable("set_puppet_transform", transform)
 	
 	laser_ranges = $LaserScanner.laser_scan()
+
+func say(text):
+	
+	#if local_player.is_in_range(self):
+	speech_bubble.say(text, speech_bubble.ButtonType.NONE)
+	
+	# connected to the Chat interface in Game.gd
+	emit_signal("robot_msg", text, username, false)
+		
+func typing():
+	speech_bubble.typing()
+	
+func not_typing_anymore():
+	speech_bubble.hide()
 	
 func set_v_w(v, w):
 	linear_velocity = v

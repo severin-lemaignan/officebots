@@ -463,6 +463,8 @@ func add_player(id):
 
 func add_robot(name):
 	local_robot = add_robot_remote(name)
+	local_robot.call_deferred("connect", "robot_msg", $CanvasLayer/UI/RightPanel/Chat, "add_msg")
+
 	
 	if GameState.mode == GameState.SERVER:
 		rpc("add_robot_remote", name)
@@ -715,7 +717,7 @@ func update_players_proximity():
 					proximity[p2]["in_range"].append([p1.name,"player"])
 				
 				print(p1.username + " and " + p2.username + " in range")
-				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
+				#$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + p2.username + " in range", "[SERVER]")
 			
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
@@ -730,7 +732,7 @@ func update_players_proximity():
 					proximity[p2]["not_in_range"].append([p1.name, "player"])
 				
 				print(p1.username + " and " + p2.username + " not in range anymore")
-				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
+				#$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + p2.username + " not in range anymore")
 			
 			players_distances[p1][p2] = dist
 			players_distances[p2][p1] = dist
@@ -759,7 +761,7 @@ func update_players_proximity():
 					proximity[p1]["in_range"].append([r.name,"robot"])
 				
 				print(p1.username + " and " + r.robot_name + " in range")
-				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
+				#$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + r.robot_name + " in range", "[SERVER]")
 			
 			elif dist > min_dist and prev_dist < min_dist:
 				# p1 and p2 are not in range anymore
@@ -769,7 +771,7 @@ func update_players_proximity():
 					proximity[p1]["not_in_range"].append([r.name,"robot"])
 				
 				print(p1.username + " and " + r.robot_name + " not in range anymore")
-				$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
+				#$CanvasLayer/UI/RightPanel/Chat.add_msg(p1.username + " and " + r.robot_name + " not in range anymore")
 			
 			players_distances[p1][r] = dist
 			
