@@ -73,6 +73,8 @@ func _ready():
 	
 	$CanvasLayer/GameModeSelection.visible = false
 	var _err = $CanvasLayer/UI/Settings.connect("on_toggle_laser", self, "toggle_robots_lasers")
+	_err = $CanvasLayer/UI/Settings.connect("on_toggle_npcs", self, "toggle_npcs")
+	toggle_npcs($CanvasLayer/UI/Settings.NPCsBtn.pressed)
 	
 	set_physics_process(false)
 	
@@ -327,6 +329,9 @@ func compute_visible_humans(robot):
 	return robot.players_in_fov
 						
 func is_object_visible(object, camera):
+	if not object.visible:
+		return null
+		
 	var target = object.global_transform.origin
 	if is_point_in_frustum(target, camera):
 		var space_state = get_world().direct_space_state
@@ -507,6 +512,11 @@ func toggle_robots_lasers(state):
 	
 	for robot in $Robots.get_children():
 		robot.get_node("LaserScanner").visible = state
+
+func toggle_npcs(state):
+	for npc_path in $NPCPath.get_children():
+		npc_path.get_child(0).get_child(0).visible = state
+		npc_path.get_child(0).get_child(0).face.visible = state
 
 remote func pre_configure_game():
 	

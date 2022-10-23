@@ -31,22 +31,22 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 344.0
-margin_top = 128.0
+margin_top = 92.0
 margin_right = 679.0
-margin_bottom = 471.0
+margin_bottom = 508.0
 custom_constants/separation = 20
 
 [node name="Settings" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_right = 335.0
-margin_bottom = 17.0
+margin_bottom = 20.0
 theme = ExtResource( 1 )
 text = "Settings"
 align = 1
 
 [node name="Control3" type="Control" parent="CenterContainer/VBoxContainer"]
-margin_top = 37.0
+margin_top = 40.0
 margin_right = 335.0
-margin_bottom = 87.0
+margin_bottom = 90.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 __meta__ = {
@@ -54,19 +54,19 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 107.0
+margin_top = 110.0
 margin_right = 335.0
-margin_bottom = 157.0
+margin_bottom = 160.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_top = 16.0
-margin_right = 75.0
-margin_bottom = 33.0
+margin_top = 15.0
+margin_right = 96.0
+margin_bottom = 35.0
 theme = ExtResource( 1 )
 text = "Laser visible"
 
 [node name="Control" type="Control" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 79.0
+margin_left = 100.0
 margin_right = 281.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
@@ -82,17 +82,46 @@ texture_normal = ExtResource( 10 )
 texture_pressed = ExtResource( 11 )
 expand = true
 
-[node name="Control2" type="Control" parent="CenterContainer/VBoxContainer"]
-margin_top = 177.0
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 180.0
 margin_right = 335.0
-margin_bottom = 227.0
+margin_bottom = 230.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer3"]
+margin_top = 15.0
+margin_right = 98.0
+margin_bottom = 35.0
+theme = ExtResource( 1 )
+text = "Enable NPCs"
+
+[node name="Control" type="Control" parent="CenterContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 102.0
+margin_right = 281.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_horizontal = 3
+
+[node name="NPCsEnabled" type="TextureButton" parent="CenterContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 285.0
+margin_right = 335.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+toggle_mode = true
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 11 )
+expand = true
+
+[node name="Control2" type="Control" parent="CenterContainer/VBoxContainer"]
+margin_top = 250.0
+margin_right = 335.0
+margin_bottom = 300.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 247.0
+margin_top = 320.0
 margin_right = 335.0
-margin_bottom = 343.0
+margin_bottom = 416.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -155,10 +184,10 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ModalMessage/CenterContainer"]
-margin_left = 414.0
-margin_top = 245.0
-margin_right = 609.0
-margin_bottom = 354.0
+margin_left = 385.0
+margin_top = 244.0
+margin_right = 639.0
+margin_bottom = 356.0
 custom_constants/separation = 20
 
 [node name="Label" type="Label" parent="ModalMessage/CenterContainer/VBoxContainer"]

@@ -180,7 +180,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.808762, 0, -0.378852 )
 curve = SubResource( 2 )
 
 [node name="NPC1" parent="NPCPath/NPCPath1" instance=ExtResource( 7 )]
-transform = Transform( 0.330899, 0, 0.943662, 0, 1, 0, -0.943667, 0, 0.330898, -5.06129, 1.52588e-05, 4.86618 )
+transform = Transform( 0.330899, 0, 0.943661, 0, 1, 0, -0.943667, 0, 0.330897, -5.06129, 1.52588e-05, 4.86618 )
 skin = ExtResource( 9 )
 npc_name = "Anna"
 
@@ -189,7 +189,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.427, 0, -1.33055 )
 curve = SubResource( 3 )
 
 [node name="NPC2" parent="NPCPath/NPCPath2" instance=ExtResource( 7 )]
-transform = Transform( 0.990202, 0, 0.139646, 0, 1, 0, -0.139646, 0, 0.990198, 4.22644, 0, 0.860942 )
+transform = Transform( 0.990202, 0, 0.139645, 0, 1, 0, -0.139646, 0, 0.990197, 4.22644, 0, 0.860942 )
 skin = ExtResource( 8 )
 npc_name = "Nicky"
 
