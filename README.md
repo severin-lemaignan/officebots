@@ -73,8 +73,18 @@ simulation.
 
 Currently supported:
 
-- [ROS4HRI](wiki.ros.org/hri)-compatible support for persons, faces, speech
-- laserscan publication (standard ROS mapping is possible)
+
+- control the robot's velocity via the standard `/cmd_vel` topic (therefore, usual ROS teleop with
+  keyboard/joystick is possible)
+- laserscan (`/scan`, standard ROS mapping is possible)
+- [ROS4HRI](wiki.ros.org/hri)-compatible support for persons, faces, gaze, speech
+  (body tracking not implemented, though)
+- pusblishing images to the in-game robot's tablet (simply publish images to
+  `/screen/raw_image`)
+- publish a string to `/say` for the robot to 'speak' via a speech bubble
+
+
+Type `rostopic list` for the list of available topics.
 
 Other platforms, Web version
 ----------------------------
