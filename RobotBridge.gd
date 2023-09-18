@@ -203,7 +203,7 @@ func pop_last_msg():
 		
 	var msg = last_msg[0]
 	var user = last_msg[1]
-	last_msg = []
+	last_msg.clear()
 	
 	return [msg, user]
 
