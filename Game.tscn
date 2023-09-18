@@ -45,7 +45,6 @@ _data = {
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 2 )
-run_as = 3
 enable_focus_blur = false
 random_player_start_positions = false
 random_robot_start_positions = false
