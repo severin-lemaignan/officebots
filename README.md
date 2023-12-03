@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10252309.svg)](https://doi.org/10.5281/zenodo.10252309)
+
 OfficeBots
 ==========
 
