@@ -1,4 +1,4 @@
-extends StaticBody
+extends StaticBody3D
 
 var local_player
 
@@ -8,11 +8,11 @@ enum DOOR_STATE {
 	open
    }
 
-export(DOOR_STATE) var initial_state
+@export var initial_state: DOOR_STATE
 
-export(float) var open_angle = -90
-export(float) var half_open_angle = -40
-export(float) var closed_angle = 0
+@export var open_angle: float = -90
+@export var half_open_angle: float = -40
+@export var closed_angle: float = 0
 
 var state
 
@@ -24,9 +24,9 @@ func _ready():
 	
 	state = initial_state
 	
-	var _err = $HandleHighlight.connect("highlight_clicked", self, "on_handle_clicked")
+	var _err = $HandleHighlight.connect("highlight_clicked", Callable(self, "on_handle_clicked"))
 
-remotesync func set_state(new_state):
+@rpc("any_peer", "call_local") func set_state(new_state):
 	$Tween.remove_all()
 	match new_state:
 		DOOR_STATE.half_open:

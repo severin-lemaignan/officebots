@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 ####### THESE ENUMS ARE *ONLY* FOR CONFIGURATION IN THE GODOT EDITOR UI ########
 ####### See GameState for the actual global variables used in the code #########
@@ -6,17 +6,17 @@ extends Spatial
 # set the initial game mode. Can be overridden by 
 # command-line arguments --server, --client, --standalone
 enum modes {UNSET, CLIENT, SERVER, STANDALONE}
-export(modes) var run_as = modes.UNSET
+@export var run_as: modes = modes.UNSET
 
 # by default, the game supports adding robots; robots can be disabled if eg
 # it is only played online with human users.
 enum RobotsMode {ROBOTS, NO_ROBOTS}
-export(RobotsMode) var has_robots = RobotsMode.ROBOTS
+@export var has_robots: RobotsMode = RobotsMode.ROBOTS
 
-export(bool) var enable_focus_blur = true
+@export var enable_focus_blur: bool = true
 
-export(bool) var random_player_start_positions = true
-export(bool) var random_robot_start_positions = true
+@export var random_player_start_positions: bool = true
+@export var random_robot_start_positions: bool = true
 
 ###############################################################################
 
@@ -43,7 +43,7 @@ var screen_textures = {}
 # if changing that, make sure to add spawn points accordingly
 var MAX_PLAYERS = 10
 
-export(String) var username = "John Doe"
+@export var username: String = "John Doe"
 
 # Player info, associate ID to data
 var player_info = {}
@@ -60,20 +60,20 @@ var show_laserscans = false
 
 var robot_server
 
-onready var navmesh = $MainOffice.get_navmesh()
+@onready var navigation_mesh = $MainOffice.get_navmesh()
 
 func _ready():
 	
 	$CanvasLayer/Effects/VignetteEffect.visible = enable_focus_blur
 	
-	time_start= OS.get_unix_time()
+	time_start= Time.get_unix_time_from_system()
 		
 	
 	randomize()
 	
 	$CanvasLayer/GameModeSelection.visible = false
-	var _err = $CanvasLayer/UI/Settings.connect("on_toggle_laser", self, "toggle_robots_lasers")
-	_err = $CanvasLayer/UI/Settings.connect("on_toggle_npcs", self, "toggle_npcs")
+	var _err = $CanvasLayer/UI/Settings.connect("on_toggle_laser", Callable(self, "toggle_robots_lasers"))
+	_err = $CanvasLayer/UI/Settings.connect("on_toggle_npcs", Callable(self, "toggle_npcs"))
 	toggle_npcs($CanvasLayer/UI/Settings.NPCsBtn.pressed)
 	
 	set_physics_process(false)
@@ -103,7 +103,7 @@ func _ready():
 	# finally, if still not set, show the selection screen
 	if GameState.mode == GameState.UNSET:
 		$CanvasLayer/GameModeSelection.visible = true
-		var url = yield($CanvasLayer/GameModeSelection,"on_mode_set")
+		var url = await $CanvasLayer/GameModeSelection.on_mode_set
 
 		if url == null: # single player!
 			GameState.mode = GameState.STANDALONE
@@ -132,7 +132,7 @@ func _ready():
 	
 	if GameState.mode == GameState.CLIENT:
 
-		$FakePlayer/Camera.current = false
+		$FakePlayer/Camera3D.current = false
 		
 		# the name of the player was given on cmd-line? no need to choose the dialog
 		if player_name:
@@ -140,14 +140,14 @@ func _ready():
 	
 	elif GameState.mode == GameState.SERVER:
 
-		$FakePlayer/Camera.current = true
+		$FakePlayer/Camera3D.current = true
 		$CanvasLayer/UI.visible = false
 		$CanvasLayer/CharacterSelection.visible = false
 		$CanvasLayer/Effects.visible = false
 	
 	elif GameState.mode == GameState.STANDALONE:
 		
-		$FakePlayer/Camera.current = false
+		$FakePlayer/Camera3D.current = false
 		
 		# the name of the player was given on cmd-line? no need to choose the dialog
 		if player_name:
@@ -172,17 +172,17 @@ func _ready():
 	# 3. register_player -> add_player that creates Character node instance for each other peers on the new peer
 	
 	# called when a player joins the game
-	_err = get_tree().connect("network_peer_connected", self, "_player_connected")
+	_err = get_tree().connect("peer_connected", Callable(self, "_player_connected"))
 	
 	# called when a player leaves the game
-	_err = get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+	_err = get_tree().connect("peer_disconnected", Callable(self, "_player_disconnected"))
 	
 
 	# called when *I* connect to the server
-	_err = get_tree().connect("connected_to_server", self, "_connected_ok")
-	_err = get_tree().connect("connection_failed", self, "_connected_fail")
+	_err = get_tree().connect("connected_to_server", Callable(self, "_connected_ok"))
+	_err = get_tree().connect("connection_failed", Callable(self, "_connected_fail"))
 	# called when the server disconnect, eg is killed
-	_err = get_tree().connect("server_disconnected", self, "_server_disconnected")
+	_err = get_tree().connect("server_disconnected", Callable(self, "_server_disconnected"))
 	
 			
 	if GameState.mode == GameState.SERVER:
@@ -191,7 +191,7 @@ func _ready():
 		peer = WebSocketServer.new()
 		
 		# the last 'true' parameter enables the Godot high-level multiplayer API
-		var error = peer.listen(SERVER_PORT, PoolStringArray(), true)
+		var error = peer.listen(SERVER_PORT, PackedStringArray(), true)
 		
 		if error != OK:
 			match error:
@@ -222,7 +222,7 @@ func _ready():
 	
 		# if we do not already have the player name, wait for the character creation to be complete
 		if not player_name:
-			var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+			var res = await $CanvasLayer/CharacterSelection.on_character_created
 			player_name = res[0]
 			player_skin = res[1]
 		
@@ -235,7 +235,7 @@ func _ready():
 		peer = WebSocketClient.new()
 		
 		# the last 'true' parameter enables the Godot high-level multiplayer API
-		peer.connect_to_url(SERVER_URL, PoolStringArray(), true)
+		peer.connect_to_url(SERVER_URL, PackedStringArray(), true)
 		get_tree().network_peer = peer
 		
 		is_networking_started = true
@@ -245,7 +245,7 @@ func _ready():
 
 		# if we do not already have the player name, wait for the character creation to be complete
 		if not player_name:
-			var res = yield($CanvasLayer/CharacterSelection,"on_character_created")
+			var res = await $CanvasLayer/CharacterSelection.on_character_created
 			player_name = res[0]
 			player_skin = res[1]
 		
@@ -298,7 +298,7 @@ func _physics_process(_delta):
 	
 	assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
 	if GameState.mode == GameState.SERVER:
-		assert(is_network_master())
+		assert(is_multiplayer_authority())
 	
 		# check visibility of players:
 	# 1. select robot's camera
@@ -334,7 +334,7 @@ func is_object_visible(object, camera):
 		
 	var target = object.global_transform.origin
 	if is_point_in_frustum(target, camera):
-		var space_state = get_world().direct_space_state
+		var space_state = get_world_3d().direct_space_state
 		var result = space_state.intersect_ray(camera.global_transform.origin, target)
 		if result:
 			return result.collider
@@ -394,7 +394,7 @@ func _player_connected(id):
 		print("New player " + str(id) + " joined")
 		create_file(str(id))
 		
-	if not get_tree().is_network_server():
+	if not get_tree().is_server():
 		rpc_id(id, "register_player", my_info)
 	
 func _player_disconnected(id):
@@ -405,15 +405,15 @@ func _player_disconnected(id):
 ########################################################
 
 # excuted on every existing peer (incl server) when a new player joins
-remote func register_player(info):
+@rpc("any_peer") func register_player(info):
 	
-	var id = get_tree().get_rpc_sender_id()
+	var id = get_tree().get_remote_sender_id()
 	
 	player_info[id] = info
 	
 	add_player(id)
 
-	if get_tree().is_network_server():
+	if get_tree().is_server():
 		print("Player " + player_info[id]["name"] + " (peer id #" + str(id) + "): registration & initialization complete")
 		
 
@@ -424,7 +424,7 @@ func add_player(id):
 	# THIS RUNS BOTH ON THE SERVER AND ON THE CLIENTS
 	
 	print("Creating character instance for peer #" + str(id))
-	var player = preload("res://Character.tscn").instance()
+	var player = preload("res://Character.tscn").instantiate()
 	
 	# this is key: by re-using the id, each player (be it a Player instance or 
 	# a Character instance) will have the *same* node path on every peers, enabling
@@ -435,12 +435,12 @@ func add_player(id):
 	
 	# the server is ultimately controlling all the characters position
 	# -> the network master is 1 (eg, default)
-	player.set_network_master(1)
+	player.set_multiplayer_authority(1)
 	
 	
 	
 	# physics *only* performed on server
-	if get_tree().is_network_server():
+	if get_tree().is_server():
 		player.call_deferred("enable_collisions", true)
 		player.call_deferred("set_physics_process", true)
 		
@@ -474,9 +474,9 @@ func add_robot(name):
 	if GameState.mode == GameState.SERVER:
 		rpc("add_robot_remote", name)
 	
-puppet func add_robot_remote(name):
+@rpc func add_robot_remote(name):
 	print("Adding robot " + str(name))
-	var robot = preload("res://RobotBridge.tscn").instance()
+	var robot = preload("res://RobotBridge.tscn").instantiate()
 	
 	robots[name] = robot
 	
@@ -518,18 +518,18 @@ func toggle_npcs(state):
 		npc_path.get_child(0).get_child(0).visible = state
 		npc_path.get_child(0).get_child(0).face.visible = state
 
-remote func pre_configure_game():
+@rpc("any_peer") func pre_configure_game():
 	
 	var selfPeerID = "myself" # used in STANDALONE mode
 	
 	if GameState.mode == GameState.CLIENT:
-		selfPeerID = get_tree().get_network_unique_id()  # used in CLIENT/SERVER mode
+		selfPeerID = get_tree().get_unique_id()  # used in CLIENT/SERVER mode
 			
 		get_tree().set_pause(true)
 
 	
 	# Load my player
-	local_player = preload("res://Player.tscn").instance()
+	local_player = preload("res://Player.tscn").instantiate()
 	local_player.set_name(str(selfPeerID))
 	local_player.username = player_name
 	
@@ -540,11 +540,11 @@ remote func pre_configure_game():
 	
 	get_node("/root/Game/Players").add_child(local_player)
 	
-	var _err = $CanvasLayer/UI/RightPanel/Chat.connect("on_chat_msg", local_player, "say")
-	_err = $CanvasLayer/UI/RightPanel/Chat.connect("typing", local_player, "typing")
-	_err = $CanvasLayer/UI/RightPanel/Chat.connect("not_typing_anymore", local_player, "not_typing_anymore")
-	_err = local_player.connect("player_list_updated", $CanvasLayer/UI/RightPanel/Chat, "set_list_players_in_range")
-	_err = $CanvasLayer/UI.connect("on_expression", local_player, "set_expression")
+	var _err = $CanvasLayer/UI/RightPanel/Chat.connect("on_chat_msg", Callable(local_player, "say"))
+	_err = $CanvasLayer/UI/RightPanel/Chat.connect("typing", Callable(local_player, "typing"))
+	_err = $CanvasLayer/UI/RightPanel/Chat.connect("not_typing_anymore", Callable(local_player, "not_typing_anymore"))
+	_err = local_player.connect("player_list_updated", Callable($CanvasLayer/UI/RightPanel/Chat, "set_list_players_in_range"))
+	_err = $CanvasLayer/UI.connect("on_expression", Callable(local_player, "set_expression"))
 	
 	$MainOffice.set_local_player(local_player)
 
@@ -565,7 +565,7 @@ remote func pre_configure_game():
 # server has accepted our player, we can start the game.
 # *if transform=null, the server has rejected our player*
 # (typically because no more space). In which case, we must exit.
-remote func post_configure_game(transform):
+@rpc("any_peer") func post_configure_game(transform):
 	if !transform:
 		print("Server is full! Exiting")
 		get_tree().quit()
@@ -578,9 +578,9 @@ remote func post_configure_game(transform):
 
 # Executed on the server only
 var players_done = []
-remote func done_preconfiguring(who):
+@rpc("any_peer") func done_preconfiguring(who):
 	# Here are some checks you can do, for example
-	assert(get_tree().is_network_server())
+	assert(get_tree().is_server())
 	assert(who in player_info) # Exists
 	assert(not who in players_done) # Was not added yet
 
@@ -605,7 +605,7 @@ func debug_point(pos):
 	if pos in debug_points:
 		return
 	
-	var point = MeshInstance.new()
+	var point = MeshInstance3D.new()
 	point.mesh = SphereMesh.new()
 	point.mesh.radius = 0.03
 	point.mesh.height = 0.06
@@ -661,7 +661,7 @@ func pre_save():
 	for p in $Players.get_children(): 
 		var ID = p.get_name()
 		
-		var time = OS.get_unix_time()
+		var time = Time.get_unix_time_from_system()
 		var mood = all_expr[p.expression]
 		
 		var data = "%s"%time+ "," + "%.2f"%p.global_transform.origin[0]+ "," + "%.2f"%p.global_transform.origin[2] +"," + "%.1f"%p.rotation_degrees[1] + "," + "%s"%mood + "," + "%s"%p.is_speaking()
@@ -673,7 +673,7 @@ func pre_save():
 		#print(who) # print the id of the player 
 		
 func time_played(): 
-	time_now= OS.get_unix_time()
+	time_now= Time.get_unix_time_from_system()
 	var elapsed = time_now - time_start
 	return elapsed
 
@@ -704,7 +704,7 @@ func update_players_proximity():
 			if not players_distances.has(p2):
 				players_distances[p2] = {}
 			
-			var dist = p1.translation.distance_squared_to(p2.translation)
+			var dist = p1.position.distance_squared_to(p2.position)
 			
 			if not players_distances[p1].has(p2):
 				players_distances[p1][p2] = dist
@@ -756,7 +756,7 @@ func update_players_proximity():
 		for idx2 in range(robots.size()):
 			var r = robots[idx2]
 			
-			var dist = p1.translation.distance_squared_to(r.translation)
+			var dist = p1.position.distance_squared_to(r.position)
 			
 			if not players_distances[p1].has(r):
 				players_distances[p1][r] = dist

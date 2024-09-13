@@ -1,6 +1,6 @@
-extends Spatial
+extends Node3D
 
-onready var nav = $Navigation
+@onready var nav = $Navigation
 
 
 # Called when the node enters the scene tree for the first time.
@@ -18,14 +18,14 @@ func set_local_player(object):
 
 
 func get_navmesh():
-	var navmesh = $Navigation/NavigationMeshInstance.navmesh
+	var navigation_mesh = $Navigation/NavigationRegion3D.navigation_mesh
 	var polygons = []
-	var vertices = navmesh.get_vertices()
+	var vertices = navigation_mesh.get_vertices()
 	
-	for idx in navmesh.get_polygon_count():
+	for idx in navigation_mesh.get_polygon_count():
 		var polygon = []
-		for v in navmesh.get_polygon(idx):
-			var vertex = GameState.convert_coordinates_godot2robotics(global_transform.xform(vertices[v]))
+		for v in navigation_mesh.get_polygon(idx):
+			var vertex = GameState.convert_coordinates_godot2robotics(global_transform * (vertices[v]))
 			polygon.append([vertex.x, vertex.y, vertex.z])
 		
 		polygons.append(polygon)

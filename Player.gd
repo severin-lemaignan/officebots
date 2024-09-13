@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 # mouselook + motion based on godot FPS tutorial:
 # https://docs.godotengine.org/en/stable/tutorials/3d/fps_tutorial/part_one.html
@@ -20,11 +20,11 @@ signal player_list_updated
 var pickedup_object_original_parent
 var pickedup_object
 
-onready var camera = $Rotation_helper/Camera
-onready var rotation_helper = $Rotation_helper
+@onready var camera = $Rotation_helper/Camera3D
+@onready var rotation_helper = $Rotation_helper
 
 # used by Robot.gd to compute visibility of players
-onready var face = $Rotation_helper/Camera
+@onready var face = $Rotation_helper/Camera3D
 
 var username = "myself"
 
@@ -37,9 +37,9 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 func toggle_collisions(enabled=true):
-	$CollisionShape.disabled = !enabled
+	$CollisionShape3D.disabled = !enabled
 
-puppet func set_puppet_transform(puppet_transform):
+@rpc func set_puppet_transform(puppet_transform):
 
 	transform = puppet_transform
 	
@@ -52,17 +52,17 @@ func _physics_process(delta):
 	# puppet head pose overridden by animation
 	#rpc_unreliable("set_puppet_transform", transform, $Rotation_helper/CameraTarget.get_global_transform().origin)
 
-puppet func puppet_says(_msg):
+@rpc func puppet_says(_msg):
 	# do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
 	pass
 
-puppet func puppet_set_expression(_msg):
+@rpc func puppet_set_expression(_msg):
 	# do nothing on the player itself! (but the other players, eg, the Characters will display the right expression)
 	pass
 
-puppet func puppet_update_players_in_range(in_range, not_in_range):
+@rpc func puppet_update_players_in_range(in_range, not_in_range):
 	
-	if in_range.empty() and not_in_range.empty():
+	if in_range.is_empty() and not_in_range.is_empty():
 		return
 	
 	for agent in in_range:
@@ -110,7 +110,7 @@ func typing():
 	if GameState.mode != GameState.STANDALONE:
 		rpc_id(1, "execute_puppet_typing")
 
-puppet func puppet_typing():
+@rpc func puppet_typing():
 	# do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
 	pass
 
@@ -120,7 +120,7 @@ func not_typing_anymore():
 	if GameState.mode != GameState.STANDALONE:
 		rpc_id(1, "execute_puppet_not_typing_anymore")
 
-puppet func puppet_not_typing_anymore():
+@rpc func puppet_not_typing_anymore():
 	# do nothing on the player itself! (but the other players, eg, the Characters will display the speech bubble)
 	pass
 
@@ -145,10 +145,10 @@ func pickup_object(object):
 	pickedup_object_original_parent = object.get_parent()
 	pickedup_object_original_parent.remove_child(object)
 	
-	$Rotation_helper/Camera/PickupAnchor.add_child(object)
+	$Rotation_helper/Camera3D/PickupAnchor.add_child(object)
 	object.set_picked()
 	
-	object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
+	object.transform = Transform3D() # set the object transform to 0 -> origin matches the anchor point
 
 
 func release_object():
@@ -158,9 +158,9 @@ func release_object():
 		if GameState.mode != GameState.STANDALONE:
 			rpc("release_object")
 		
-		$Rotation_helper/Camera/PickupAnchor.remove_child(pickedup_object)
+		$Rotation_helper/Camera3D/PickupAnchor.remove_child(pickedup_object)
 		pickedup_object_original_parent.add_child(pickedup_object)
-		pickedup_object.set_global_transform($Rotation_helper/Camera/PickupAnchor.get_global_transform())
+		pickedup_object.set_global_transform($Rotation_helper/Camera3D/PickupAnchor.get_global_transform())
 		pickedup_object.set_released()
 		pickedup_object = null
 
@@ -230,7 +230,7 @@ func process_movement(delta):
 	else:
 		accel = DEACCEL
 
-	hvel = hvel.linear_interpolate(target, accel * delta)
+	hvel = hvel.lerp(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
@@ -241,7 +241,13 @@ func process_movement(delta):
 			rpc_unreliable_id(1, "execute_move_and_slide", vel)
 		elif GameState.mode == GameState.STANDALONE:
 			vel.y += GameState.GRAVITY * delta
-			vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, GameState.MAX_SLOPE_ANGLE)
+			set_velocity(vel)
+			set_up_direction(Vector3(0, 1, 0))
+			set_floor_stop_on_slope_enabled(0.05)
+			set_max_slides(4)
+			set_floor_max_angle(GameState.MAX_SLOPE_ANGLE)
+			move_and_slide()
+			vel = velocity
 		else:
 			assert(false)
 	
@@ -250,12 +256,12 @@ func process_movement(delta):
 func _input(event):
 	
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		rotation_helper.rotate_x(deg2rad(event.relative.y * MOUSE_SENSITIVITY))
+		rotation_helper.rotate_x(deg_to_rad(event.relative.y * MOUSE_SENSITIVITY))
 		
 		if GameState.mode == GameState.CLIENT:
-			rpc_unreliable_id(1, "execute_set_rotation", deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+			rpc_unreliable_id(1, "execute_set_rotation", deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
 		elif GameState.mode == GameState.STANDALONE:
-			self.rotate_y(deg2rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+			self.rotate_y(deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
 		else:
 			assert(false)
 			

@@ -1,21 +1,21 @@
-extends KinematicBody
+extends CharacterBody3D
 class_name Character
 
-onready var anim_player = $AnimationPlayer
+@onready var anim_player = $AnimationPlayer
 
 # reference to the active player owns by this network peer
 # used to ensure the speech bubbles of the other players
 # are oriented to face this player
 var local_player
 var expression = 0 #to export the expression 
-onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
-onready var speech_bubble_handle = $SpeechBubbleHandle
-onready var face = $Face # used by Robot.gd to compute visibility of players
+@onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
+@onready var speech_bubble_handle = $SpeechBubbleHandle
+@onready var face = $Face # used by Robot.gd to compute visibility of players
 
 var username = "Unknown player"
-export(float) var max_earshot_distance = 3
-export(float) var max_background_distance = 1
-export(Texture) var neutral_skin
+@export var max_earshot_distance: float = 3
+@export var max_background_distance: float = 1
+@export var neutral_skin: Texture2D
 
 var is_looking_at_player
 var dialogue_is_finished
@@ -53,7 +53,7 @@ func _ready():
 
 	last_location = global_transform.origin
 
-	original_orientation = Quat(transform.basis.orthonormalized())
+	original_orientation = Quaternion(transform.basis.orthonormalized())
 	set_expression(GameState.Expressions.NEUTRAL)
 	
 	# flip the tip of the speech bubble to place the speech bubble on the left of NPCs
@@ -82,7 +82,7 @@ func _ready():
 #                                 Transform(face(eye_target), tr.origin))
 
 func enable_collisions(val=true):
-	$CollisionShape.disabled = !val
+	$CollisionShape3D.disabled = !val
 	
 func portrait_mode(mode):
 	
@@ -90,8 +90,8 @@ func portrait_mode(mode):
 	
 	if mode == true:
 		
-		$FakePlayer/Camera.visible = true
-		$OmniLight.visible = true
+		$FakePlayer/Camera3D.visible = true
+		$OmniLight3D.visible = true
 		
 		anim_player.current_animation = "Idle"
 		anim_player.seek(randf() * anim_player.current_animation_length)
@@ -101,13 +101,13 @@ func portrait_mode(mode):
 
 	
 	else:
-		$FakePlayer/Camera.visible = false
-		$OmniLight.visible = false
+		$FakePlayer/Camera3D.visible = false
+		$OmniLight3D.visible = false
 
 func set_portrait_camera():
-	$FakePlayer/Camera.current = true
+	$FakePlayer/Camera3D.current = true
 func set_close_up_camera():
-	$"FakePlayer/Camera-closeup".current = true
+	$"FakePlayer/Camera3D-closeup".current = true
 	
 # used to test in Game whether an object colliding with the ray cast for visibility testing
 # is indeed a character (via .has_method(i_am_a_character))
@@ -116,25 +116,25 @@ func i_am_a_character():
 	
 
 	
-puppet func set_puppet_transform(puppet_transform):
+@rpc func set_puppet_transform(puppet_transform):
 
 	transform = puppet_transform
 
-puppet func puppet_set_expression(expr):
+@rpc func puppet_set_expression(expr):
 	set_expression(expr)
 
-puppet func puppet_update_players_in_range(in_range, not_in_range):
+@rpc func puppet_update_players_in_range(in_range, not_in_range):
 	# do nothing on the characters, only the Player need to update the UI
 	pass
 		
 	
 # this code is only supposed to be called on the server, where the physics takes place
-remote func execute_set_rotation(angle):
-	assert(get_tree().is_network_server())
+@rpc("any_peer") func execute_set_rotation(angle):
+	assert(get_tree().is_server())
 	rotate_y(angle)
 	rpc_unreliable("set_puppet_transform", transform)
 	
-remote func pickup_object(object_path):
+@rpc("any_peer") func pickup_object(object_path):
 
 	var object = get_node(object_path)
 
@@ -147,9 +147,9 @@ remote func pickup_object(object_path):
 	$PickupAnchor.add_child(object)
 	object.set_picked()
 	
-	object.transform = Transform() # set the object transform to 0 -> origin matches the anchor point
+	object.transform = Transform3D() # set the object transform to 0 -> origin matches the anchor point
 	
-remote func release_object():
+@rpc("any_peer") func release_object():
 	
 	if pickedup_object:
 		
@@ -163,20 +163,20 @@ remote func release_object():
 #
 # these methods are only executed on the server, where the physics takes place
 #
-remote func execute_move_and_slide(linear_velocity):
+@rpc("any_peer") func execute_move_and_slide(linear_velocity):
 
-	assert(get_tree().is_network_server())
+	assert(get_tree().is_server())
 	velocity = linear_velocity
 	
-remote func execute_puppet_says(msg):
-	assert(get_tree().is_network_server())
+@rpc("any_peer") func execute_puppet_says(msg):
+	assert(get_tree().is_server())
 	rpc("puppet_says", msg)
 	
 	# execute it as well on the server, for debugging purpose + to track when the players are
 	# speaking in the logs
 	say(msg)
 
-puppet func puppet_says(msg):
+@rpc func puppet_says(msg):
 	print("Got something to say: " + msg)
 	
 	if local_player.is_in_range(self):
@@ -185,29 +185,29 @@ puppet func puppet_says(msg):
 		# connected to the Chat interface in Game.gd
 		emit_signal("player_msg", msg, username, false)
 		
-remote func execute_puppet_typing():
-	assert(get_tree().is_network_server())
+@rpc("any_peer") func execute_puppet_typing():
+	assert(get_tree().is_server())
 	rpc("puppet_typing")
 	typing()
 
-puppet func puppet_typing():
+@rpc func puppet_typing():
 
 	if local_player.is_in_range(self):
 		typing()
 
-remote func execute_puppet_not_typing_anymore():
-	assert(get_tree().is_network_server())
+@rpc("any_peer") func execute_puppet_not_typing_anymore():
+	assert(get_tree().is_server())
 	rpc("puppet_not_typing_anymore")
 	not_typing_anymore()
 
-puppet func puppet_not_typing_anymore():
+@rpc func puppet_not_typing_anymore():
 
 	if local_player.is_in_range(self):
 		not_typing_anymore()
 		
-remote func execute_puppet_set_expression(msg):
+@rpc("any_peer") func execute_puppet_set_expression(msg):
 	expression = msg
-	assert(get_tree().is_network_server())
+	assert(get_tree().is_server())
 	rpc("puppet_set_expression", msg)
 ###############################################################################
 
@@ -216,7 +216,10 @@ func _physics_process(delta):
 	
 	velocity.y += GameState.GRAVITY * delta
   
-	velocity = move_and_slide(velocity, Vector3.UP)
+	set_velocity(velocity)
+	set_up_direction(Vector3.UP)
+	move_and_slide()
+	velocity = velocity
 	
 	
 	
@@ -303,14 +306,14 @@ func get_look_at_transform_basis(target,
 	v_x = v_x.normalized()
 	v_y = v_y.normalized()
 	
-	return Transform(v_x, v_y, v_z, eye).basis
+	return Transform3D(v_x, v_y, v_z, eye).basis
 
 func set_base_skin(resource_path):
 	neutral_skin = load(resource_path)
 	set_skin(neutral_skin)
 	
 func set_skin(texture):
-	$Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", texture)
+	$Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", texture)
 
 func set_username(name):
 	username = name
@@ -336,7 +339,7 @@ func set_expression(expr):
 			skin = load(texture_basename + "sad.png")
 			
 			
-	$Root/Skeleton/Character.get_surface_material(0).set_shader_param("skin", skin)
+	$Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", skin)
 	
 #func face(object):
 #

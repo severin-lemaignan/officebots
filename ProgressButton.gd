@@ -1,9 +1,9 @@
 extends Control
 
-export (Texture) var normal
-export (Texture) var pressed
+@export var normal: Texture2D
+@export var pressed: Texture2D
 
-export (bool) var timer = true
+@export var timer: bool = true
 
 signal pressed
 signal unpressed
@@ -18,14 +18,14 @@ func _ready():
 	$button.texture_hover = pressed
 	$button.texture_pressed = pressed
 	
-	$button.connect("pressed", self, "on_pressed")
-	$RadialProgress.connect("timeout", self, "on_timeout")
+	$button.connect("pressed", Callable(self, "on_pressed"))
+	$RadialProgress.connect("timeout", Callable(self, "on_timeout"))
 
 func on_pressed():
 	
 	active = true
 	emit_signal("pressed")
-	$button.pressed = true
+	$button.button_pressed = true
 	
 	if timer:
 		$RadialProgress.visible = true
@@ -40,7 +40,7 @@ func on_timeout():
 
 func stop():
 	active = false
-	$button.pressed = false
+	$button.button_pressed = false
 	$RadialProgress.visible = false
 	$RadialProgress.reset()
 

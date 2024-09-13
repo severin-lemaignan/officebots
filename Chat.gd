@@ -1,7 +1,7 @@
 extends Control
 
 
-onready var textinput = $VBoxContainer/HBoxContainer/TextInput
+@onready var textinput = $VBoxContainer/HBoxContainer/TextInput
 
 signal on_chat_msg
 signal typing
@@ -14,15 +14,15 @@ var presencelabel = preload("res://PresenceLabel.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	textinput.connect("text_entered", self, "on_chat_msg_entered")
-	$VBoxContainer/HBoxContainer/SendBtn.connect("button_up", self, "on_chat_msg_entered")
+	textinput.connect("text_submitted", Callable(self, "on_chat_msg_entered"))
+	$VBoxContainer/HBoxContainer/SendBtn.connect("button_up", Callable(self, "on_chat_msg_entered"))
 	
-	textinput.connect("text_changed", self, "on_is_typing")
+	textinput.connect("text_changed", Callable(self, "on_is_typing"))
 	$VBoxContainer/HBoxContainer/is_typing_timer.wait_time = 2 # after this time without typing, the player is 'not typing anymore'
-	$VBoxContainer/HBoxContainer/is_typing_timer.connect("timeout", self, "on_is_typing_expired")
+	$VBoxContainer/HBoxContainer/is_typing_timer.connect("timeout", Callable(self, "on_is_typing_expired"))
 	
 	for btn in $VBoxContainer/ReactionsContainer.get_children():
-		btn.connect("reaction", self, "on_chat_msg_entered")
+		btn.connect("reaction", Callable(self, "on_chat_msg_entered"))
 		
 	#for i in range(10):
 	#	var msg
@@ -71,18 +71,18 @@ func set_list_players_in_range(players):
 		n.queue_free()
 	
 	if not players:
-		var lbl = presencelabel.instance() # default label ("No-one nearby")
+		var lbl = presencelabel.instantiate() # default label ("No-one nearby")
 		$VBoxContainer/ListPlayersInRange.add_child(lbl)
 	else:
 		for p in players:
-			var lbl = presencelabel.instance()
-			lbl.bbcode_text = "[i][b]" + p.username + "[/b] is nearby[/i]"
+			var lbl = presencelabel.instantiate()
+			lbl.text = "[i][b]" + p.username + "[/b] is nearby[/i]"
 			$VBoxContainer/ListPlayersInRange.add_child(lbl)
 
 func add_msg(text, author=null, own=null):
 	# own controls the msg alignment: own=True -> right aligned, False: left aligned, null: full width
 
-	var msg = chatmsg.instance()
+	var msg = chatmsg.instantiate()
 	msg.set_text(text, author)
 	$VBoxContainer/ScrollContainer/Msgs.add_child(msg)
 	
@@ -91,7 +91,7 @@ func add_msg(text, author=null, own=null):
 	
 	# not very pretty, but the only way I could find to force the scroll container to
 	# scroll to the bottom of the msg list
-	get_tree().create_timer(.1).connect("timeout", self, "scroll_down")
+	get_tree().create_timer(.1).connect("timeout", Callable(self, "scroll_down"))
 	
 		
 	return msg

@@ -19,18 +19,18 @@ func _init(game):
 	if GameState.mode == GameState.STANDALONE:
 		print("STARTING ROBOTS WEBSOCKET CLIENT (STANDALONE mode). YOU NEED TO START THE PYTHON WEBSOCKET SERVER")
 		robot_server = WebSocketClient.new()
-		robot_server.connect("connection_error", self, "_on_connection_error")
-		robot_server.connect("connection_established", self, "_on_connection_established")
-		robot_server.connect("connection_closed", self, "_on_connection_closed")
+		robot_server.connect("connection_error", Callable(self, "_on_connection_error"))
+		robot_server.connect("connection_established", Callable(self, "_on_connection_established"))
+		robot_server.connect("connection_closed", Callable(self, "_on_connection_closed"))
 		
 		pub_timer.wait_time = pub_interval
 		pub_timer.one_shot = false
-		pub_timer.connect("timeout", self, "publish_robot_state")
+		pub_timer.connect("timeout", Callable(self, "publish_robot_state"))
 		game_instance.add_child(pub_timer)
 
-		robot_server.connect("data_received", self, "_on_robot_data")
+		robot_server.connect("data_received", Callable(self, "_on_robot_data"))
 	
-		GameState.connect("robot_state_changed", self, "on_robot_state_changed")
+		GameState.connect("robot_state_changed", Callable(self, "on_robot_state_changed"))
 	
 func on_robot_state_changed(state):
 	
@@ -39,7 +39,7 @@ func on_robot_state_changed(state):
 	
 func attempt_connect_relay_server():
 	# the last 'false' parameter disables the Godot high-level multiplayer API
-	var error = robot_server.connect_to_url("localhost:" + str(API_SERVER_PORT), PoolStringArray(), false)
+	var error = robot_server.connect_to_url("localhost:" + str(API_SERVER_PORT), PackedStringArray(), false)
 	if error != OK:
 		print("Error: " + str(error))
 	
@@ -52,7 +52,7 @@ func publish_robot_state():
 	if connected and game_instance.local_robot:
 
 		var state = get_state()
-		robot_server.get_peer(1).put_packet(JSON.print([0, state]).to_utf8())
+		robot_server.get_peer(1).put_packet(JSON.stringify([0, state]).to_utf8_buffer())
 
 
 func get_state():
@@ -76,7 +76,7 @@ func _on_connection_error():
 	if GameState.robot_state == GameState.RobotState.CONNECTING:
 		
 		# wait 1/2 sec and try to reconnect
-		yield(game_instance.get_tree().create_timer(.5), "timeout")
+		await game_instance.get_tree().create_timer(.5).timeout
 		print("Trying to reconnect to API server...")
 		self.attempt_connect_relay_server()
 	
@@ -99,7 +99,7 @@ func _on_connection_closed(_is_clean):
 	self.attempt_connect_relay_server()
 
 
-puppet func puppet_load_image(jpg_buffer):
+@rpc func puppet_load_image(jpg_buffer):
 #    var img = Image.new()
 #
 #    var err = img.load_jpg_from_buffer(jpg_buffer)
@@ -118,7 +118,9 @@ func _on_robot_data():
 	process_incoming_data(data)
 	
 func process_incoming_data(data):
-	var json = JSON.parse(data.get_string_from_utf8())
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(data.get_string_from_utf8())
+	var json = test_json_conv.get_data()
 	if json.error != OK:
 		print("Received invalid JSON command for the robot:")
 		print(data.get_string_from_utf8())
@@ -136,11 +138,11 @@ func process_incoming_data(data):
 	if target == "server": # special server commands
 		match cmd:
 			#robot-api
-			"get-navmesh":
+			"get-navigation_mesh":
 				if params.size() != 0:
-					send_error(id, "get-navmesh does not take any parameter")
+					send_error(id, "get-navigation_mesh does not take any parameter")
 					return
-				send_ok(id, game_instance.navmesh)
+				send_ok(id, game_instance.navigation_mesh)
 				return
 		send_error(id, "Unknown server command: " + cmd)
 		return
@@ -328,10 +330,10 @@ func process_incoming_data(data):
 
 func send_error(id, msg):
 	print("API ERROR: " + str(msg))
-	robot_server.get_peer(1).put_packet(JSON.print([id,["EE",  msg]]).to_utf8())
+	robot_server.get_peer(1).put_packet(JSON.stringify([id,["EE",  msg]]).to_utf8_buffer())
 
 func send_ok(id, msg = null):
-	robot_server.get_peer(1).put_packet(JSON.print([id, ["OK", msg]]).to_utf8())
+	robot_server.get_peer(1).put_packet(JSON.stringify([id, ["OK", msg]]).to_utf8_buffer())
 	
 	
 ########################################################

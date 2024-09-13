@@ -3,7 +3,7 @@ extends ColorRect
 signal on_toggle_laser
 signal on_toggle_npcs
 
-onready var NPCsBtn = $CenterContainer/VBoxContainer/HBoxContainer3/NPCsEnabled
+@onready var NPCsBtn = $CenterContainer/VBoxContainer/HBoxContainer3/NPCsEnabled
 
 # used when pressing 'cancel'
 var original_state_laser
@@ -13,11 +13,11 @@ func _ready():
 	visible = false
 	modulate = Color(1.0,1.0,1.0,0.0)
 	
-	var _err = $CenterContainer/VBoxContainer/HBoxContainer2/exit.connect("pressed", self, "on_exit")
-	_err = $CenterContainer/VBoxContainer/HBoxContainer2/ok.connect("pressed", self, "on_ok")
-	_err = $CenterContainer/VBoxContainer/HBoxContainer2/cancel.connect("pressed", self, "on_cancel")
-	_err = $CenterContainer/VBoxContainer/HBoxContainer/LaserEnabled.connect("toggled", self, "on_toggle_laser")
-	_err = NPCsBtn.connect("toggled", self, "on_toggle_npcs")
+	var _err = $CenterContainer/VBoxContainer/HBoxContainer2/exit.connect("pressed", Callable(self, "on_exit"))
+	_err = $CenterContainer/VBoxContainer/HBoxContainer2/ok.connect("pressed", Callable(self, "on_ok"))
+	_err = $CenterContainer/VBoxContainer/HBoxContainer2/cancel.connect("pressed", Callable(self, "on_cancel"))
+	_err = $CenterContainer/VBoxContainer/HBoxContainer/LaserEnabled.connect("toggled", Callable(self, "on_toggle_laser"))
+	_err = NPCsBtn.connect("toggled", Callable(self, "on_toggle_npcs"))
 
 	
 func show(msg = null):
@@ -48,29 +48,29 @@ func on_ok():
 	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
 	$Tween.start()
 	
-	yield($Tween,"tween_all_completed")
+	await $Tween.tween_all_completed
 	
 	visible = false
 
 func on_cancel():
 	
-	$CenterContainer/VBoxContainer/HBoxContainer/LaserEnabled.pressed = original_state_laser
+	$CenterContainer/VBoxContainer/HBoxContainer/LaserEnabled.button_pressed = original_state_laser
 	on_toggle_laser(original_state_laser)
-	NPCsBtn.pressed = original_state_npcs
+	NPCsBtn.button_pressed = original_state_npcs
 	on_toggle_npcs(original_state_npcs)
 	
 	$Tween.remove_all()
 	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
 	$Tween.start()
 	
-	yield($Tween,"tween_all_completed")
+	await $Tween.tween_all_completed
 
 	visible = false
 
 
 func on_exit():
 	$ModalMessage.show()
-	var output = yield($ModalMessage, "on_choice")
+	var output = await $ModalMessage.on_choice
 	
 	if output == "ok":
 		get_tree().quit()

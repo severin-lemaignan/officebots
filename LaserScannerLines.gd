@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var ray_class = preload("res://Ray.tscn")
 
@@ -13,7 +13,7 @@ func _ready():
 	
 	for i in range(NB_RAYS):
 
-		var ray = ray_class.instance()
+		var ray = ray_class.instantiate()
 		ray.name = "ray_" + str(i)
 		add_child(ray)
 		
@@ -38,7 +38,7 @@ func draw(ranges):
 
 func laser_scan():
 	#get_parent().game_instance.debug_point(global_transform.origin)
-	var space_state = get_world().direct_space_state
+	var space_state = get_world_3d().direct_space_state
 	var laser_ranges = []
 	var laser_hitpoints = []
 	
@@ -46,7 +46,7 @@ func laser_scan():
 	var angle = -PI/2
 
 	for i in range(NB_RAYS):
-		var target = global_transform.basis.xform(global_transform.origin + Vector3(0,0,RANGE).rotated(Vector3(0,1,0), angle))
+		var target = global_transform.basis * (global_transform.origin + Vector3(0,0,RANGE).rotated(Vector3(0,1,0), angle))
 		var result = space_state.intersect_ray(global_transform.origin, target)
 		if result:
 			#get_parent().game_instance.debug_point(result.position)

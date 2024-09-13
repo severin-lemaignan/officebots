@@ -13,9 +13,9 @@ var prev_cursor
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var _err = $Area2D.connect("mouse_entered", self, "on_enter_zone")
-	_err = $Area2D.connect("mouse_exited", self, "on_leave_zone")
-	_err = $Area2D.connect("input_event", self, "on_event")
+	var _err = $Area2D.connect("mouse_entered", Callable(self, "on_enter_zone"))
+	_err = $Area2D.connect("mouse_exited", Callable(self, "on_leave_zone"))
+	_err = $Area2D.connect("input_event", Callable(self, "on_event"))
 
 func set_scale(scale):
 	$Area2D/CollisionShape2D.scale = Vector2(scale,scale)

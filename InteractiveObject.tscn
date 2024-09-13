@@ -6,8 +6,8 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 60.0
 
-[node name="InteractiveObject" type="RigidBody"]
-transform = Transform( 0.885491, 0, -0.464657, 0, 1, 0, 0.464657, 0, 0.885491, -5.609, 0.882331, 0.285 )
+[node name="InteractiveObject" type="RigidBody3D"]
+transform = Transform3D( 0.885491, 0, -0.464657, 0, 1, 0, 0.464657, 0, 0.885491, -5.609, 0.882331, 0.285 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true

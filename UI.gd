@@ -1,6 +1,6 @@
 extends Control
 
-onready var portrait = $CharacterViewport/Character
+@onready var portrait = $CharacterViewport/Character
 
 var robot_online = preload("res://assets/icons/robot-online.svg")
 var robot_online_hover = preload("res://assets/icons/robot-online.svg")
@@ -19,12 +19,12 @@ signal on_expression
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	var _err = $RightPanel/IconSet/settings.connect("pressed", self, "on_settings") 
-	_err = $RightPanel/IconSet/chat.connect("pressed", self, "on_chat") 
+	var _err = $RightPanel/IconSet/settings.connect("pressed", Callable(self, "on_settings")) 
+	_err = $RightPanel/IconSet/chat.connect("pressed", Callable(self, "on_chat")) 
 	
 	if GameState.robots_enabled():
-		_err = $RightPanel/IconSet/robot.connect("pressed", self, "on_robot_clicked")    
-		_err = GameState.connect("robot_state_changed", self, "on_robot_state_changed")
+		_err = $RightPanel/IconSet/robot.connect("pressed", Callable(self, "on_robot_clicked"))    
+		_err = GameState.connect("robot_state_changed", Callable(self, "on_robot_state_changed"))
 	else:
 		$RightPanel/IconSet/robot.hide()
 	
@@ -33,7 +33,7 @@ func _ready():
 	#_err = $Bottom/Actions/ExpressionGroup/angry.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.ANGRY])
 	#_err = $Bottom/Actions/ExpressionGroup/excited.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.HAPPY])
 	
-	connect("on_expression" ,portrait, "set_expression")
+	connect("on_expression", Callable(portrait, "set_expression"))
 	
 	portrait.portrait_mode(true)
 	portrait.set_close_up_camera()

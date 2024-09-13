@@ -1,16 +1,16 @@
-extends RigidBody
+extends RigidBody3D
 class_name InteractiveObject
 
 var local_player
 
-export var pickable = false
+@export var pickable = false
 
 enum OBJECT_STATE {
 	picked,
 	resting
    }
 
-export(float, 0, 2, 0.1) var pickup_area_size = 1.0
+@export var pickup_area_size = 1.0 # (float, 0, 2, 0.1)
 
 var state = OBJECT_STATE.resting
 
@@ -23,7 +23,7 @@ func _ready():
 	if pickable:
 		$Highlight.visible = false
 		
-		var _err = $Highlight.connect("highlight_clicked", self, "on_highlight_clicked")
+		var _err = $Highlight.connect("highlight_clicked", Callable(self, "on_highlight_clicked"))
 
 		$Highlight.set_scale(pickup_area_size)
 	
@@ -32,16 +32,16 @@ func _ready():
 
 func set_picked():
 	print(self.to_string() + " has been picked up")
-	mode = RigidBody.MODE_STATIC
+	mode = RigidBody3D.FREEZE_MODE_STATIC
 	state = OBJECT_STATE.picked
 
 func set_released():
 	print(self.to_string() + " has been released")
 	state = OBJECT_STATE.resting
-	mode = RigidBody.MODE_RIGID
+	mode = RigidBody3D.MODE_RIGID
 	sleeping = false
 
-puppet func set_puppet_transform(global_transform):
+@rpc func set_puppet_transform(global_transform):
 	self.global_transform = global_transform
 
 		
@@ -82,7 +82,7 @@ func _physics_process(_delta):
 	# this code should *only* be called by the server (where the physics is executed)
 	assert(GameState.mode == GameState.SERVER || GameState.mode == GameState.STANDALONE)
 	if GameState.mode == GameState.SERVER:
-		assert(is_network_master())
+		assert(is_multiplayer_authority())
 		
 		if self.state != OBJECT_STATE.picked:
 			# if the object has moved, update all the puppets

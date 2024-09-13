@@ -14,22 +14,22 @@ var others_msg_style = preload("ChatMsg.tres")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	add_constant_override("margin_top", margin_value)
-	add_constant_override("margin_left", margin_value)
-	add_constant_override("margin_bottom", margin_value)
-	add_constant_override("margin_right", margin_value)
+	add_theme_constant_override("offset_top", margin_value)
+	add_theme_constant_override("offset_left", margin_value)
+	add_theme_constant_override("offset_bottom", margin_value)
+	add_theme_constant_override("offset_right", margin_value)
 	
 func set_own_msg(own_msg):
 
 	if own_msg:
-		add_constant_override("margin_left", margin_value + 20)
-		add_constant_override("margin_right", margin_value)
-		$Container.set('custom_styles/panel', own_msg_style)
+		add_theme_constant_override("offset_left", margin_value + 20)
+		add_theme_constant_override("offset_right", margin_value)
+		$Container.set('theme_override_styles/panel', own_msg_style)
 		
 	else:
-		add_constant_override("margin_left", margin_value)
-		add_constant_override("margin_right", margin_value + 20)
-		$Container.set('custom_styles/panel', others_msg_style)
+		add_theme_constant_override("offset_left", margin_value)
+		add_theme_constant_override("offset_right", margin_value + 20)
+		$Container.set('theme_override_styles/panel', others_msg_style)
 
 
 func set_text(msg, author=null):
@@ -37,7 +37,7 @@ func set_text(msg, author=null):
 	if not author:
 		$Container/VBoxContainer/Author.visible = false
 	else:
-		$Container/VBoxContainer/Author.bbcode_text = "[b][color=#236550]" + author + "[/color][/b]"
+		$Container/VBoxContainer/Author.text = "[b][color=#236550]" + author + "[/color][/b]"
 		$Container/VBoxContainer/Author.visible = true
 	
 	

@@ -1,6 +1,6 @@
 extends Control
 
-onready var button = $speech_bubble/Label/Button
+@onready var button = $speech_bubble/Label/Button
 
 enum ButtonType {NONE, OK, NEXT}
 
@@ -55,9 +55,9 @@ func say(text, button_type = ButtonType.NONE):
 	$speech_bubble/Label.text = text
 	
 	if text.length() < 20:
-		$speech_bubble/Label.get("custom_fonts/font").set_size(36)
+		$speech_bubble/Label.get("theme_override_fonts/font").set_size(36)
 	else:
-		$speech_bubble/Label.get("custom_fonts/font").set_size(24)
+		$speech_bubble/Label.get("theme_override_fonts/font").set_size(24)
 	
 	is_speaking = true
 	
@@ -69,10 +69,10 @@ func say(text, button_type = ButtonType.NONE):
 
 	if button_type == ButtonType.NONE:
 		# dismiss the bubble after set time
-		yield(get_tree().create_timer(wait_time), "timeout")
+		await get_tree().create_timer(wait_time).timeout
 	else:
 		# wait for a click
-		yield(button, "pressed")
+		await button.pressed
 	
 	$Tween.remove_all()
 	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5)

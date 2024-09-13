@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://FredokaOne-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://FredokaOne-Regular.ttf" type="FontFile" id=1]
 [ext_resource path="res://GameModeSelection.gd" type="Script" id=2]
 [ext_resource path="res://default_theme.tres" type="Theme" id=7]
 
@@ -13,7 +13,7 @@ border_width_bottom = 1
 
 [sub_resource type="ButtonGroup" id=2]
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="FontFile" id=3]
 size = 20
 outline_size = 2
 outline_color = Color( 1, 1, 1, 0.478431 )
@@ -40,18 +40,18 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
-margin_left = 178.0
-margin_top = 225.0
-margin_right = 846.0
-margin_bottom = 375.0
-rect_min_size = Vector2( 0, 150 )
+offset_left = 178.0
+offset_top = 225.0
+offset_right = 846.0
+offset_bottom = 375.0
+custom_minimum_size = Vector2( 0, 150 )
 
 [node name="SinglePlayerBtn" type="Button" parent="CenterContainer/HBoxContainer"]
-margin_right = 300.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 300, 0 )
+offset_right = 300.0
+offset_bottom = 150.0
+custom_minimum_size = Vector2( 300, 0 )
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 1 )
+theme_override_styles/hover = SubResource( 1 )
 group = SubResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -66,10 +66,10 @@ __meta__ = {
 }
 
 [node name="SinglePlayerGame" type="VBoxContainer" parent="CenterContainer/HBoxContainer/SinglePlayerBtn/CenterContainer"]
-margin_left = 111.0
-margin_top = 66.0
-margin_right = 189.0
-margin_bottom = 83.0
+offset_left = 111.0
+offset_top = 66.0
+offset_right = 189.0
+offset_bottom = 83.0
 mouse_default_cursor_shape = 2
 alignment = 1
 __meta__ = {
@@ -77,29 +77,29 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="CenterContainer/HBoxContainer/SinglePlayerBtn/CenterContainer/SinglePlayerGame"]
-margin_right = 78.0
-margin_bottom = 17.0
+offset_right = 78.0
+offset_bottom = 17.0
 theme = ExtResource( 7 )
 text = "Single player"
 align = 1
 valign = 1
 
 [node name="Control2" type="Control" parent="CenterContainer/HBoxContainer"]
-margin_left = 304.0
-margin_right = 364.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 60, 20 )
+offset_left = 304.0
+offset_right = 364.0
+offset_bottom = 150.0
+custom_minimum_size = Vector2( 60, 20 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MultiPlayerBtn" type="Button" parent="CenterContainer/HBoxContainer"]
-margin_left = 368.0
-margin_right = 668.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 300, 0 )
+offset_left = 368.0
+offset_right = 668.0
+offset_bottom = 150.0
+custom_minimum_size = Vector2( 300, 0 )
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 1 )
+theme_override_styles/hover = SubResource( 1 )
 group = SubResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -114,10 +114,10 @@ __meta__ = {
 }
 
 [node name="MultiplayerGame" type="VBoxContainer" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer"]
-margin_left = 10.0
-margin_top = 23.0
-margin_right = 290.0
-margin_bottom = 127.0
+offset_left = 10.0
+offset_top = 23.0
+offset_right = 290.0
+offset_bottom = 127.0
 mouse_filter = 2
 alignment = 1
 __meta__ = {
@@ -125,35 +125,35 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-margin_right = 280.0
-margin_bottom = 17.0
+offset_right = 280.0
+offset_bottom = 17.0
 theme = ExtResource( 7 )
 text = "Multi-player"
 align = 1
 
 [node name="Control" type="Control" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-margin_top = 21.0
-margin_right = 280.0
-margin_bottom = 41.0
-rect_min_size = Vector2( 0, 20 )
+offset_top = 21.0
+offset_right = 280.0
+offset_bottom = 41.0
+custom_minimum_size = Vector2( 0, 20 )
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-margin_top = 45.0
-margin_right = 280.0
-margin_bottom = 70.0
+offset_top = 45.0
+offset_right = 280.0
+offset_bottom = 70.0
 theme = ExtResource( 7 )
-custom_fonts/font = SubResource( 3 )
+theme_override_fonts/font = SubResource( 3 )
 text = "Server URL:"
 
 [node name="URL" type="LineEdit" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-margin_top = 74.0
-margin_right = 280.0
-margin_bottom = 104.0
-rect_min_size = Vector2( 280, 0 )
+offset_top = 74.0
+offset_right = 280.0
+offset_bottom = 104.0
+custom_minimum_size = Vector2( 280, 0 )
 theme = ExtResource( 7 )
 placeholder_text = "eg https://game.example.com"
 

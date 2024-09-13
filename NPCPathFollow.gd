@@ -1,7 +1,7 @@
-extends PathFollow
+extends PathFollow3D
 
-export(Texture) var skin
-export(String) var npc_name = "Mysterious person"
+@export var skin: Texture2D
+@export var npc_name: String = "Mysterious person"
 
 var SPEED = 5 / 3.6 # in m/s
 
@@ -9,7 +9,7 @@ var next_pause = randf()
 var PAUSE_LENGTH=2 #sec
 
 var current_pause = -1
-onready var npc = $Character
+@onready var npc = $Character
 
 func _ready():
 	npc.set_skin(skin)
@@ -23,9 +23,9 @@ func _process(delta):
 	else:
 		offset += SPEED * delta
 	
-	if current_pause < 0 and abs(next_pause - unit_offset) < 0.001:
+	if current_pause < 0 and abs(next_pause - progress_ratio) < 0.001:
 		next_pause = randf()
 		current_pause = PAUSE_LENGTH
 	
-	if unit_offset >= 1:
-		unit_offset = 0
+	if progress_ratio >= 1:
+		progress_ratio = 0

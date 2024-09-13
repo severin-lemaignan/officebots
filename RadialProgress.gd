@@ -13,7 +13,7 @@ func _ready():
 func reset():
 	running = false
 	elapsed = 0.0
-	material.set_shader_param("value", 100);
+	material.set_shader_parameter("value", 100);
 
 func start(d=5):
 	
@@ -31,7 +31,7 @@ func _process(delta):
 	if duration > 0 and elapsed < duration:
 		elapsed += delta
 		
-		material.set_shader_param("value", 100 * (1- elapsed / duration));
+		material.set_shader_parameter("value", 100 * (1- elapsed / duration));
 	
 	else:
 		emit_signal("timeout")

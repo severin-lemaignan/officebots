@@ -1,14 +1,13 @@
-[gd_resource type="Environment" load_steps=2 format=2]
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://dnenslarahls8"]
 
-[sub_resource type="ProceduralSky" id=4]
+[sub_resource type="Sky" id="4"]
 
 [resource]
-background_sky = SubResource( 4 )
-ambient_light_color = Color( 0.780392, 0.639216, 0.494118, 0 )
+sky = SubResource("4")
+ambient_light_color = Color(0.780392, 0.639216, 0.494118, 0)
 tonemap_mode = 2
 tonemap_exposure = 1.28
 tonemap_white = 0.44
 ssao_enabled = true
 ssao_radius = 1.5
-ssao_bias = 0.1
 adjustment_enabled = true

@@ -2,7 +2,7 @@ extends Node
 
 const GRAVITY = -24.8
 
-const MAX_SLOPE_ANGLE = deg2rad(30) # max angle that characters can climb
+const MAX_SLOPE_ANGLE = deg_to_rad(30) # max angle that characters can climb
 
 enum {UNSET, CLIENT, SERVER, STANDALONE}
 var mode = UNSET
@@ -19,7 +19,7 @@ enum Expressions {NEUTRAL, ANGRY, HAPPY, SAD}
 const DISTANCE_AUDIBLE = 4 #m: max distance to hear what a player says
 
 func _ready():
-	var _err = connect("robot_state_changed", self, "on_robot_state_changed")
+	var _err = connect("robot_state_changed", Callable(self, "on_robot_state_changed"))
 
 func on_robot_state_changed(state):
 	robot_state = state

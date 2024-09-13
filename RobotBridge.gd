@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 class_name Robot
 
 #const SERVER_URL="research.skadge.org"
@@ -47,9 +47,9 @@ const CAMERA_FAR = 30
 
 var local_player
 
-onready var camera = $robot/Camera
-onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
-onready var speech_bubble_handle = $SpeechBubbleHandle
+@onready var camera = $robot/Camera3D
+@onready var speech_bubble = $SpeechBubbleHandle/SpeechBubble
+@onready var speech_bubble_handle = $SpeechBubbleHandle
 
 # emitted when this robot says something within Player's range
 signal robot_msg
@@ -76,9 +76,9 @@ func _ready():
 	
 	
 func enable_collisions(val=true):
-	$CollisionShape.disabled = !val
+	$CollisionShape3D.disabled = !val
 
-puppet func set_puppet_transform(transform):
+@rpc func set_puppet_transform(transform):
 	self.transform = transform
 	
 func set_color(color):
@@ -92,7 +92,7 @@ func set_color(color):
 	if GameState.mode == GameState.SERVER:
 		rpc("set_color_remote", color)
 
-puppet func set_color_remote(color):
+@rpc func set_color_remote(color):
 	
 	$robot/Robot.mesh = meshes[color]
 
@@ -106,11 +106,11 @@ func set_screen_texture(jpg_buffer):
 	
 	return err
 		
-puppet func set_screen_texture_remote(jpg_buffer):
+@rpc func set_screen_texture_remote(jpg_buffer):
 
 	var img = Image.new()
 	var err = img.load_jpg_from_buffer(jpg_buffer)
-	img.lock()
+	false # img.lock() # TODOConverter3To4, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	
 	var tex = ImageTexture.new()
 	tex.create_from_image(img)
@@ -149,14 +149,20 @@ func _physics_process(delta):
 		if direction.length() < 0.2:
 			path_node += 1
 		else:
-			var _vel = move_and_slide(direction.normalized() * speed, Vector3.UP)
+			set_velocity(direction.normalized() * speed)
+			set_up_direction(Vector3.UP)
+			move_and_slide()
+			var _vel = velocity
 
 	elif (linear_velocity or angular_velocity):
 		rotate_y(angular_velocity * delta)
 		
 		# TODO: map back the resulting vel to local coordinates, and send it back to 
 		# client
-		var _vel = move_and_slide(global_transform.basis.xform(Vector3(0,0,linear_velocity)), Vector3.UP)
+		set_velocity(global_transform.basis * (Vector3(0,0,linear_velocity)))
+		set_up_direction(Vector3.UP)
+		move_and_slide()
+		var _vel = velocity
 		
 	if GameState.mode == GameState.SERVER:
 		rpc_unreliable("set_puppet_transform", transform)

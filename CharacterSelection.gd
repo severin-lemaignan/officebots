@@ -10,7 +10,7 @@ func _ready():
 		v.get_child(0).portrait_mode(true)
 		
 	for c in $CenterContainer/VBoxContainer/PortraitsContainer.get_children():
-		c.connect("pressed", self, "on_pressed")
+		c.connect("pressed", Callable(self, "on_pressed"))
 		
 
 
@@ -40,7 +40,7 @@ func on_pressed():
 	$Tween.remove_all()
 	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
 	$Tween.start()
-	yield($Tween, "tween_all_completed")
+	await $Tween.tween_all_completed
 	
 	visible = false
 	

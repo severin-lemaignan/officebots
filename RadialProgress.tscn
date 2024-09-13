@@ -5,8 +5,8 @@
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
-uniform vec4 base_color: hint_color;
-uniform vec4 low_color: hint_color;
+uniform vec4 base_color: source_color;
+uniform vec4 low_color: source_color;
 uniform float value: hint_range(0, 100); // %
 uniform float low_threshold: hint_range(0, 100) = 30.; // %
 uniform float thickness: hint_range(0, 100) = 30.; // % thickness
@@ -55,6 +55,6 @@ shader_param/smoothing = 0.0
 
 [node name="RadialProgress" type="Panel"]
 material = SubResource( 2 )
-margin_right = 50.0
-margin_bottom = 50.0
+offset_right = 50.0
+offset_bottom = 50.0
 script = ExtResource( 1 )
