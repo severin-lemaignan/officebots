@@ -1,7 +1,7 @@
 extends ColorRect
 
-signal on_toggle_laser
-signal on_toggle_npcs
+signal laser_toggled
+signal npcs_toggled
 
 @onready var NPCsBtn = $CenterContainer/VBoxContainer/HBoxContainer3/NPCsEnabled
 
@@ -20,7 +20,7 @@ func _ready():
 	_err = NPCsBtn.connect("toggled", Callable(self, "on_toggle_npcs"))
 
 	
-func show(msg = null):
+func display(msg = null):
 	
 	original_state_laser = $CenterContainer/VBoxContainer/HBoxContainer/LaserEnabled.pressed
 	original_state_npcs = NPCsBtn.pressed
@@ -36,11 +36,11 @@ func show(msg = null):
 
 func on_toggle_laser(state):
 
-	emit_signal("on_toggle_laser", state)
+	emit_signal("laser_toggled", state)
 
 func on_toggle_npcs(state):
 
-	emit_signal("on_toggle_npcs", state)
+	emit_signal("npcs_toggled", state)
 
 func on_ok():
 	
@@ -69,7 +69,7 @@ func on_cancel():
 
 
 func on_exit():
-	$ModalMessage.show()
+	$ModalMessage.open()
 	var output = await $ModalMessage.on_choice
 	
 	if output == "ok":

@@ -72,8 +72,8 @@ func _ready():
 	randomize()
 	
 	$CanvasLayer/GameModeSelection.visible = false
-	var _err = $CanvasLayer/UI/Settings.connect("on_toggle_laser", Callable(self, "toggle_robots_lasers"))
-	_err = $CanvasLayer/UI/Settings.connect("on_toggle_npcs", Callable(self, "toggle_npcs"))
+	var _err = $CanvasLayer/UI/Settings.connect("laser_toggled", Callable(self, "toggle_robots_lasers"))
+	_err = $CanvasLayer/UI/Settings.connect("npcs_toggled", Callable(self, "toggle_npcs"))
 	toggle_npcs($CanvasLayer/UI/Settings.NPCsBtn.pressed)
 	
 	set_physics_process(false)
@@ -188,7 +188,8 @@ func _ready():
 	if GameState.mode == GameState.SERVER:
 		print("STARTING AS SERVER")
 		
-		peer = WebSocketServer.new()
+		#peer = WebSocketServer.new()
+		assert(false, "not ported yet to Godot4")
 		
 		# the last 'true' parameter enables the Godot high-level multiplayer API
 		var error = peer.listen(SERVER_PORT, PackedStringArray(), true)
@@ -232,7 +233,8 @@ func _ready():
 		
 		# then, initiate the connection to the server
 		
-		peer = WebSocketClient.new()
+		#peer = WebSocketClient.new()
+		assert(false, "not ported yet to Godot4")
 		
 		# the last 'true' parameter enables the Godot high-level multiplayer API
 		peer.connect_to_url(SERVER_URL, PackedStringArray(), true)
@@ -335,7 +337,7 @@ func is_object_visible(object, camera):
 	var target = object.global_transform.origin
 	if is_point_in_frustum(target, camera):
 		var space_state = get_world_3d().direct_space_state
-		var result = space_state.intersect_ray(camera.global_transform.origin, target)
+		var result = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(camera.global_transform.origin, target))
 		if result:
 			return result.collider
 
@@ -618,7 +620,6 @@ func debug_point(pos):
 	
 	
 ######### save data ###########
-var file = File.new()
 var path ="res://logs"
 var all_expr=["happy", "angry", "excited", "sad"]
 
@@ -629,7 +630,7 @@ func create_file(name):
 	
 	var path_modified = path + "/%s"%name + ".csv"
 	
-	file.open(path_modified ,file.WRITE)
+	var file = FileAccess.open(path_modified ,FileAccess.WRITE)
 	if not file.is_open():
 		print("Error opening file: " + path_modified)
 		return
@@ -644,7 +645,7 @@ func create_file(name):
 	
 func save_data(name, data): #save the data in the csv file nammed name.csv
 	var path_modified = path + "/%s"%name + ".csv"
-	file.open(path_modified,file.READ_WRITE)
+	var file = FileAccess.open(path_modified, FileAccess.READ_WRITE)
 	if not file.is_open():
 		print("Error opening file: " + path_modified)
 		return

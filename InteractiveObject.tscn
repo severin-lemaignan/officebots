@@ -1,22 +1,19 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://whjg0rmwbiiq"]
 
-[ext_resource path="res://InteractiveObject.gd" type="Script" id=1]
-[ext_resource path="res://Highlight.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://InteractiveObject.gd" id="1"]
+[ext_resource type="Script" path="res://Highlight.gd" id="2"]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id="1"]
 radius = 60.0
 
 [node name="InteractiveObject" type="RigidBody3D"]
-transform = Transform3D( 0.885491, 0, -0.464657, 0, 1, 0, 0.464657, 0, 0.885491, -5.609, 0.882331, 0.285 )
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
+transform = Transform3D(0.885491, 0, -0.464657, 0, 1, 0, 0.464657, 0, 0.885491, -5.609, 0.882331, 0.285)
+script = ExtResource("1")
 
 [node name="Highlight" type="Node2D" parent="."]
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="Area2D" type="Area2D" parent="Highlight"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Highlight/Area2D"]
-shape = SubResource( 1 )
+shape = SubResource("1")

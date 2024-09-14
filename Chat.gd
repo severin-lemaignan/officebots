@@ -22,7 +22,7 @@ func _ready():
 	$VBoxContainer/HBoxContainer/is_typing_timer.connect("timeout", Callable(self, "on_is_typing_expired"))
 	
 	for btn in $VBoxContainer/ReactionsContainer.get_children():
-		btn.connect("reaction", Callable(self, "on_chat_msg_entered"))
+		btn.connect("user_reaction", Callable(self, "on_chat_msg_entered"))
 		
 	#for i in range(10):
 	#	var msg

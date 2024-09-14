@@ -10,7 +10,7 @@ func _ready():
 	var _err = $CenterContainer/VBoxContainer/HBoxContainer/Ok.connect("pressed", Callable(self, "on_ok"))
 	_err = $CenterContainer/VBoxContainer/HBoxContainer/Cancel.connect("pressed", Callable(self, "on_cancel"))
 	
-func show(msg = null):
+func open(msg = null):
 	
 	if msg:
 		$CenterContainer/VBoxContainer/Label.text = msg

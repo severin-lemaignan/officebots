@@ -21,7 +21,7 @@ func flip_left():
 func flip_right():
 	$speech_bubble.flip_h = true
 
-func hide():
+func maskaway():
 	if is_speaking:
 		return
 		
@@ -80,7 +80,3 @@ func say(text, button_type = ButtonType.NONE):
 	
 	is_speaking = false
 	emit_signal("done_speaking")
-
-
-
-

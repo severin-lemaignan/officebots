@@ -2,8 +2,7 @@ extends TextureButton
 
 @export var reaction: String
 
-signal reaction
+signal user_reaction
 
 func _ready():
-	connect("button_up", Callable(self, "emit_signal").bind("reaction", reaction))
-
+	connect("button_up", Callable(self, "emit_signal").bind("user_reaction", reaction))

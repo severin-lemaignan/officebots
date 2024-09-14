@@ -43,7 +43,7 @@ func set_name_skin(name, skin):
 	portrait.set_base_skin(skin)
 	
 func on_settings():
-	$Settings.show()
+	$Settings.display()
 
 func on_chat():
 	if not $RightPanel/Chat.is_visible_in_tree():

@@ -18,7 +18,8 @@ func _init(game):
 	
 	if GameState.mode == GameState.STANDALONE:
 		print("STARTING ROBOTS WEBSOCKET CLIENT (STANDALONE mode). YOU NEED TO START THE PYTHON WEBSOCKET SERVER")
-		robot_server = WebSocketClient.new()
+		#robot_server = WebSocketClient.new()
+		assert(false, "not yet ported to Godot4")
 		robot_server.connect("connection_error", Callable(self, "_on_connection_error"))
 		robot_server.connect("connection_established", Callable(self, "_on_connection_established"))
 		robot_server.connect("connection_closed", Callable(self, "_on_connection_closed"))

@@ -17,7 +17,7 @@ func _ready():
 	_err = $Area2D.connect("mouse_exited", Callable(self, "on_leave_zone"))
 	_err = $Area2D.connect("input_event", Callable(self, "on_event"))
 
-func set_scale(scale):
+func change_scale(scale):
 	$Area2D/CollisionShape2D.scale = Vector2(scale,scale)
 	size = scale
 	
@@ -31,13 +31,13 @@ func on_enter_zone():
 	prev_cursor = Input.get_current_cursor_shape()
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	
-	update()
+	queue_redraw()
 
 func on_leave_zone():
 	
 	hover = false
 	Input.set_default_cursor_shape(prev_cursor)
-	update()
+	queue_redraw()
 	
 func _draw():
 	

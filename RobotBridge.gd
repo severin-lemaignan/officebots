@@ -165,7 +165,9 @@ func _physics_process(delta):
 		var _vel = velocity
 		
 	if GameState.mode == GameState.SERVER:
-		rpc_unreliable("set_puppet_transform", transform)
+		#TODO: port to Godot4
+		#rpc_unreliable("set_puppet_transform", transform)
+		pass
 	
 	laser_ranges = $LaserScanner.laser_scan()
 
@@ -181,7 +183,7 @@ func typing():
 	speech_bubble.typing()
 	
 func not_typing_anymore():
-	speech_bubble.hide()
+	speech_bubble.maskaway()
 	
 func set_v_w(v, w):
 	linear_velocity = v
@@ -220,4 +222,3 @@ func stop():
 	
 	path = []
 	path_node = 0
-

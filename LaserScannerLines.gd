@@ -47,7 +47,7 @@ func laser_scan():
 
 	for i in range(NB_RAYS):
 		var target = global_transform.basis * (global_transform.origin + Vector3(0,0,RANGE).rotated(Vector3(0,1,0), angle))
-		var result = space_state.intersect_ray(global_transform.origin, target)
+		var result = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(global_transform.origin, target))
 		if result:
 			#get_parent().game_instance.debug_point(result.position)
 			laser_ranges.append(global_transform.origin.distance_to(result.position))

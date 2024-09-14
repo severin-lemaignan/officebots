@@ -20,25 +20,27 @@ var prev_transform
 
 func _ready():
 	
+	freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+	
 	if pickable:
 		$Highlight.visible = false
 		
 		var _err = $Highlight.connect("highlight_clicked", Callable(self, "on_highlight_clicked"))
 
-		$Highlight.set_scale(pickup_area_size)
+		$Highlight.change_scale(pickup_area_size)
 	
 	# physics managed by the server
 	set_physics_process(false)
 
 func set_picked():
 	print(self.to_string() + " has been picked up")
-	mode = RigidBody3D.FREEZE_MODE_STATIC
+	freeze = true
 	state = OBJECT_STATE.picked
 
 func set_released():
 	print(self.to_string() + " has been released")
 	state = OBJECT_STATE.resting
-	mode = RigidBody3D.MODE_RIGID
+	freeze = false
 	sleeping = false
 
 @rpc func set_puppet_transform(global_transform):
@@ -87,5 +89,6 @@ func _physics_process(_delta):
 		if self.state != OBJECT_STATE.picked:
 			# if the object has moved, update all the puppets
 			if prev_transform != global_transform:
-				rpc_unreliable("set_puppet_transform", global_transform)
+				#rpc_unreliable("set_puppet_transform", global_transform)
+				assert(false, "not yet ported to Godot4")
 				prev_transform = global_transform

@@ -41,8 +41,6 @@ var pickedup_object
 const EPSILON = 0.01
 const EPSILON_SQUARED = EPSILON * EPSILON
 
-var velocity = Vector3.ZERO
-
 var is_portrait_mode
 
 # Called when the node enters the scene tree for the first time.
@@ -132,7 +130,9 @@ func i_am_a_character():
 @rpc("any_peer") func execute_set_rotation(angle):
 	assert(get_tree().is_server())
 	rotate_y(angle)
-	rpc_unreliable("set_puppet_transform", transform)
+	#TODO: port to Godot4
+	#rpc_unreliable("set_puppet_transform", transform)
+	assert(false, "not ported yet to Godot4")
 	
 @rpc("any_peer") func pickup_object(object_path):
 
@@ -219,14 +219,17 @@ func _physics_process(delta):
 	set_velocity(velocity)
 	set_up_direction(Vector3.UP)
 	move_and_slide()
-	velocity = velocity
+	
 	
 	
 	
 	if velocity.length_squared() > EPSILON_SQUARED:
 		# the server is responsible to broadcast the position of all the player
 		# once the physics is computed
-		rpc_unreliable("set_puppet_transform", transform)
+		
+		#TODO: port to Godot4
+		#rpc_unreliable("set_puppet_transform", transform)
+		assert(false, "not ported yet to Godot4")
 	
 	
 func _process(delta):
@@ -313,8 +316,10 @@ func set_base_skin(resource_path):
 	set_skin(neutral_skin)
 	
 func set_skin(texture):
-	$Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", texture)
-
+	# TODO: Godot4 port
+	# $Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", texture)
+	pass
+	
 func set_username(name):
 	username = name
 	$NameHandle/Name.text = name
@@ -339,7 +344,9 @@ func set_expression(expr):
 			skin = load(texture_basename + "sad.png")
 			
 			
-	$Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", skin)
+	#TODO: Godot4 port
+	#$Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", skin)
+	
 	
 #func face(object):
 #
@@ -359,7 +366,7 @@ func typing():
 	speech_bubble.typing()
 	
 func not_typing_anymore():
-	speech_bubble.hide()
+	speech_bubble.maskaway()
 	
 func distance_to(object):
 	return get_global_transform().origin.distance_to(object.get_global_transform().origin)
@@ -402,5 +409,3 @@ func quaternions_distance(q1, q2):
 #
 #
 #
-
-

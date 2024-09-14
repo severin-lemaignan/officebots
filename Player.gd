@@ -238,7 +238,9 @@ func process_movement(delta):
 		if GameState.mode == GameState.CLIENT:
 			# execute the actual motion on the server, so that physics are computed
 			# the resulting new position will be updated by the server via 'set_puppet_transform'
-			rpc_unreliable_id(1, "execute_move_and_slide", vel)
+			#TODO: Godo4 port
+			#rpc_unreliable_id(1, "execute_move_and_slide", vel)
+			assert(false, "not ported yet to Godot4")
 		elif GameState.mode == GameState.STANDALONE:
 			vel.y += GameState.GRAVITY * delta
 			set_velocity(vel)
@@ -259,7 +261,8 @@ func _input(event):
 		rotation_helper.rotate_x(deg_to_rad(event.relative.y * MOUSE_SENSITIVITY))
 		
 		if GameState.mode == GameState.CLIENT:
-			rpc_unreliable_id(1, "execute_set_rotation", deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+			#rpc_unreliable_id(1, "execute_set_rotation", deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
+			assert(false, "not ported yet to Godot4")
 		elif GameState.mode == GameState.STANDALONE:
 			self.rotate_y(deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
 		else:
@@ -296,4 +299,3 @@ func _input(event):
 	   event.is_action_released("mouselook"):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			release_object()
-

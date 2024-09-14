@@ -31,4 +31,3 @@ func get_navmesh():
 		polygons.append(polygon)
 	
 	return polygons
-

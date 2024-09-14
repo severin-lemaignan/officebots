@@ -21,7 +21,7 @@ func _process(delta):
 	if current_pause > 0:
 		current_pause -= delta
 	else:
-		offset += SPEED * delta
+		progress += SPEED * delta
 	
 	if current_pause < 0 and abs(next_pause - progress_ratio) < 0.001:
 		next_pause = randf()
