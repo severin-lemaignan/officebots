@@ -29,9 +29,8 @@ func display(msg = null):
 		$CenterContainer/VBoxContainer/Label.text = msg
 		
 	visible = true
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
-	$Tween.start()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 
 
 func on_toggle_laser(state):
@@ -44,11 +43,10 @@ func on_toggle_npcs(state):
 
 func on_ok():
 	
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
-	$Tween.start()
-	
-	await $Tween.tween_all_completed
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
+
+	await tween.loop_finished
 	
 	visible = false
 
@@ -59,11 +57,10 @@ func on_cancel():
 	NPCsBtn.button_pressed = original_state_npcs
 	on_toggle_npcs(original_state_npcs)
 	
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
-	$Tween.start()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 	
-	await $Tween.tween_all_completed
+	await tween.loop_finished
 
 	visible = false
 

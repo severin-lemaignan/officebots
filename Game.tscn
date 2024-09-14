@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://GameModeSelection.tscn" id="1"]
 [ext_resource type="Script" path="res://Game.gd" id="2"]
-[ext_resource type="PackedScene" path="res://assets/MainOffice/MainOffice.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cb2kyl4o1mapr" path="res://assets/MainOffice/MainOffice.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://bgukf7e25eurf" path="res://UI.tscn" id="4"]
 [ext_resource type="Script" path="res://FakePlayer.gd" id="5"]
 [ext_resource type="PackedScene" path="res://CharacterSelection.tscn" id="6"]

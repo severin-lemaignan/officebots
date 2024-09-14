@@ -27,19 +27,17 @@ func _ready():
 	var _err = $HandleHighlight.connect("highlight_clicked", Callable(self, "on_handle_clicked"))
 
 @rpc("any_peer", "call_local") func set_state(new_state):
-	$Tween.remove_all()
+	var tween = get_tree().create_tween().bind_node(self).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	match new_state:
 		DOOR_STATE.half_open:
-			$Tween.interpolate_property(self, "rotation_degrees:y", null, half_open_angle, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+			tween.tween_property(self, "rotation_degrees:y", half_open_angle, 1.5)
 			state = DOOR_STATE.half_open
 		DOOR_STATE.open:
-			$Tween.interpolate_property(self, "rotation_degrees:y", null, open_angle, 1.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+			tween.tween_property(self, "rotation_degrees:y", open_angle, 1.5)
 			state = DOOR_STATE.open
 		DOOR_STATE.closed:
-			$Tween.interpolate_property(self, "rotation_degrees:y", null, closed_angle, 2.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+			tween.tween_property(self, "rotation_degrees:y", closed_angle, 2.5)
 			state = DOOR_STATE.closed
-	
-	$Tween.start()
 
 func on_handle_clicked():
 	if GameState.mode == GameState.STANDALONE:
@@ -83,4 +81,3 @@ func _process(_delta):
 	
 	else:
 		$HandleHighlight.visible = false
-

@@ -25,18 +25,16 @@ func maskaway():
 	if is_speaking:
 		return
 		
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.1)
-	$Tween.start()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.1)
 
 
 func typing():
 	$speech_bubble/Label.text = ""
 	$speech_bubble/AnimatedDots.visible = true
 	
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.1)
-	$Tween.start()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.1)
 	
 func say(text, button_type = ButtonType.NONE):
 	
@@ -63,9 +61,8 @@ func say(text, button_type = ButtonType.NONE):
 	
 	var wait_time = 2 + text.length() / 8
 	
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.1)
-	$Tween.start()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.1)
 
 	if button_type == ButtonType.NONE:
 		# dismiss the bubble after set time
@@ -74,9 +71,8 @@ func say(text, button_type = ButtonType.NONE):
 		# wait for a click
 		await button.pressed
 	
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 0.0, 0.5)
-	$Tween.start()
+	tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 0.5)
 	
 	is_speaking = false
 	emit_signal("done_speaking")

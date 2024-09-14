@@ -1,160 +1,111 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://8022mct5o2qn"]
 
-[ext_resource path="res://FredokaOne-Regular.ttf" type="FontFile" id=1]
-[ext_resource path="res://GameModeSelection.gd" type="Script" id=2]
-[ext_resource path="res://default_theme.tres" type="Theme" id=7]
+[ext_resource type="FontFile" uid="uid://c1g7y857m1r6f" path="res://FredokaOne-Regular.ttf" id="1"]
+[ext_resource type="Script" path="res://GameModeSelection.gd" id="2"]
+[ext_resource type="Theme" uid="uid://07pq6sxhfns3" path="res://default_theme.tres" id="7"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.286275, 0.258824, 0.258824, 1 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.286275, 0.258824, 0.258824, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 
-[sub_resource type="ButtonGroup" id=2]
-
-[sub_resource type="FontFile" id=3]
-size = 20
-outline_size = 2
-outline_color = Color( 1, 1, 1, 0.478431 )
-font_data = ExtResource( 1 )
+[sub_resource type="FontFile" id="3"]
+fallbacks = Array[Font]([ExtResource("1"), ExtResource("1")])
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
 
 [node name="GameModeSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="Bg" type="ColorRect" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0, 0, 0, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
-offset_left = 178.0
-offset_top = 225.0
-offset_right = 846.0
-offset_bottom = 375.0
-custom_minimum_size = Vector2( 0, 150 )
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
 
 [node name="SinglePlayerBtn" type="Button" parent="CenterContainer/HBoxContainer"]
-offset_right = 300.0
-offset_bottom = 150.0
-custom_minimum_size = Vector2( 300, 0 )
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_styles/hover = SubResource( 1 )
-group = SubResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
+theme_override_styles/hover = SubResource("1")
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/HBoxContainer/SinglePlayerBtn"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SinglePlayerGame" type="VBoxContainer" parent="CenterContainer/HBoxContainer/SinglePlayerBtn/CenterContainer"]
-offset_left = 111.0
-offset_top = 66.0
-offset_right = 189.0
-offset_bottom = 83.0
+layout_mode = 2
 mouse_default_cursor_shape = 2
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label2" type="Label" parent="CenterContainer/HBoxContainer/SinglePlayerBtn/CenterContainer/SinglePlayerGame"]
-offset_right = 78.0
-offset_bottom = 17.0
-theme = ExtResource( 7 )
+layout_mode = 2
+theme = ExtResource("7")
 text = "Single player"
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Control2" type="Control" parent="CenterContainer/HBoxContainer"]
-offset_left = 304.0
-offset_right = 364.0
-offset_bottom = 150.0
-custom_minimum_size = Vector2( 60, 20 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 2
 
 [node name="MultiPlayerBtn" type="Button" parent="CenterContainer/HBoxContainer"]
-offset_left = 368.0
-offset_right = 668.0
-offset_bottom = 150.0
-custom_minimum_size = Vector2( 300, 0 )
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_styles/hover = SubResource( 1 )
-group = SubResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
+theme_override_styles/hover = SubResource("1")
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/HBoxContainer/MultiPlayerBtn"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MultiplayerGame" type="VBoxContainer" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer"]
-offset_left = 10.0
-offset_top = 23.0
-offset_right = 290.0
-offset_bottom = 127.0
+layout_mode = 2
 mouse_filter = 2
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label2" type="Label" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-offset_right = 280.0
-offset_bottom = 17.0
-theme = ExtResource( 7 )
+layout_mode = 2
+theme = ExtResource("7")
 text = "Multi-player"
-align = 1
+horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-offset_top = 21.0
-offset_right = 280.0
-offset_bottom = 41.0
-custom_minimum_size = Vector2( 0, 20 )
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-offset_top = 45.0
-offset_right = 280.0
-offset_bottom = 70.0
-theme = ExtResource( 7 )
-theme_override_fonts/font = SubResource( 3 )
+layout_mode = 2
+theme = ExtResource("7")
+theme_override_fonts/font = SubResource("3")
 text = "Server URL:"
 
 [node name="URL" type="LineEdit" parent="CenterContainer/HBoxContainer/MultiPlayerBtn/CenterContainer/MultiplayerGame"]
-offset_top = 74.0
-offset_right = 280.0
-offset_bottom = 104.0
-custom_minimum_size = Vector2( 280, 0 )
-theme = ExtResource( 7 )
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme = ExtResource("7")
 placeholder_text = "eg https://game.example.com"
-
-[node name="Tween" type="Tween" parent="."]

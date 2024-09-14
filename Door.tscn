@@ -1,31 +1,29 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://d2uw1f2xvm0y8"]
 
-[ext_resource path="res://Highlight.gd" type="Script" id=1]
-[ext_resource path="res://assets/MainOffice/Door.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://Highlight.gd" id="1"]
+[ext_resource type="Script" path="res://assets/MainOffice/Door.gd" id="2"]
 
-[sub_resource type="CircleShape2D" id=617]
+[sub_resource type="CircleShape2D" id="617"]
 radius = 60.0
 
-[sub_resource type="BoxShape3D" id=618]
-extents = Vector3( 0.520628, 1.36822, 0.0604212 )
+[sub_resource type="BoxShape3D" id="618"]
+size = Vector3(1.04126, 2.73644, 0.120842)
 
 [node name="Door" type="StaticBody3D"]
-transform = Transform3D( 0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, 2.36, 0, 4.846 )
-script = ExtResource( 2 )
+transform = Transform3D(0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, 2.36, 0, 4.846)
+script = ExtResource("2")
 
 [node name="HandleAnchor" type="Node3D" parent="."]
-transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.816254, 0.933472, 0.0654106 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.816254, 0.933472, 0.0654106)
 
 [node name="HandleHighlight" type="Node2D" parent="."]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Area2D" type="Area2D" parent="HandleHighlight"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandleHighlight/Area2D"]
-shape = SubResource( 617 )
-
-[node name="Tween" type="Tween" parent="."]
+shape = SubResource("617")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.547536, 1.4021, 0.0489888 )
-shape = SubResource( 618 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.547536, 1.4021, 0.0489888)
+shape = SubResource("618")

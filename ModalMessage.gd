@@ -16,9 +16,8 @@ func open(msg = null):
 		$CenterContainer/VBoxContainer/Label.text = msg
 		
 	visible = true
-	$Tween.remove_all()
-	$Tween.interpolate_property(self, "modulate:a", null, 1.0, 0.5, Tween.TRANS_QUART, Tween.EASE_IN)
-	$Tween.start()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 
 
 func on_ok():
