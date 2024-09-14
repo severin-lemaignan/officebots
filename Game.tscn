@@ -1,11 +1,11 @@
 [gd_scene load_steps=19 format=3 uid="uid://dmvdh1h1tsj5x"]
 
-[ext_resource type="PackedScene" path="res://GameModeSelection.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://8022mct5o2qn" path="res://GameModeSelection.tscn" id="1"]
 [ext_resource type="Script" path="res://Game.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://cb2kyl4o1mapr" path="res://assets/MainOffice/MainOffice.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://bgukf7e25eurf" path="res://UI.tscn" id="4"]
 [ext_resource type="Script" path="res://FakePlayer.gd" id="5"]
-[ext_resource type="PackedScene" path="res://CharacterSelection.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://bdis1glhln08s" path="res://CharacterSelection.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://NPC.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://dot7kp8jx0i2n" path="res://assets/characters/skins/casualFemaleB_neutral.png" id="8"]
 [ext_resource type="Texture2D" uid="uid://ia2yw60cm6p" path="res://assets/characters/skins/casualFemaleA_neutral.png" id="9"]
@@ -74,13 +74,10 @@ texture = ExtResource("11")
 expand_mode = 1
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("4")]
-layout_mode = 3
-anchors_preset = 15
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Bottom" parent="CanvasLayer/UI" index="0"]
-layout_mode = 0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -88,25 +85,13 @@ offset_left = 0.0
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Control" parent="CanvasLayer/UI/Bottom" index="0"]
-layout_mode = 2
-
 [node name="Top" parent="CanvasLayer/UI" index="1"]
-layout_mode = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_left = 0.0
 offset_top = 0.0
 
-[node name="HBoxContainer2" parent="CanvasLayer/UI/Top" index="0"]
-layout_mode = 2
-
-[node name="Portrait" parent="CanvasLayer/UI/Top/HBoxContainer2" index="0"]
-layout_mode = 2
-expand_mode = 1
-
 [node name="ColorRect" parent="CanvasLayer/UI/Top/HBoxContainer2/Portrait" index="0"]
-layout_mode = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_left = 0.0
@@ -114,36 +99,10 @@ offset_top = 0.0
 offset_right = 2.7
 offset_bottom = 17.44
 
-[node name="NameBox" parent="CanvasLayer/UI/Top/HBoxContainer2" index="1"]
-layout_mode = 2
-
-[node name="Name" parent="CanvasLayer/UI/Top/HBoxContainer2/NameBox" index="0"]
-layout_mode = 2
-
-[node name="RightPanel" parent="CanvasLayer/UI" index="2"]
-anchors_preset = 0
-
 [node name="IconSet" parent="CanvasLayer/UI/RightPanel" index="0"]
-layout_mode = 0
 anchor_right = 0.0
 
-[node name="robot" parent="CanvasLayer/UI/RightPanel/IconSet" index="0"]
-layout_mode = 2
-
-[node name="spacer" parent="CanvasLayer/UI/RightPanel/IconSet" index="1"]
-layout_mode = 2
-
-[node name="away" parent="CanvasLayer/UI/RightPanel/IconSet" index="2"]
-layout_mode = 2
-
-[node name="chat" parent="CanvasLayer/UI/RightPanel/IconSet" index="3"]
-layout_mode = 2
-
-[node name="settings" parent="CanvasLayer/UI/RightPanel/IconSet" index="4"]
-layout_mode = 2
-
 [node name="Chat" parent="CanvasLayer/UI/RightPanel" index="1"]
-layout_mode = 0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -152,7 +111,6 @@ offset_right = 390.0
 offset_bottom = 64.0
 
 [node name="TransientMessage" parent="CanvasLayer/UI" index="3"]
-layout_mode = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -162,35 +120,14 @@ offset_top = 0.0
 offset_right = 519.0
 offset_bottom = 38.0
 
-[node name="Tween" parent="CanvasLayer/UI/TransientMessage" index="0"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-script = null
-
 [node name="Settings" parent="CanvasLayer/UI" index="4"]
-layout_mode = 0
+anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 
-[node name="CharacterViewport" parent="CanvasLayer/UI" index="5"]
-size = Vector2i(256, 256)
-
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource("6")]
-layout_mode = 3
-anchors_preset = 15
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="GameModeSelection" parent="CanvasLayer" instance=ExtResource("1")]
-layout_mode = 3
-anchors_preset = 15
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -296,7 +233,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.427, 0, -1.33055)
 curve = SubResource("3")
 
 [node name="NPC2" parent="NPCPath/NPCPath2" instance=ExtResource("7")]
-transform = Transform3D(-0.990202, 0, -0.139643, 0, 1, 0, 0.139644, 0, -0.990197, 4.22644, 0, 0.860942)
+transform = Transform3D(-0.990202, 0, -0.139643, 0, 1, 0, 0.139644, 0, -0.990198, 4.22644, 0, 0.860942)
 skin = ExtResource("8")
 npc_name = "Nicky"
 

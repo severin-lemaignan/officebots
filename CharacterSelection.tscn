@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://bdis1glhln08s"]
 
-[ext_resource type="PackedScene" path="res://Character.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://bk1a8xgi2mm50" path="res://Character.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://n0m4pviiqpe4" path="res://assets/characters/char1.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://dwk6413j1pfo6" path="res://assets/characters/skins/racerBlueFemale_neutral.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://ca3ey41n88yiu" path="res://assets/characters/skins/businessMaleB_neutral.png" id="4"]
@@ -26,6 +26,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("5")
 
 [node name="Bg" type="ColorRect" parent="."]
@@ -81,9 +83,13 @@ size = Vector2i(256, 256)
 neutral_skin = ExtResource("3")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 144.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2
@@ -123,7 +129,6 @@ horizontal_alignment = 1
 layout_mode = 2
 
 [node name="Char1" type="TextureButton" parent="CenterContainer/VBoxContainer/PortraitsContainer"]
-custom_minimum_size = Vector2(100, 200)
 layout_mode = 2
 theme = ExtResource("7")
 texture_normal = ExtResource("2")

@@ -35,11 +35,11 @@ func display(msg = null):
 
 func on_toggle_laser(state):
 
-	emit_signal("laser_toggled", state)
+	laser_toggled.emit(state)
 
 func on_toggle_npcs(state):
 
-	emit_signal("npcs_toggled", state)
+	npcs_toggled.emit(state)
 
 func on_ok():
 	

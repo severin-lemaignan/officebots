@@ -33,13 +33,13 @@ func _ready():
 	#_err = $Bottom/Actions/ExpressionGroup/angry.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.ANGRY])
 	#_err = $Bottom/Actions/ExpressionGroup/excited.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.HAPPY])
 	
-	connect("on_expression", Callable(portrait, "set_expression"))
+	on_expression.connect(Callable(portrait, "set_expression"))
 	
 	portrait.portrait_mode(true)
 	portrait.set_close_up_camera()
 
-func set_name_skin(name, skin):
-	$Top/HBoxContainer2/NameBox/Name.text = name
+func set_name_skin(character_name, skin):
+	$Top/HBoxContainer2/NameBox/Name.text = character_name
 	portrait.set_base_skin(skin)
 	
 func on_settings():

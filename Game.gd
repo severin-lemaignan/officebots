@@ -74,7 +74,7 @@ func _ready():
 	$CanvasLayer/GameModeSelection.visible = false
 	var _err = $CanvasLayer/UI/Settings.connect("laser_toggled", Callable(self, "toggle_robots_lasers"))
 	_err = $CanvasLayer/UI/Settings.connect("npcs_toggled", Callable(self, "toggle_npcs"))
-	toggle_npcs($CanvasLayer/UI/Settings.NPCsBtn.pressed)
+	toggle_npcs($CanvasLayer/UI/Settings.NPCsBtn.button_pressed)
 	
 	set_physics_process(false)
 	

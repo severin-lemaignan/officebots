@@ -1,8 +1,5 @@
 extends Node3D
 
-@onready var nav = $Navigation
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -18,7 +15,7 @@ func set_local_player(object):
 
 
 func get_navmesh():
-	var navigation_mesh = $Navigation/NavigationRegion3D.navigation_mesh
+	var navigation_mesh = $NavigationMeshInstance.navigation_mesh
 	var polygons = []
 	var vertices = navigation_mesh.get_vertices()
 	

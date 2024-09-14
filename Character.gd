@@ -47,6 +47,8 @@ var is_portrait_mode
 func _ready():
 	randomize()
 	
+	set_skin(neutral_skin)
+	
 	local_player = $FakePlayer
 
 	last_location = global_transform.origin
@@ -316,9 +318,7 @@ func set_base_skin(resource_path):
 	set_skin(neutral_skin)
 	
 func set_skin(texture):
-	# TODO: Godot4 port
-	# $Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", texture)
-	pass
+	$Root/Skeleton3D/Character.get_surface_override_material(0).albedo_texture = texture
 	
 func set_username(name):
 	username = name
@@ -344,8 +344,7 @@ func set_expression(expr):
 			skin = load(texture_basename + "sad.png")
 			
 			
-	#TODO: Godot4 port
-	#$Root/Skeleton3D/Character.get_surface_override_material(0).set_shader_parameter("skin", skin)
+	$Root/Skeleton3D/Character.get_surface_override_material(0).albedo_texture = skin
 	
 	
 #func face(object):

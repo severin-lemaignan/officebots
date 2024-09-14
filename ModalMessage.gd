@@ -25,7 +25,7 @@ func on_ok():
 	modulate = Color(1.0,1.0,1.0,0.0)
 	visible = false
 	
-	emit_signal("on_choice", "ok")
+	on_choice.emit("ok")
 
 func on_cancel():
 	
@@ -33,4 +33,4 @@ func on_cancel():
 	modulate = Color(1.0,1.0,1.0,0.0)
 	visible = false
 	
-	emit_signal("on_choice", "cancel")
+	on_choice.emit("cancel")

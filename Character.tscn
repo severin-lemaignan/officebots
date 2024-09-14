@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://bk1a8xgi2mm50"]
+[gd_scene load_steps=16 format=4 uid="uid://bk1a8xgi2mm50"]
 
 [ext_resource type="Material" path="res://skin.material" id="1"]
 [ext_resource type="Script" path="res://FakePlayer.gd" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dud8ueek04gv0" path="res://SpeechBubble.tscn" id="4"]
 [ext_resource type="Texture2D" uid="uid://ia2yw60cm6p" path="res://assets/characters/skins/casualFemaleA_neutral.png" id="5"]
 [ext_resource type="Theme" uid="uid://07pq6sxhfns3" path="res://default_theme.tres" id="6"]
+[ext_resource type="Texture2D" uid="uid://c8nsgkxbhr666" path="res://assets/characters/skins/farmerA_neutral.png" id="6_5vl36"]
 
 [sub_resource type="ArrayMesh" id="1"]
 resource_name = "Character"
@@ -160,6 +161,10 @@ bind/43/pose = Transform3D(0.984979, -0.0764081, 0.154848, -0.169555, -0.597668,
 bind/44/name = &"right_toes"
 bind/44/bone = -1
 bind/44/pose = Transform3D(-0.992803, 0.00958511, -0.119373, -0.119664, -0.039574, 0.992026, 0.00478277, 0.999171, 0.0404359, -0.340618, -0.128335, -0.0149813)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i5s50"]
+diffuse_mode = 3
+albedo_texture = ExtResource("6_5vl36")
 
 [sub_resource type="Animation" id="5"]
 length = 0.001
@@ -538,6 +543,7 @@ bones/44/scale = Vector3(1, 1, 1)
 [node name="Character" type="MeshInstance3D" parent="Root/Skeleton3D"]
 mesh = SubResource("1")
 skin = SubResource("2")
+surface_material_override/0 = SubResource("StandardMaterial3D_i5s50")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

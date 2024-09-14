@@ -10,10 +10,7 @@ func _ready():
 		v.get_child(0).portrait_mode(true)
 		
 	for c in $CenterContainer/VBoxContainer/PortraitsContainer.get_children():
-		c.connect("pressed", Callable(self, "on_pressed"))
-		
-
-
+		c.pressed.connect(self.on_pressed)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -22,9 +19,9 @@ func _process(_delta):
 		$CenterContainer/VBoxContainer/PortraitsContainer.get_child(i).texture_normal = tex
 
 func on_pressed():
-	var name = $CenterContainer/VBoxContainer/Name.text
+	var character_name = $CenterContainer/VBoxContainer/Name.text
 	
-	if name == "":
+	if character_name == "":
 		$CenterContainer/VBoxContainer/Name.placeholder_text = "You must set your name!"
 		return
 		
@@ -32,7 +29,7 @@ func on_pressed():
 	
 	for i in range(NB_CHARACTERS):
 		var c = $CenterContainer/VBoxContainer/PortraitsContainer.get_child(i)
-		if c.pressed:
+		if c.button_pressed:
 			texture = $Viewports.get_child(i).get_child(0).neutral_skin
 		
 	print("Created character " + name + " with skin " + texture.resource_path)
@@ -43,5 +40,5 @@ func on_pressed():
 	
 	visible = false
 	
-	emit_signal("on_character_created", [name, texture.resource_path])
+	on_character_created.emit([name, texture.resource_path])
 	

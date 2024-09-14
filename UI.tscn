@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://bnjevvku6teqe" path="res://assets/icons/timer-outline-hover.svg" id="15"]
 [ext_resource type="Script" path="res://UI.gd" id="19"]
 [ext_resource type="Script" path="res://TransientMessage.gd" id="21"]
-[ext_resource type="PackedScene" path="res://Character.tscn" id="22"]
-[ext_resource type="PackedScene" path="res://Settings.tscn" id="23"]
+[ext_resource type="PackedScene" uid="uid://bk1a8xgi2mm50" path="res://Character.tscn" id="22"]
+[ext_resource type="PackedScene" uid="uid://bndnfalxnak4j" path="res://Settings.tscn" id="23"]
 [ext_resource type="Texture2D" uid="uid://ba46o05sgcibp" path="res://assets/icons/robot-sleepy-hover.svg" id="28"]
 [ext_resource type="Texture2D" uid="uid://bx3t5gv125el1" path="res://assets/icons/robot-sleepy.svg" id="29"]
 
@@ -90,6 +90,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("19")
 
@@ -200,6 +202,7 @@ visible = false
 layout_mode = 0
 anchor_left = 0.0
 anchor_top = 1.0
+anchor_right = 0.0
 offset_left = 0.0
 offset_top = -300.0
 offset_right = 0.0
@@ -223,6 +226,9 @@ script = ExtResource("21")
 [node name="Settings" parent="." instance=ExtResource("23")]
 visible = false
 layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 
 [node name="CharacterViewport" type="SubViewport" parent="."]
 transparent_bg = true
