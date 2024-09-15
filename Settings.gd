@@ -46,7 +46,7 @@ func on_ok():
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 
-	await tween.loop_finished
+	await tween.finished
 	
 	visible = false
 
@@ -60,7 +60,7 @@ func on_cancel():
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 	
-	await tween.loop_finished
+	await tween.finished
 
 	visible = false
 

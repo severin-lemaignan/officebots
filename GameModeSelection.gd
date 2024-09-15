@@ -8,19 +8,19 @@ signal on_mode_set
 
 func _ready():
 	
-	single_btn.connect("button_up", Callable(self, "on_single_player"))
-	multi_btn.connect("button_up", Callable(self, "on_multi_player"))
+	single_btn.button_up.connect(on_single_player)
+	multi_btn.button_up.connect(on_multi_player)
 
 func on_single_player():
 	
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
 	
-	await tween.loop_finished
+	await tween.finished
 	
 	visible = false
 	
-	emit_signal("on_mode_set", null)
+	on_mode_set.emit(null)
 	
 func on_multi_player():
 	var url = url_field.text
@@ -31,8 +31,8 @@ func on_multi_player():
 	
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_IN)
-	await tween.loop_finished
+	await tween.finished
 	
 	visible = false
 	
-	emit_signal("on_mode_set", url)
+	on_mode_set.emit(url)

@@ -54,6 +54,7 @@ random_robot_start_positions = false
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Effects" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,8 +75,6 @@ texture = ExtResource("11")
 expand_mode = 1
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("4")]
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Bottom" parent="CanvasLayer/UI" index="0"]
 anchor_top = 0.0
@@ -104,7 +103,6 @@ anchor_right = 0.0
 
 [node name="Chat" parent="CanvasLayer/UI/RightPanel" index="1"]
 anchor_top = 0.0
-anchor_right = 0.0
 anchor_bottom = 0.0
 offset_top = 64.0
 offset_right = 390.0
@@ -119,11 +117,6 @@ offset_left = 0.0
 offset_top = 0.0
 offset_right = 519.0
 offset_bottom = 38.0
-
-[node name="Settings" parent="CanvasLayer/UI" index="4"]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
 
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource("6")]
 

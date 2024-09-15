@@ -47,6 +47,7 @@ var is_portrait_mode
 func _ready():
 	randomize()
 	
+	$Root/Skeleton3D/Character.set_surface_override_material(0, $Root/Skeleton3D/Character.get_surface_override_material(0).duplicate())
 	set_skin(neutral_skin)
 	
 	local_player = $FakePlayer
