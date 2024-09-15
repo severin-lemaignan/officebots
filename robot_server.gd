@@ -17,22 +17,22 @@ func _init(game):
 	self.game_instance = game
 	
 	if GameState.mode == GameState.STANDALONE:
-		#TODO: not yet ported to Godot4
-		#print("STARTING ROBOTS WEBSOCKET CLIENT (STANDALONE mode). YOU NEED TO START THE PYTHON WEBSOCKET SERVER")
-		#robot_server = WebSocketClient.new()
+		
+		print("STARTING ROBOTS WEBSOCKET CLIENT (STANDALONE mode). YOU NEED TO START THE PYTHON WEBSOCKET SERVER")
+		robot_server = WebSocketPeer.new()
+
 		#robot_server.connect("connection_error", Callable(self, "_on_connection_error"))
 		#robot_server.connect("connection_established", Callable(self, "_on_connection_established"))
 		#robot_server.connect("connection_closed", Callable(self, "_on_connection_closed"))
 		
-		#pub_timer.wait_time = pub_interval
-		#pub_timer.one_shot = false
-		#pub_timer.connect("timeout", Callable(self, "publish_robot_state"))
-		#game_instance.add_child(pub_timer)
+		pub_timer.wait_time = pub_interval
+		pub_timer.one_shot = false
+		pub_timer.timeout.connect(publish_robot_state)
+		game_instance.add_child(pub_timer)
 
-		#robot_server.connect("data_received", Callable(self, "_on_robot_data"))
+		robot_server.connect("data_received", Callable(self, "_on_robot_data"))
 	
-		#GameState.connect("robot_state_changed", Callable(self, "on_robot_state_changed"))
-		pass
+		GameState.robot_state_changed.connect(on_robot_state_changed)
 	
 func on_robot_state_changed(state):
 	
