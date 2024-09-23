@@ -516,9 +516,9 @@ func toggle_robots_lasers(state):
 		robot.get_node("LaserScanner").visible = state
 
 func toggle_npcs(state):
-	for npc_path in $NPCPath.get_children():
-		npc_path.get_child(0).get_child(0).visible = state
-		npc_path.get_child(0).get_child(0).face.visible = state
+	for npc in $NPCs.get_children():
+		npc.visible = state
+		#npc.face.visible = state
 
 @rpc("any_peer") func pre_configure_game():
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dmvdh1h1tsj5x"]
+[gd_scene load_steps=12 format=3 uid="uid://dmvdh1h1tsj5x"]
 
 [ext_resource type="PackedScene" uid="uid://8022mct5o2qn" path="res://GameModeSelection.tscn" id="1"]
 [ext_resource type="Script" path="res://Game.gd" id="2"]
@@ -6,44 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://bgukf7e25eurf" path="res://UI.tscn" id="4"]
 [ext_resource type="Script" path="res://FakePlayer.gd" id="5"]
 [ext_resource type="PackedScene" uid="uid://bdis1glhln08s" path="res://CharacterSelection.tscn" id="6"]
-[ext_resource type="PackedScene" path="res://NPC.tscn" id="7"]
-[ext_resource type="Texture2D" uid="uid://dot7kp8jx0i2n" path="res://assets/characters/skins/casualFemaleB_neutral.png" id="8"]
-[ext_resource type="Texture2D" uid="uid://ia2yw60cm6p" path="res://assets/characters/skins/casualFemaleA_neutral.png" id="9"]
-[ext_resource type="Texture2D" uid="uid://c8nsgkxbhr666" path="res://assets/characters/skins/farmerA_neutral.png" id="10"]
+[ext_resource type="Environment" uid="uid://bn4520vmsnran" path="res://default-env.tres" id="9_nnmjd"]
+[ext_resource type="PackedScene" uid="uid://bubta8ag73d1x" path="res://BaseCharacter.tscn" id="10_vl6hl"]
 [ext_resource type="Texture2D" uid="uid://b3g55hi8dlbo2" path="res://assets/white.png" id="11"]
 [ext_resource type="Shader" path="res://vignette.gdshader" id="13"]
-[ext_resource type="Texture2D" uid="uid://ca3ey41n88yiu" path="res://assets/characters/skins/businessMaleB_neutral.png" id="14"]
 
 [sub_resource type="ShaderMaterial" id="1"]
 shader = ExtResource("13")
-
-[sub_resource type="Curve3D" id="2"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -5.06129, 1.52588e-05, 4.86618, 0, 0, 0, 0, 0, 0, -3.05243, 1.52588e-05, 5.57059, 0, 0, 0, 0, 0, 0, -1.48708, 1.52588e-05, 4.44876, 0, 0, 0, 0, 0, 0, -0.808762, 0, 1.89202, 0, 0, 0, 0, 0, 0, 1.01748, 0, 1.10935, 0, 0, 0, 0, 0, 0, 2.38481, 0, 1.73292, 0, 0, 0, 0, 0, 0, 4.0097, 0, 1.05246, 0, 0, 0, 0, 0, 0, 8.88033, 0, 0.655594, 0, 0, 0, 0, 0, 0, 10.0203, 0, -1.27625, 0, 0, 0, 0, 0, 0, 13.3305, 0, -1.32354, 0, 0, 0, 0, 0, 0, 9.50014, 0, -2.12744, 0, 0, 0, 0, 0, 0, 8.82304, 0, -2.81471, 0, 0, 0, 0, 0, 0, 4.45424, 0, -2.99355, 0, 0, 0, 0, 0, 0, 3.21076, 0, -3.49881, 0, 0, 0, 0, 0, 0, 3.25345, 0, -5.03744, 0, 0, 0, 0, 0, 0, 4.01467, -1.52588e-05, -7.47105, 0, 0, 0, 0, 0, 0, 5.81164, -3.05176e-05, -10.8285, 0, 0, 0, 0, 0, 0, 3.11619, -1.52588e-05, -10.0246, 0, 0, 0, 0, 0, 0, 2.73788, 0, -5.91053, 0, 0, 0, 0, 0, 0, 2.487, -1.52588e-05, -2.61033, 0, 0, 0, 0, 0, 0, 1.5928, 0, 0.200013, 0, 0, 0, 0, 0, 0, -4.0699, 0, 0.196228, 0, 0, 0, 0, 0, 0, -3.91337, 0, 2.23118, 0, 0, 0, 0, 0, 0, -5.16565, 1.52588e-05, 2.96168, 0, 0, 0, 0, 0, 0, -5.06129, 1.52588e-05, 4.86618),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 25
-
-[sub_resource type="Curve3D" id="3"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 4.22644, 0, 0.860942, 0, 0, 0, 0, 0, 0, 4.51342, 0, 2.89589, 0, 0, 0, 0, 0, 0, 4.38297, 1.52588e-05, 6.02659, 0, 0, 0, 0, 0, 0, 3.93946, 1.52588e-05, 7.33105, 0, 0, 0, 0, 0, 0, 2.11322, 3.05176e-05, 7.77456, 0, 0, 0, 0, 0, 0, 0.443515, 3.05176e-05, 7.77456, 0, 0, 0, 0, 0, 0, 0.417426, 1.52588e-05, 5.45263, 0, 0, 0, 0, 0, 0, 0.730495, 0, 1.74797, 0, 0, 0, 0, 0, 0, -0.313069, 0, 0.547872, 0, 0, 0, 0, 0, 0, -2.31692, 0, 0.107025, 0, 0, 0, 0, 0, 0, -2.92198, 0, -0.0260887, 0, 0, 0, 0, 0, 0, -3.77191, 0, -0.00638056, 0, 0, 0, 0, 0, 0, -7.86545, 0, 0.0885406, 0, 0, 0, 0, 0, 0, -8.19665, -1.52588e-05, -2.02287, 0, 0, 0, 0, 0, 0, -8.42021, -1.52588e-05, -2.46999, 0, 0, 0, 0, 0, 0, -8.81765, -1.52588e-05, -3.26487, 0, 0, 0, 0, 0, 0, -8.23805, -3.05176e-05, -5.74889, 0, 0, 0, 0, 0, 0, -7.78265, -3.05176e-05, -6.86669, 0, 0, 0, 0, 0, 0, -8.03105, -3.05176e-05, -8.9367, 0, 0, 0, 0, 0, 0, -7.94825, -4.57764e-05, -10.2201, 0, 0, 0, 0, 0, 0, -6.74764, -4.57764e-05, -10.3857, 0, 0, 0, 0, 0, 0, -8.56925, -4.57764e-05, -10.0959, 0, 0, 0, 0, 0, 0, -8.61065, -3.05176e-05, -8.6883, 0, 0, 0, 0, 0, 0, -8.56925, -3.05176e-05, -7.28069, 0, 0, 0, 0, 0, 0, -8.77625, -3.05176e-05, -5.58329, 0, 0, 0, 0, 0, 0, -9.68705, -1.52588e-05, -4.29988, 0, 0, 0, 0, 0, 0, -11.4673, -1.52588e-05, -2.72667, 0, 0, 0, 0, 0, 0, -13.3303, -1.52588e-05, -3.34767, 0, 0, 0, 0, 0, 0, -13.4959, -1.52588e-05, -2.43687, 0, 0, 0, 0, 0, 0, -10.3081, -1.52588e-05, -2.89227, 0, 0, 0, 0, 0, 0, -9.27305, -1.52588e-05, -3.80308, 0, 0, 0, 0, 0, 0, -7.53425, 0, -0.491062, 0, 0, 0, 0, 0, 0, -2.89743, 0, 0.626743, 0, 0, 0, 0, 0, 0, -3.35283, 0, 2.65535, 0, 0, 0, 0, 0, 0, -3.96926, 6.4913e-06, 3.69447, 0, 0, 0, 0, 0, 0, -4.80184, 1.52588e-05, 5.09796, 0, 0, 0, 0, 0, 0, -5.17444, 1.52588e-05, 6.50557, 0, 0, 0, 0, 0, 0, -4.01523, 3.05176e-05, 8.49278, 0, 0, 0, 0, 0, 0, -5.75404, 3.05176e-05, 8.49278, 0, 0, 0, 0, 0, 0, -6.54064, 3.05176e-05, 7.78898, 0, 0, 0, 0, 0, 0, -6.83045, 1.52588e-05, 6.05017, 0, 0, 0, 0, 0, 0, -5.91964, 1.52588e-05, 4.18716, 0, 0, 0, 0, 0, 0, -3.1307, 0, 2.08713, 0, 0, 0, 0, 0, 0, -2.50456, 0, -0.104356, 0, 0, 0, 0, 0, 0, 1.61519, 0, 0.295542, 0, 0, 0, 0, 0, 0, 4.22644, 0, 0.860942),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 46
-
-[sub_resource type="Curve3D" id="4"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -6.97328, 0, 1.66224, 0, 0, 0, 0, 0, 0, -7.25708, 1.52588e-05, 5.95973, 0, 0, 0, 0, 0, 0, -7.36881, 3.05176e-05, 8.51584, 0, 0, 0, 0, 0, 0, -8.37681, 3.05176e-05, 10.4971, 0, 0, 0, 0, 0, 0, -11.0185, 4.57764e-05, 10.7404, 0, 0, 0, 0, 0, 0, -11.1227, 3.05176e-05, 8.5506, 0, 0, 0, 0, 0, 0, -10.1495, 3.05176e-05, 10.1495, 0, 0, 0, 0, 0, 0, -7.33405, 3.05176e-05, 9.52384, 0, 0, 0, 0, 0, 0, -6.84743, 1.52588e-05, 6.25654, 0, 0, 0, 0, 0, 0, -8.30729, 1.52588e-05, 5.90895, 0, 0, 0, 0, 0, 0, -10.2885, 3.05176e-05, 6.53461, 0, 0, 0, 0, 0, 0, -11.4703, 1.52588e-05, 6.1175, 0, 0, 0, 0, 0, 0, -10.5666, 1.52588e-05, 4.34482, 0, 0, 0, 0, 0, 0, -11.4356, 1.52588e-05, 4.24054, 0, 0, 0, 0, 0, 0, -10.6014, 1.52588e-05, 2.95448, 0, 0, 0, 0, 0, 0, -11.3313, 1.52588e-05, 4.83144, 0, 0, 0, 0, 0, 0, -11.4703, 0, 1.98124, 0, 0, 0, 0, 0, 0, -10.5318, 1.52588e-05, 2.15503, 0, 0, 0, 0, 0, 0, -10.0105, 0, 0.312827, 0, 0, 0, 0, 0, 0, -4.44909, 0, -0.590895, 0, 0, 0, 0, 0, 0, -2.2593, 0, -0.590895, 0, 0, 0, 0, 0, 0, -1.39034, 0, -0.590895, 0, 0, 0, 0, 0, 0, 0.312828, 0, 1.21655, 0, 0, 0, 0, 0, 0, -0.903723, 1.52588e-05, 3.16303, 0, 0, 0, 0, 0, 0, -1.77269, 1.52588e-05, 4.83144, 0, 0, 0, 0, 0, 0, -0.973238, 1.52588e-05, 4.34482, 0, 0, 0, 0, 0, 0, 0.521379, 0, 0.486619, 0, 0, 0, 0, 0, 0, -3.64965, 0, -0.278068, 0, 0, 0, 0, 0, 0, -6.1175, 0, 0.382343, 0, 0, 0, 0, 0, 0, -6.97328, 0, 1.66224),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 30
-
-[sub_resource type="Curve3D" id="5"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 2.12027, 0, -0.903722, 0, 0, 0, 0, 0, 0, -1.32083, 0, -0.312827, 0, 0, 0, 0, 0, 0, -3.16303, 0, -0.312827, 0, 0, 0, 0, 0, 0, -3.75392, 0, -0.312827, 0, 0, 0, 0, 0, 0, -11.1227, 0, -1.21655, 0, 0, 0, 0, 0, 0, -12.111, 0, -1.28643, 0, 0, 0, 0, 0, 0, -14.5638, 0, -1.45986, 0, 0, 0, 0, 0, 0, -10.6709, 0, 0.625653, 0, 0, 0, 0, 0, 0, -10.6709, 1.52588e-05, 3.4411, 0, 0, 0, 0, 0, 0, -10.7404, 3.05176e-05, 6.36081, 0, 0, 0, 0, 0, 0, -7.68164, 1.52588e-05, 6.01323, 0, 0, 0, 0, 0, 0, -6.36081, 1.52588e-05, 4.37958, 0, 0, 0, 0, 0, 0, -6.32605, 0, 1.4251, 0, 0, 0, 0, 0, 0, -5.2833, 0, 0.173793, 0, 0, 0, 0, 0, 0, -3.40634, 0, 0.24331, 0, 0, 0, 0, 0, 0, -3.40634, 0, 1.56413, 0, 0, 0, 0, 0, 0, -4.24054, 1.52588e-05, 2.57213, 0, 0, 0, 0, 0, 0, -3.71916, 1.52588e-05, 5.38757, 0, 0, 0, 0, 0, 0, -1.04276, 3.05176e-05, 7.75115, 0, 0, 0, 0, 0, 0, -2.08551, 3.05176e-05, 8.51584, 0, 0, 0, 0, 0, 0, -1.31387, 3.05176e-05, 8.48578, 0, 0, 0, 0, 0, 0, 0.590895, 3.05176e-05, 8.41157, 0, 0, 0, 0, 0, 0, 1.14703, 3.05176e-05, 9.35005, 0, 0, 0, 0, 0, 0, 1.04276, 3.05176e-05, 8.09874, 0, 0, 0, 0, 0, 0, -1.87696, 1.52588e-05, 6.25654, 0, 0, 0, 0, 0, 0, -1.4251, 1.52588e-05, 4.13627, 0, 0, 0, 0, 0, 0, -1.4251, 1.52588e-05, 2.78068, 0, 0, 0, 0, 0, 0, -3.02399, 0, 1.80744, 0, 0, 0, 0, 0, 0, 2.12027, 0, -0.903722),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 29
 
 [node name="Game" type="Node3D"]
 script = ExtResource("2")
@@ -121,13 +90,11 @@ offset_bottom = 38.0
 [node name="CharacterSelection" parent="CanvasLayer" instance=ExtResource("6")]
 
 [node name="GameModeSelection" parent="CanvasLayer" instance=ExtResource("1")]
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Players" type="Node3D" parent="."]
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.965926, -1.43934e-08, -0.258819, 0.224144, 0.5, 0.836516, 0.12941, -0.866025, 0.482963, -26.2575, 9.56182, 11.3093)
+transform = Transform3D(0.965926, 2.89795e-07, -0.258819, 0.257227, -0.110757, 0.959983, -0.0286662, -0.993847, -0.106984, -26.2575, 9.56182, 11.3093)
 shadow_enabled = true
 directional_shadow_mode = 1
 
@@ -139,6 +106,7 @@ script = ExtResource("5")
 
 [node name="Camera3D" type="Camera3D" parent="FakePlayer"]
 transform = Transform3D(0.468547, 0.331971, -0.818693, 0, 0.926712, 0.375772, 0.883439, -0.176067, 0.434208, -12.0087, 4.81994, 5.78424)
+environment = ExtResource("9_nnmjd")
 
 [node name="SpawnPointsPlayers" type="Node3D" parent="."]
 
@@ -210,41 +178,62 @@ transform = Transform3D(0.160604, 0, -0.987019, 0, 1, 0, 0.987019, 0, 0.160604, 
 wait_time = 3.0
 autostart = true
 
-[node name="NPCPath" type="Node3D" parent="."]
+[node name="NPCsTargets" type="Node3D" parent="."]
 
-[node name="NPCPath1" type="Path3D" parent="NPCPath"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.808762, 0, -0.378852)
-curve = SubResource("2")
+[node name="Target1" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.2642, 0, 7.65236)
 
-[node name="NPC1" parent="NPCPath/NPCPath1" instance=ExtResource("7")]
-transform = Transform3D(-0.330899, 0, -0.943661, 0, 1, 0, 0.943667, 0, -0.330896, -5.06129, 1.52588e-05, 4.86618)
-skin = ExtResource("9")
-npc_name = "Anna"
+[node name="Target2" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.97505, 0, 5.511)
 
-[node name="NPCPath2" type="Path3D" parent="NPCPath"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.427, 0, -1.33055)
-curve = SubResource("3")
+[node name="Target3" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(0.978509, 0, -0.206204, 0, 1, 0, 0.206204, 0, 0.978509, 6.04065, 0, -11.0771)
 
-[node name="NPC2" parent="NPCPath/NPCPath2" instance=ExtResource("7")]
-transform = Transform3D(-0.990202, 0, -0.139643, 0, 1, 0, 0.139644, 0, -0.990198, 4.22644, 0, 0.860942)
-skin = ExtResource("8")
-npc_name = "Nicky"
+[node name="Target4" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(0.978509, 0, -0.206204, 0, 1, 0, 0.206204, 0, 0.978509, 14.3875, 0, -1.8409)
 
-[node name="NPCPath3" type="Path3D" parent="NPCPath"]
-curve = SubResource("4")
+[node name="Target5" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(0.978509, 0, -0.206204, 0, 1, 0, 0.206204, 0, 0.978509, -0.997826, 0, 3.7537)
 
-[node name="NPC3" parent="NPCPath/NPCPath3" instance=ExtResource("7")]
-transform = Transform3D(-0.997827, 2.3346e-07, 0.0658948, 0, 1, -3.5429e-06, -0.0658951, -3.53521e-06, -0.997823, -6.97328, 0, 1.66224)
-skin = ExtResource("10")
-npc_name = "Nic"
+[node name="Target6" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(0.978509, 0, -0.206204, 0, 1, 0, 0.206204, 0, 0.978509, -20.8802, 0, -5.72785)
 
-[node name="NPCPath4" type="Path3D" parent="NPCPath"]
-curve = SubResource("5")
+[node name="Target7" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(0.978509, 0, -0.206204, 0, 1, 0, 0.206204, 0, 0.978509, -10.9295, 0, 3.75164)
 
-[node name="NPC4" parent="NPCPath/NPCPath4" instance=ExtResource("7")]
-transform = Transform3D(-0.16924, 0, 0.985571, 0, 1, 0, -0.985575, 0, -0.169239, 2.12027, 0, -0.903722)
-skin = ExtResource("14")
-npc_name = "Jane"
+[node name="Target8" type="Node3D" parent="NPCsTargets"]
+transform = Transform3D(0.978509, 0, -0.206204, 0, 1, 0, 0.206204, 0, 0.978509, -1.64856, 0, 8.5729)
+
+[node name="NPCs" type="Node3D" parent="."]
+
+[node name="NPC1" parent="NPCs" node_paths=PackedStringArray("nav_targets") instance=ExtResource("10_vl6hl")]
+transform = Transform3D(-0.0192323, 0, -0.999815, 0, 1, 0, 0.999815, 0, -0.0192323, 8.81906, 0, 0.482126)
+nav_targets = [NodePath("../../NPCsTargets/Target1"), NodePath("../../NPCsTargets/Target2"), NodePath("../../NPCsTargets/Target3"), NodePath("../../NPCsTargets/Target4"), NodePath("../../NPCsTargets/Target5"), NodePath("../../NPCsTargets/Target6"), NodePath("../../NPCsTargets/Target7"), NodePath("../../NPCsTargets/Target8")]
+
+[node name="NPC2" parent="NPCs" node_paths=PackedStringArray("nav_targets") instance=ExtResource("10_vl6hl")]
+transform = Transform3D(-0.989794, 0, 0.142508, 0, 1, 0, -0.142508, 0, -0.989794, -10.7673, 0, 5.81564)
+nav_targets = [NodePath("../../NPCsTargets/Target1"), NodePath("../../NPCsTargets/Target2"), NodePath("../../NPCsTargets/Target3"), NodePath("../../NPCsTargets/Target4"), NodePath("../../NPCsTargets/Target5"), NodePath("../../NPCsTargets/Target6"), NodePath("../../NPCsTargets/Target7"), NodePath("../../NPCsTargets/Target8")]
+character = 12
+
+[node name="NPC3" parent="NPCs" node_paths=PackedStringArray("nav_targets") instance=ExtResource("10_vl6hl")]
+transform = Transform3D(0.992356, 0, -0.123411, 0, 1, 0, 0.123411, 0, 0.992356, 5.75524, 0, -11.9894)
+nav_targets = [NodePath("../../NPCsTargets/Target1"), NodePath("../../NPCsTargets/Target2"), NodePath("../../NPCsTargets/Target3"), NodePath("../../NPCsTargets/Target4"), NodePath("../../NPCsTargets/Target5"), NodePath("../../NPCsTargets/Target6"), NodePath("../../NPCsTargets/Target7"), NodePath("../../NPCsTargets/Target8")]
+character = 14
+
+[node name="NPC4" parent="NPCs" node_paths=PackedStringArray("nav_targets") instance=ExtResource("10_vl6hl")]
+transform = Transform3D(0.0762665, 0, 0.997087, 0, 1, 0, -0.997087, 0, 0.0762665, -18.6225, 0, -1.09197)
+nav_targets = [NodePath("../../NPCsTargets/Target1"), NodePath("../../NPCsTargets/Target2"), NodePath("../../NPCsTargets/Target3"), NodePath("../../NPCsTargets/Target4"), NodePath("../../NPCsTargets/Target5"), NodePath("../../NPCsTargets/Target6"), NodePath("../../NPCsTargets/Target7"), NodePath("../../NPCsTargets/Target8")]
+character = 4
+
+[node name="NPC5" parent="NPCs" node_paths=PackedStringArray("nav_targets") instance=ExtResource("10_vl6hl")]
+transform = Transform3D(-0.951315, 0, 0.30822, 0, 1, 0, -0.30822, 0, -0.951315, -16.9652, 0, 6.87575)
+nav_targets = [NodePath("../../NPCsTargets/Target1"), NodePath("../../NPCsTargets/Target2"), NodePath("../../NPCsTargets/Target3"), NodePath("../../NPCsTargets/Target4"), NodePath("../../NPCsTargets/Target5"), NodePath("../../NPCsTargets/Target6"), NodePath("../../NPCsTargets/Target7"), NodePath("../../NPCsTargets/Target8")]
+character = 6
+
+[node name="NPC6" parent="NPCs" node_paths=PackedStringArray("nav_targets") instance=ExtResource("10_vl6hl")]
+transform = Transform3D(-0.369276, 0, -0.92932, 0, 1, 0, 0.92932, 0, -0.369276, -6.94414, 0, 2.62894)
+nav_targets = [NodePath("../../NPCsTargets/Target1"), NodePath("../../NPCsTargets/Target2"), NodePath("../../NPCsTargets/Target3"), NodePath("../../NPCsTargets/Target4"), NodePath("../../NPCsTargets/Target5"), NodePath("../../NPCsTargets/Target6"), NodePath("../../NPCsTargets/Target7"), NodePath("../../NPCsTargets/Target8")]
+character = 1
 
 [connection signal="timeout" from="timer_save" to="." method="_on_timer_save_timeout"]
 

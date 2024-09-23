@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=5 format=3 uid="uid://07pq6sxhfns3"]
 
-[ext_resource type="FontFile" path="res://default_font.tres" id="1"]
+[ext_resource type="FontFile" uid="uid://cg8y0ksreka8b" path="res://default_font.tres" id="1"]
 [ext_resource type="FontFile" uid="uid://c1g7y857m1r6f" path="res://FredokaOne-Regular.ttf" id="2"]
 
 [sub_resource type="FontFile" id="2"]

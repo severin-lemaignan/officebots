@@ -19,12 +19,12 @@ signal on_expression
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	var _err = $RightPanel/IconSet/settings.connect("pressed", Callable(self, "on_settings")) 
-	_err = $RightPanel/IconSet/chat.connect("pressed", Callable(self, "on_chat")) 
+	var _err = $RightPanel/IconSet/settings.pressed.connect(on_settings) 
+	_err = $RightPanel/IconSet/chat.pressed.connect(on_chat) 
 	
 	if GameState.robots_enabled():
-		_err = $RightPanel/IconSet/robot.connect("pressed", Callable(self, "on_robot_clicked"))    
-		_err = GameState.connect("robot_state_changed", Callable(self, "on_robot_state_changed"))
+		_err = $RightPanel/IconSet/robot.pressed.connect(on_robot_clicked)    
+		_err = GameState.robot_state_changed.connect(on_robot_state_changed)
 	else:
 		$RightPanel/IconSet/robot.hide()
 	
@@ -33,7 +33,7 @@ func _ready():
 	#_err = $Bottom/Actions/ExpressionGroup/angry.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.ANGRY])
 	#_err = $Bottom/Actions/ExpressionGroup/excited.connect("pressed", self, "emit_signal", ["on_expression", GameState.Expressions.HAPPY])
 	
-	on_expression.connect(Callable(portrait, "set_expression"))
+	on_expression.connect(portrait.set_expression)
 	
 	portrait.portrait_mode(true)
 	portrait.set_close_up_camera()

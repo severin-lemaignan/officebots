@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dyn6dlh7hkhrb"]
+
+[ext_resource type="Texture2D" uid="uid://dqmtj1o2dcm7c" path="res://assets/textures/PolygonOffice_Texture_03_A.png" id="1_ukouo"]
+
+[resource]
+resource_name = "PolygonOffice_Charaters16"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.906332, 0.906332, 0.906332, 0.8)
+albedo_texture = ExtResource("1_ukouo")
+emission_enabled = true
